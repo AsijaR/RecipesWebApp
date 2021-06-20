@@ -10,14 +10,18 @@ namespace RecipesServer.Interfaces
 {
 	public interface IRecipeRepository
 	{
-        void Update(Recipe recipe);
+        Task<IEnumerable<RecipeBasicInfoDTO>> GetUserRecipes(int userId);
+        void DeleteRecipe(Recipe recipe);
+        void Update(Recipe recipe); 
         Task<bool> SaveAllAsync();
-        Task<IEnumerable<Recipe>> GetRecipesAsync();
+        Task<RecipeIngDTO> AddNewRecipe(RecipeIngDTO recipeDTO);
+        // Task<IEnumerable<Recipe>> GetRecipesAsync();
         Task<RecipeDTO> GetRecipeByIdAsync(int id);
-       // Task<AppUser> GetUserByUsernameAsync(string username);
-        Task<PagedList<RecipeDTO>> GetRecipesAsync(RecipeParams recipeParams);
-       // Task<Recipe> GetRecipeAsync(int recipeId);
+        // Task<AppUser> GetUserByUsernameAsync(string username);
+        //Task<PagedList<RecipeDTO>> GetRecipesAsync(RecipeParams recipeParams);
+        // Task<Recipe> GetRecipeAsync(int recipeId);
+        
         Task<Recipe> FindRecipeByIdAsync(int recipeId);
-        public int ingredientExists(Ingredient ingredient);
+       // public int ingredientExists(Ingredient ingredient);
     }
 }

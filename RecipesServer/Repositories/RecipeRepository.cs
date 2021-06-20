@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using RecipesServer.Data;
+using RecipesServer.DTOs;
 using RecipesServer.DTOs.Recipe;
 using RecipesServer.Helpers;
 using RecipesServer.Interfaces;
@@ -35,18 +36,6 @@ namespace RecipesServer.Repositories
 			return recipe;
 		}
 
-		public int ingredientExists(Ingredient ingredient)
-		{
-			var exists = _context.Ingredients.Where(ing => ing.Name == ingredient.Name.ToLower()).Any();
-			if (exists)
-			{
-				return _context.Ingredients.FirstOrDefault(i => i.Name == ingredient.Name).IngredientId;
-			}
-			else
-			{
-				return 0;
-			}
-		}
 
 		public async Task<RecipeDTO> GetRecipeByIdAsync(int id)
 		{
@@ -59,10 +48,16 @@ namespace RecipesServer.Repositories
 
 			return recipeDTO;
 		}
-
-		public async Task<IEnumerable<Recipe>> GetRecipesAsync()
+		public async Task<IEnumerable<RecipeBasicInfoDTO>> GetUserRecipes(int userId) 
 		{
-			return await _context.Recipes.ToListAsync();
+			return await _context.Recipes.Where(u => u.UserId == userId)
+									.ProjectTo<RecipeBasicInfoDTO>(_mapper.ConfigurationProvider)
+									.ToListAsync();
+		}
+		public async void DeleteRecipe(Recipe recipe)
+		{
+			_context.Recipes.Remove(recipe);
+			_context.SaveChanges();
 		}
 
 		public Task<PagedList<RecipeDTO>> GetRecipesAsync(RecipeParams recipeParams)
@@ -73,6 +68,70 @@ namespace RecipesServer.Repositories
 		public async Task<Recipe> FindRecipeByIdAsync(int recipeId) 
 		{ 
 			return _context.Recipes.SingleOrDefault(r => r.RecipeId == recipeId);
+		}
+
+		public int ingredientExists(IngredientDTO ingredient)
+		{
+			var exists = _context.Ingredients.Where(ing => ing.Name == ingredient.Name.ToLower()).ProjectTo<Ingredient>(_mapper.ConfigurationProvider).Any();
+			if (exists)
+			{
+				return _context.Ingredients.FirstOrDefault(i => i.Name == ingredient.Name).IngredientId;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		public async Task<RecipeIngDTO> AddNewRecipe(RecipeIngDTO newRecipeDTO)
+		{
+			if (newRecipeDTO != null)
+			{
+				//var recIng = _mapper.Map<RecipeIngredients>(newRecipeDTO);
+			//	var ingredients = _mapper.Map<Ingredient>(newRecipeDTO.Ingredients);
+				var alreadyExistIgredients = new Dictionary<int, string>();
+				var doesntExistIgredients = new List<IngredientDTO>();
+				/*foreach (var i in newRecipeDTO.Ingredient)
+				{
+					if (ingredientExists(i) is var id && id != 0)
+					{
+						alreadyExistIgredients.Add(id, i.Amount);
+					}
+					else
+					{
+						doesntExistIgredients.Add(i);
+					}
+				}*/
+				if (doesntExistIgredients.Count > 0)
+					_context.Ingredients.AddRange(_mapper.Map<Ingredient>(doesntExistIgredients));
+				var r = _mapper.Map<Recipe>(newRecipeDTO.Recipe);
+				_context.Recipes.Add(r);
+				//_context.SaveChanges();
+
+				//foreach (KeyValuePair<int, string> entry in alreadyExistIgredients)
+				//{
+				//	var recIng = new RecipeIngredients
+				//	{
+				//		RecipeId = recipe.RecipeId,
+				//		IngredientId = entry.Key,
+				//		Amount = entry.Value
+				//	};
+				//	_context.Add(recIng);
+				//	_context.SaveChanges();
+				//}
+				//foreach (Ingredient i in doesntExistIgredients)
+				//{
+				//	var recIng = new RecipeIngredients
+				//	{
+				//		RecipeId = recipe.RecipeId,
+				//		IngredientId = i.IngredientId,
+				//		Amount = i.Amount
+				//	};
+				//	_context.Add(recIng);
+				//	_context.SaveChanges();
+				//}
+			}
+			return newRecipeDTO;
 		}
 
 		public async Task<bool> SaveAllAsync()

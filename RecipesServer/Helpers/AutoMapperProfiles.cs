@@ -40,7 +40,7 @@ namespace RecipesServer.Helpers
 
             CreateMap<RecipeIngredients, IngredientDTO>()
                 .ForMember(dest=>dest.Amount,src=>src.MapFrom(r=>r.Amount))
-                .ForMember(dest=>dest.Name,src=>src.MapFrom(r=>r.Ingredient.Name));
+                .ForMember(dest=>dest.Name,src=>src.MapFrom(r=>r.Ingredient.Name)).ReverseMap();
 
             CreateMap<RecipeComments, CommentDTO>()
                 .ForMember(dest => dest.FullName, src => src.MapFrom(u => u.Comment.User.FirstName + " " + u.Comment.User.LastName))
@@ -60,7 +60,16 @@ namespace RecipesServer.Helpers
                 .ForMember(dest => dest.ApprovalStatus, src => src.MapFrom(r => r.Status));
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<RegisterDTO, AppUser>();
-             CreateMap<Recipe, RecipeDTO>()
+
+            CreateMap<Recipe, RecipeBasicInfoDTO>().ReverseMap();
+            CreateMap<Recipe, RecipeDeleteDTO>().ReverseMap();
+            CreateMap<Recipe, RecipeUpdateDTO>().ReverseMap();
+            CreateMap<Recipe, NewRecipeDTO>().ReverseMap();
+            CreateMap<RecipeIngDTO, RecipeIngredients>()
+                .ForMember(dest => dest.Recipe, src => src.MapFrom(r => r.Recipe))
+                .ForMember(dest => dest.Ingredient, src => src.MapFrom(r => r.Ingredients));
+
+            CreateMap<Recipe, RecipeDTO>()
                  .ForMember(dest=>dest.ChefName,opt=>opt.MapFrom(u=>u.User.FirstName+" "+u.User.LastName));
              
         }

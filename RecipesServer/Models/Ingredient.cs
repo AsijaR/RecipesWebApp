@@ -11,8 +11,8 @@ namespace RecipesServer.Models
 		public int IngredientId { get; set; }
 
 		public string Name { get; set; }
-		//[NotMapped]
-		//public string Amount { get; set; }
+		[NotMapped]
+		public string Amount { get; set; }
 
 		public ICollection<RecipeIngredients> Recipes { get; set; }
 	}
