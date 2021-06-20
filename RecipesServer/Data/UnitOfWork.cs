@@ -26,6 +26,7 @@ namespace RecipesServer.Data
 		public ICategoryRepository CategoryRepository => new CategoryRepository(_context, _mapper);
 		public IBookmarkRepository BookmarkRepository => new BookmarkRepository(_context, _mapper);
 		public ICommentRepository CommentRepository => new CommentRepository(_context, _mapper);
+		public IOrderRepository OrderRepository => new OrderRepository(_context, _mapper);
 
 		public async Task<bool> Complete()
 		{

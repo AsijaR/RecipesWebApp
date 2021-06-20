@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using RecipesServer.Data;
-using RecipesServer.DTOs;
 using RecipesServer.Interfaces;
 using RecipesServer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RecipesServer.DTOs.Comment;
 
 namespace RecipesServer.Repositories
 {
@@ -24,7 +24,7 @@ namespace RecipesServer.Repositories
 		public async void AddComment(int recipeId, int userId, AddCommentDTO comment)
 		{
 				var commentToAdd = new Comment { UserId = userId, DateCommentIsPosted = DateTime.Now, Message = comment.Message };
-				_context.RecipeCommments.AddAsync(new RecipeComments { RecipeId = recipeId, Comment= commentToAdd });
+				await _context.RecipeCommments.AddAsync(new RecipeComments { RecipeId = recipeId, Comment= commentToAdd });
 		}
 
 		public void DeleteComment(int recipeId, int commentId)

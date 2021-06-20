@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using RecipesServer.DTOs;
+using RecipesServer.DTOs.Order;
 using RecipesServer.DTOs.Category;
 using RecipesServer.DTOs.Recipe;
+using RecipesServer.DTOs.Comment;
 using RecipesServer.Models;
 using System;
 using System.Collections.Generic;
@@ -46,6 +48,17 @@ namespace RecipesServer.Helpers
                 .ForMember(dest => dest.Message, src => src.MapFrom(u => u.Comment.Message));
             CreateMap<AddCommentDTO, Comment>();
 
+           // CreateMap<RecipeOrders, OrderDTO>();
+            //    .ForMember(dest=>dest.Address,src=>src.MapFrom(r=>r.Address))
+            //    .ForMember(dest=>dest.City,src=>src.MapFrom(r=>r.City))
+            //    .ForMember(dest=>dest.Address,src=>src.MapFrom(r=>r.Address))
+            //    .ForMember(dest=>dest.Address,src=>src.MapFrom(r=>r.Address))
+            //    .ForMember(dest=>dest.Address,src=>src.MapFrom(r=>r.Address))
+            //.ForMember(dest=>dest.Title,src=>src.MapFrom(r=>r.Order.Recipes.))
+
+            CreateMap<OrderStatusDTO, RecipeOrders>()
+                .ForMember(dest => dest.ApprovalStatus, src => src.MapFrom(r => r.Status));
+            CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<RegisterDTO, AppUser>();
              CreateMap<Recipe, RecipeDTO>()
                  .ForMember(dest=>dest.ChefName,opt=>opt.MapFrom(u=>u.User.FirstName+" "+u.User.LastName));

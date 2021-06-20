@@ -7,7 +7,7 @@ namespace RecipesServer.Interfaces
 {
 	public interface IUnitOfWork
 	{
-		//IOrderRepository OrderRepository { get; }
+		IOrderRepository OrderRepository { get; }
 		ICommentRepository CommentRepository { get; }
 		IBookmarkRepository BookmarkRepository { get; }
 		IRecipeRepository RecipeRepository { get; }

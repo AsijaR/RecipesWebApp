@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RecipesServer.DTOs
+namespace RecipesServer.DTOs.Order
 {
-	public class AddCommentDTO
+	public class OrderStatusDTO
 	{
-		public string Message { get; set; }
+		public string Status { get; set; }
 	}
 }

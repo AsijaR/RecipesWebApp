@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using RecipesServer.DTOs;
+using RecipesServer.DTOs.Comment;
 using RecipesServer.DTOs.Recipe;
 using RecipesServer.Extensions;
 using RecipesServer.Interfaces;
