@@ -24,6 +24,7 @@ namespace RecipesServer.Extensions
 			services.AddScoped<IRecipeRepository, RecipeRepository>();
 			services.AddScoped<ICategoryRepository, CategoryRepository>();
 			services.AddScoped<IBookmarkRepository, BookmarkRepository>();
+			services.AddScoped<ICommentRepository, CommentRepository>();
 			//services.AddScoped<ILikesRepository, LikesRepository>();
 			//services.AddScoped<MessageRepository, MessageRepository>();
 			//services.AddScoped<LogUserActivity>();

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace RecipesServer.DTOs
 {
-	public class RecipesInBookmarkDTO
+	public class AddCommentDTO
 	{
-		
+		public string Message { get; set; }
 	}
 }

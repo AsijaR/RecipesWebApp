@@ -44,7 +44,8 @@ namespace RecipesServer.Helpers
                 .ForMember(dest => dest.FullName, src => src.MapFrom(u => u.Comment.User.FirstName + " " + u.Comment.User.LastName))
                 .ForMember(dest => dest.DateCommentIsPosted, src => src.MapFrom(u => u.Comment.DateCommentIsPosted))
                 .ForMember(dest => dest.Message, src => src.MapFrom(u => u.Comment.Message));
-            
+            CreateMap<AddCommentDTO, Comment>();
+
             CreateMap<RegisterDTO, AppUser>();
              CreateMap<Recipe, RecipeDTO>()
                  .ForMember(dest=>dest.ChefName,opt=>opt.MapFrom(u=>u.User.FirstName+" "+u.User.LastName));

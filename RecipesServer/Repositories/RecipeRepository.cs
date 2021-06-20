@@ -70,6 +70,11 @@ namespace RecipesServer.Repositories
 			throw new NotImplementedException();
 		}
 
+		public async Task<Recipe> FindRecipeByIdAsync(int recipeId) 
+		{ 
+			return _context.Recipes.SingleOrDefault(r => r.RecipeId == recipeId);
+		}
+
 		public async Task<bool> SaveAllAsync()
 		{
 			return await _context.SaveChangesAsync() > 0;

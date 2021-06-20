@@ -16,7 +16,8 @@ namespace RecipesServer.Interfaces
         Task<RecipeDTO> GetRecipeByIdAsync(int id);
        // Task<AppUser> GetUserByUsernameAsync(string username);
         Task<PagedList<RecipeDTO>> GetRecipesAsync(RecipeParams recipeParams);
-        Task<Recipe> GetRecipeAsync(int recipeId);
+       // Task<Recipe> GetRecipeAsync(int recipeId);
+        Task<Recipe> FindRecipeByIdAsync(int recipeId);
         public int ingredientExists(Ingredient ingredient);
     }
 }

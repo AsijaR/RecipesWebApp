@@ -8,12 +8,11 @@ namespace RecipesServer.Interfaces
 	public interface IUnitOfWork
 	{
 		//IOrderRepository OrderRepository { get; }
-		//ICommentRepository CommentRepository { get; }
-		//IBookmarkRepository BookmarkRepository { get; }
+		ICommentRepository CommentRepository { get; }
+		IBookmarkRepository BookmarkRepository { get; }
 		IRecipeRepository RecipeRepository { get; }
 		IUserRepository UserRepository { get; }
 		ICategoryRepository CategoryRepository { get; }
-		IBookmarkRepository BookmarkRepository { get; }
 		Task<bool> Complete();
 		bool HasChanges();
 	}
