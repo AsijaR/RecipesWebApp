@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RecipesServer.DTOs;
 using RecipesServer.Extensions;
 using RecipesServer.Interfaces;
 using RecipesServer.Models;
@@ -20,22 +21,48 @@ namespace RecipesServer.Controllers
 			this.unitOfWork = unitOfWork;
 		}
 
+        [HttpGet]
+        public async Task<ActionResult<BookmarkDTO>> GetUserBookmark()
+        {
+            var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
+            var bk = this.unitOfWork.BookmarkRepository.GetUserBookmarkId(user.Id);
+            var result = await unitOfWork.BookmarkRepository.GetUserBookmark(bk);
+			if (result == null) return NotFound();
+			return result;
+		}
 
         [HttpPut("add-to-bookmark/{id}")]
         public async Task<ActionResult<Recipe>> AddRecipeToBookmark(int id)
         {
             var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
             var bk = this.unitOfWork.BookmarkRepository.GetUserBookmarkId(user.Id);
-            unitOfWork.BookmarkRepository.AddToBookmark(bk, id);
-            //var found = this.unitOfWork.BookmarkRepository.RecipeExistInBookmark(bk, recipeId);
-            //    if (found)
-            //    {
-            //         unitOfWork.BookmarkRepository.AddToBookmark(id, recipeId);
-            //        return addRecipe;
-            //    }
-            //    else 
-                return Conflict();
-            
+            var exist = unitOfWork.BookmarkRepository.RecipeExistInBookmark(bk,id);
+			if (!exist.Result) { 
+                var r= await unitOfWork.BookmarkRepository.AddToBookmark(bk, id);
+                if (r == null) return BadRequest("nije kkako treba");
+                else
+                {
+                    await unitOfWork.Complete();
+                    return Ok("Recipe Added");
+                }
+            }
+            else return Ok("Already Exists");
+        }
+
+        [HttpPut("remove-from-bookmark/{id}")]
+        public async Task<ActionResult<Recipe>> RemoveRecipeFromBookmark(int id)
+        {
+            var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
+            var bk = this.unitOfWork.BookmarkRepository.GetUserBookmarkId(user.Id);
+            var exist =  unitOfWork.BookmarkRepository.RecipeExistInBookmark(bk, id);
+            if (exist.Result)
+            {
+                unitOfWork.BookmarkRepository.DeleteFromBookmark(bk, id);
+               // if (r == null) return BadRequest("nije kkako treba");
+                await unitOfWork.Complete();
+                return Ok("Recipe Removed");
+            }
+            else return Ok("Doesnt Exists");
         }
 
     }

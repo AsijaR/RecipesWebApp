@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RecipesServer.DTOs;
+using AutoMapper.QueryableExtensions;
 
 namespace RecipesServer.Repositories
 {
@@ -20,36 +22,45 @@ namespace RecipesServer.Repositories
 			_context = context;
 			_mapper = mapper;
 		}
-
-		public async void AddToBookmark(int bookmarkId, int recipeId)
+		public async Task<bool> RecipeExistInBookmark(int bookmarkId, int recipeId)
 		{
-			//var findUserBookmark = await _context.Bookmarks.FindAsync(bookmarkId);
+			var exists = await _context.RecipeBookmarks.AsNoTracking().SingleOrDefaultAsync(b=>b.BookmarkId==bookmarkId && b.RecipeId==recipeId);
+			if (exists != null)
+				return true;
+			else
+				return false;
+		}
+
+		public async Task<Recipe> AddToBookmark(int bookmarkId, int recipeId)
+		{
 			var recipe = await _context.Recipes.SingleOrDefaultAsync(r=>r.RecipeId==recipeId);
-			//if (!RecipeExistInBookmark())
-			//{
-				var p =_context.RecipeBookmarks.Add(new RecipeBookmarks { RecipeId = recipeId, BookmarkId = bookmarkId }); ;
-				_context.SaveChangesAsync();
-			//}
-			//return null;
+			if (recipe != null) { 
+					_context.RecipeBookmarks.Add(new RecipeBookmarks { RecipeId = recipeId, BookmarkId = bookmarkId }); ;
+				return recipe;		
+			}
+			
+			return null;
 		}
 
-		public Task<Bookmark> DeleteFromBookmark(int bookmarkId, int recipeId)
+		public async void DeleteFromBookmark(int bookmarkId, int recipeId)
 		{
-			throw new NotImplementedException();
+			 _context.RecipeBookmarks.Remove(new RecipeBookmarks { RecipeId = recipeId, BookmarkId = bookmarkId }); ;
 		}
+
 		public int GetUserBookmarkId(int userId)
 		{
 			Bookmark p=  _context.Bookmarks.SingleOrDefault(u=>u.UserId==userId);
 			return p.BookmarkId;
 		}
-		public Task<Bookmark> GetUserBookmark(int userId)
+
+		public async Task<BookmarkDTO> GetUserBookmark(int bookmarkId)
 		{
-			throw new NotImplementedException();
+			var bookmarsRecipes =  await _context.Bookmarks.Include(br => br.Recipes)
+															.ProjectTo<BookmarkDTO>(_mapper.ConfigurationProvider)
+															.FirstOrDefaultAsync(b => b.BookmarkId == bookmarkId);
+			return bookmarsRecipes;
 		}
 
-		public bool RecipeExistInBookmark(int bookmarkId, int recipeId)
-		{
-			throw new NotImplementedException();
-		}
+		
 	}
 }

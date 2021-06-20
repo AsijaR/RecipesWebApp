@@ -2,7 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using RecipesServer.Data;
-using RecipesServer.DTOs;
+using RecipesServer.DTOs.Recipe;
 using RecipesServer.Helpers;
 using RecipesServer.Interfaces;
 using RecipesServer.Models;

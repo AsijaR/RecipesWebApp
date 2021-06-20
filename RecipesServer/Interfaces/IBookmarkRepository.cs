@@ -1,4 +1,5 @@
-﻿using RecipesServer.Models;
+﻿using RecipesServer.DTOs;
+using RecipesServer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,11 @@ namespace RecipesServer.Interfaces
 {
 	public interface IBookmarkRepository
 	{
-		bool RecipeExistInBookmark(int bookmarkId, int recipeId);
-		Task<Bookmark> GetUserBookmark(int userId);
-		void AddToBookmark(int bookmarkId, int recipeId);
-		Task<Bookmark> DeleteFromBookmark(int bookmarkId, int recipeId);
+		Task<bool> RecipeExistInBookmark(int bookmarkId, int recipeId);
+		Task<BookmarkDTO> GetUserBookmark(int bookmarkId);
+		Task<Recipe> AddToBookmark(int bookmarkId, int recipeId);
+		void DeleteFromBookmark(int bookmarkId, int recipeId);
 
-		int GetUserBookmarkId(int userId);
+		int  GetUserBookmarkId(int userId);
 	}
 }

@@ -1,4 +1,4 @@
-﻿using RecipesServer.DTOs;
+﻿using RecipesServer.DTOs.Recipe;
 using RecipesServer.Helpers;
 using RecipesServer.Models;
 using System;
