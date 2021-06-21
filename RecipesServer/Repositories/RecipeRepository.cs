@@ -70,12 +70,12 @@ namespace RecipesServer.Repositories
 			return _context.Recipes.SingleOrDefault(r => r.RecipeId == recipeId);
 		}
 
-		public int ingredientExists(IngredientDTO ingredient)
+		public int ingredientExists(RecipeIngredients ingredient)
 		{
-			var exists = _context.Ingredients.Where(ing => ing.Name == ingredient.Name.ToLower()).ProjectTo<Ingredient>(_mapper.ConfigurationProvider).Any();
+			var exists = _context.RecipeIngredients.Where(ing => ing.Ingredient.Name == ingredient.Ingredient.Name.ToLower()).Any();
 			if (exists)
 			{
-				return _context.Ingredients.FirstOrDefault(i => i.Name == ingredient.Name).IngredientId;
+				return _context.RecipeIngredients.FirstOrDefault(i => i.Ingredient.Name == ingredient.Ingredient.Name).IngredientId;
 			}
 			else
 			{
@@ -87,49 +87,52 @@ namespace RecipesServer.Repositories
 		{
 			if (newRecipeDTO != null)
 			{
-				//var recIng = _mapper.Map<RecipeIngredients>(newRecipeDTO);
-			//	var ingredients = _mapper.Map<Ingredient>(newRecipeDTO.Ingredients);
 				var alreadyExistIgredients = new Dictionary<int, string>();
-				var doesntExistIgredients = new List<IngredientDTO>();
-				/*foreach (var i in newRecipeDTO.Ingredient)
+				var alreadyExistIgredients2 = new Dictionary<string, string>();
+				var doesntExistIgredients = new List<RecipeIngredients>();
+				var ingredients = newRecipeDTO.Ingredients;
+			
+				foreach (var i in ingredients)
 				{
-					if (ingredientExists(i) is var id && id != 0)
+
+					if (ingredientExists(_mapper.Map<RecipeIngredients>(i)) is var id && id != 0)
 					{
 						alreadyExistIgredients.Add(id, i.Amount);
 					}
 					else
 					{
-						doesntExistIgredients.Add(i);
+						doesntExistIgredients.Add(_mapper.Map<RecipeIngredients>(i));
 					}
-				}*/
+				}
 				if (doesntExistIgredients.Count > 0)
-					_context.Ingredients.AddRange(_mapper.Map<Ingredient>(doesntExistIgredients));
+					_context.Ingredients.AddRange(doesntExistIgredients.Select(p => p.Ingredient));
 				var r = _mapper.Map<Recipe>(newRecipeDTO.Recipe);
 				_context.Recipes.Add(r);
-				//_context.SaveChanges();
+				_context.SaveChanges();
 
-				//foreach (KeyValuePair<int, string> entry in alreadyExistIgredients)
-				//{
-				//	var recIng = new RecipeIngredients
-				//	{
-				//		RecipeId = recipe.RecipeId,
-				//		IngredientId = entry.Key,
-				//		Amount = entry.Value
-				//	};
-				//	_context.Add(recIng);
-				//	_context.SaveChanges();
-				//}
-				//foreach (Ingredient i in doesntExistIgredients)
-				//{
-				//	var recIng = new RecipeIngredients
-				//	{
-				//		RecipeId = recipe.RecipeId,
-				//		IngredientId = i.IngredientId,
-				//		Amount = i.Amount
-				//	};
-				//	_context.Add(recIng);
-				//	_context.SaveChanges();
-				//}
+				foreach (KeyValuePair<int, string> entry in alreadyExistIgredients)
+				{
+					var recIng = new RecipeIngredients
+					{
+						RecipeId = r.RecipeId,
+						IngredientId = entry.Key,
+						Amount = entry.Value
+					};
+					_context.Add(recIng);
+					_context.SaveChanges();
+				} 
+
+				foreach (var i in doesntExistIgredients)
+				{
+					var recIng = new RecipeIngredients
+					{
+						RecipeId = r.RecipeId,
+						IngredientId = i.Ingredient.IngredientId,
+						Amount = i.Amount
+					};
+					_context.Add(recIng);
+					_context.SaveChanges();
+				}
 			}
 			return newRecipeDTO;
 		}

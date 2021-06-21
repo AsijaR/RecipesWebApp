@@ -65,9 +65,9 @@ namespace RecipesServer.Helpers
             CreateMap<Recipe, RecipeDeleteDTO>().ReverseMap();
             CreateMap<Recipe, RecipeUpdateDTO>().ReverseMap();
             CreateMap<Recipe, NewRecipeDTO>().ReverseMap();
-            CreateMap<RecipeIngDTO, RecipeIngredients>()
-                .ForMember(dest => dest.Recipe, src => src.MapFrom(r => r.Recipe))
-                .ForMember(dest => dest.Ingredient, src => src.MapFrom(r => r.Ingredients));
+            CreateMap<RecipeIngDTO, Recipe>();
+                //.ForMember(dest => dest.Recipe, src => src.MapFrom(r => r.Recipe))
+                //.ForMember(dest => dest.Ingredient, src => src.MapFrom(r => r.Ingredients));
 
             CreateMap<Recipe, RecipeDTO>()
                  .ForMember(dest=>dest.ChefName,opt=>opt.MapFrom(u=>u.User.FirstName+" "+u.User.LastName));

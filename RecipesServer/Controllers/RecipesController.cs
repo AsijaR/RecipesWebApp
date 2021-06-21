@@ -55,12 +55,12 @@ namespace RecipesServer.Controllers
 		}
 		[Authorize]
 		[HttpPost]
-		public async Task<ActionResult<RecipeIngDTO>> AddRecipe(RecipeIngDTO recipe)
+		public async Task<ActionResult<RecipeIngDTO>> AddRecipe(RecipeIngDTO recipeDTO)
 		{
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
-			recipe.Recipe.UserId = user.Id;
-			await this.unitOfWork.RecipeRepository.AddNewRecipe(recipe);
-			return Ok();///CreatedAtRoute("GetRecipe", new { recipe = recipe.RecipeId }, mapper.Map<NewRecipeDTO>(recipe));
+			recipeDTO.Recipe.UserId = user.Id;
+			await this.unitOfWork.RecipeRepository.AddNewRecipe(recipeDTO);
+			return CreatedAtRoute("GetRecipe", new { recipe = recipeDTO.Recipe.RecipeId }, recipeDTO);
 		}
 
 		[Authorize]
