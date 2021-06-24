@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RecipesServer.Controllers
 {
-	[Authorize]
+	
 	public class OrderController : BaseApiController
 	{
 		private readonly IUnitOfWork unitOfWork;
@@ -20,7 +20,7 @@ namespace RecipesServer.Controllers
 		{
 			this.unitOfWork = unitOfWork;
 		}
-
+		[Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomRecipeOrder>>> GetChefsOrders(string status)
         {
@@ -32,6 +32,7 @@ namespace RecipesServer.Controllers
 			return Ok(result);
 
 		}
+		[Authorize]
         [HttpPut("change-status/{orderId}")]
         public async Task<ActionResult<OrderStatusDTO>> ChangeOrder(int orderId, string orderStatus)
         {
@@ -44,14 +45,15 @@ namespace RecipesServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<OrderDTO>> AddOrder(OrderDTO order)
+		[Authorize]
+		public async Task<ActionResult<OrderDTO>> MakeOrder(OrderDTO order)
 		{
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 			if (order == null)
-				return BadRequest();
+				return BadRequest("Bad request. Try again later.");
 			await unitOfWork.OrderRepository.OrderMeal(user.Id, order);
 
-			return Ok("Order has been made");
+			return Ok("Meal is succefuly ordered");
 
 		}
 

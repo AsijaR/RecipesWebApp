@@ -75,7 +75,12 @@ namespace RecipesServer.Repositories
 			{
 				var makeOrder = await _context.Orders.AddAsync(o);
 				_context.SaveChanges();
-				_context.RecipeOrders.Add(new RecipeOrders { UserId = userId, ChefId = findRecipe.UserId, OrderId = makeOrder.Entity.OrderId });
+				_context.RecipeOrders.Add(new RecipeOrders { 
+					UserId = userId, 
+					ChefId = findRecipe.UserId, 
+					OrderId = makeOrder.Entity.OrderId
+				}
+				);
 				_context.SaveChanges();
 			}
 			return null;

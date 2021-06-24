@@ -1,5 +1,6 @@
 ﻿using RecipesServer.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 
 namespace RecipesServer.Controllers
 {

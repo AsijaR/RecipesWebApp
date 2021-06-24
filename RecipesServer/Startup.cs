@@ -40,7 +40,12 @@ namespace RecipesServer
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "RecipesServer", Version = "v1" });
 			});
-			services.AddCors();
+			services.AddCors(options =>
+			{
+				options.AddPolicy("AllowSpecificOrigin",
+					builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
+			});
+			//	services.AddCors();
 			services.AddIdentityServices(_config);
 		}
 
@@ -51,17 +56,15 @@ namespace RecipesServer
 
 			if (env.IsDevelopment())
 			{
-				app.UseDeveloperExceptionPage();
+				//app.UseDeveloperExceptionPage();
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RecipesServer v1"));
 			}
 
 			app.UseHttpsRedirection();
 
-			app.UseHttpsRedirection();
-
 			app.UseRouting();
-			app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+			app.UseCors("AllowSpecificOrigin");
 
 			app.UseAuthentication();
 			app.UseAuthorization();

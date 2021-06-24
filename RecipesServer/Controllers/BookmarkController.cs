@@ -43,10 +43,10 @@ namespace RecipesServer.Controllers
                 else
                 {
                     await unitOfWork.Complete();
-                    return Ok("Recipe Added");
+                    return Ok("Recipe is added to bookmark");
                 }
             }
-            else return Ok("Already Exists");
+            else return Ok("Recipe already exist in bookmark");
         }
 
         [HttpPut("remove-from-bookmark/{id}")]
@@ -60,7 +60,7 @@ namespace RecipesServer.Controllers
                 unitOfWork.BookmarkRepository.DeleteFromBookmark(bk, id);
                // if (r == null) return BadRequest("nije kkako treba");
                 await unitOfWork.Complete();
-                return Ok("Recipe Removed");
+                return Ok("Recipe is removed from bookmark");
             }
             else return Ok("Doesnt Exists");
         }

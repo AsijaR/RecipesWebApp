@@ -70,12 +70,12 @@ namespace RecipesServer.Repositories
 			return _context.Recipes.Include(i=>i.Ingredients).ThenInclude(i=>i.Ingredient).SingleOrDefault(r => r.RecipeId == recipeId);
 		}
 
-		public int ingredientExists(RecipeIngredients ing)
+		public int ingredientExists(RecipeIngredients ingredient)
 		{
-			var exists = _context.RecipeIngredients.Where(ing => ing.Ingredient.Name == ing.Ingredient.Name.ToLower()).Any();
+			var exists = _context.Ingredients.Where(ing => ing.Name == ingredient.Ingredient.Name.ToLower()).Any();
 			if (exists)
 			{
-				var c=_context.RecipeIngredients.FirstOrDefault(i => i.Ingredient.Name == ing.Ingredient.Name).IngredientId;
+				var c=_context.RecipeIngredients.FirstOrDefault(i => i.Ingredient.Name == ingredient.Ingredient.Name).IngredientId;
 				return c;
 			}
 			else
