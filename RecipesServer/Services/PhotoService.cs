@@ -11,10 +11,10 @@ using RecipesServer.Interfaces;
 
 namespace RecipesServer.Services
 {
-	public class RecipePhotoService : IRecipePhotoService
+	public class PhotoService : IPhotoService
     {
         private readonly Cloudinary _cloudinary;
-        public RecipePhotoService(IOptions<CloudinarySettings> config)
+        public PhotoService(IOptions<CloudinarySettings> config)
         {
             var acc = new Account
             (
@@ -26,7 +26,25 @@ namespace RecipesServer.Services
             _cloudinary = new Cloudinary(acc);
         }
 
-        public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)
+        public async Task<ImageUploadResult> AddRecipePhotoAsync(IFormFile file)
+        {
+            var uploadResult = new ImageUploadResult();
+
+            if (file.Length > 0)
+            {
+                using var stream = file.OpenReadStream();
+                var uploadParams = new ImageUploadParams
+                {
+                    File = new FileDescription(file.FileName, stream),
+                    Transformation = new Transformation().Height(668).Width(1200).Crop("fill")
+                };
+                uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            }
+
+            return uploadResult;
+        }
+
+        public async Task<ImageUploadResult> AddUserPhotoAsync(IFormFile file)
         {
             var uploadResult = new ImageUploadResult();
 

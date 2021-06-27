@@ -14,7 +14,7 @@ namespace RecipesServer.Interfaces
         void DeleteRecipe(Recipe recipe);
         Task<RecipeUpdateDTO> UpdateAsync(Recipe recipe, RecipeUpdateDTO recipeDTO); 
         Task<bool> SaveAllAsync();
-        Task<RecipeIngDTO> AddNewRecipe(RecipeIngDTO recipeDTO);
+        Task<Int32> AddNewRecipe(RecipeIngDTO recipeDTO);
         // Task<IEnumerable<Recipe>> GetRecipesAsync();
         Task<RecipeDTO> GetRecipeByIdAsync(int id);
         // Task<AppUser> GetUserByUsernameAsync(string username);

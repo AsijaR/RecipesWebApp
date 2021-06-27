@@ -18,7 +18,7 @@ namespace RecipesServer.Extensions
 		{
 			services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
 			services.AddScoped<ITokenService, TokenService>();
-			services.AddScoped<IRecipePhotoService, RecipePhotoService>();
+			services.AddScoped<IPhotoService, PhotoService>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IRecipeRepository, RecipeRepository>();
@@ -29,7 +29,7 @@ namespace RecipesServer.Extensions
 			//services.AddScoped<ILikesRepository, LikesRepository>();
 			//services.AddScoped<MessageRepository, MessageRepository>();
 			//services.AddScoped<LogUserActivity>();
-			//services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 			services.AddDbContext<DataContext>(options =>
 			{

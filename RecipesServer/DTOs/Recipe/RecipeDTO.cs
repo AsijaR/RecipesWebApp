@@ -10,6 +10,7 @@ namespace RecipesServer.DTOs.Recipe
 	public class RecipeDTO
 	{
 		public int RecipeId { get; set; }
+		public string ChefPhoto { get; set; }
 		public string ChefName { get; set; }
 		public string Title { get; set; }
 		public string PhotoUrl { get; set; }
@@ -20,11 +21,12 @@ namespace RecipesServer.DTOs.Recipe
 		public string Note { get; set; }
 		public bool MealCanBeOrdered { get; set; }
 		public float Price { get; set; }
-		public int MaxServingNumber { get; set; }
+		public float ShippingPrice { get; set; }
 		public string NoteForShipping { get; set; }
 		public int CategoryId { get; set; }
 		public ICollection<IngredientDTO> Ingredients { get; set; }
 		public ICollection<CommentDTO> Comments { get; set; }
+		public ICollection<RecipePhotoDTO> RecipePhotos { get; set; }
 		//public Comment[] Comments { get; set; }
 		//ovo mi treba dto
 		//public ICollection<RecipeIngredients> Ingredients { get; set; }

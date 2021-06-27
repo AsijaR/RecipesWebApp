@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RecipesServer.DTOs.Member;
 
 namespace RecipesServer.Helpers
 {
@@ -16,12 +17,15 @@ namespace RecipesServer.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<AppUser, MemberDTO>();
-             //  .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
-            //       src.Photos.FirstOrDefault(x => x.IsMain).Url))
-              // .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+            CreateMap<AppUser, MemberDTO>()
+              .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
+                   src.UserPhoto.Url));
+            CreateMap<MemberUpdateProfileDTO, AppUser>();
+            CreateMap<MemberUpdateShippingPriceDTO, AppUser>();
+            // .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+            CreateMap<UserPhoto, UserPhotoDTO>().ReverseMap();
+
             CreateMap<RecipePhotos, RecipePhotoDTO>();
-            CreateMap<MemberUpdateDTO, AppUser>();
 
             CreateMap<Category, CategoryUpdateDTO>()
                 .ForMember(des => des.Name, src => src.MapFrom(c => c.Name)).ReverseMap();
@@ -70,7 +74,9 @@ namespace RecipesServer.Helpers
                 //.ForMember(dest => dest.Ingredient, src => src.MapFrom(r => r.Ingredients));
 
             CreateMap<Recipe, RecipeDTO>()
-                 .ForMember(dest=>dest.ChefName,opt=>opt.MapFrom(u=>u.User.FirstName+" "+u.User.LastName));
+                 .ForMember(dest=>dest.ChefName,opt=>opt.MapFrom(u=>u.User.FirstName+" "+u.User.LastName))
+                 .ForMember(dest=>dest.ChefPhoto,opt=>opt.MapFrom(u=>u.User.UserPhoto.Url))
+                 .ForMember(dest=>dest.ShippingPrice,opt=>opt.MapFrom(u=>u.User.ShippingPrice));
              
         }
     }

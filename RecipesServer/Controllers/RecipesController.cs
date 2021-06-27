@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RecipesServer.DTOs.Comment;
 using RecipesServer.DTOs.Recipe;
@@ -17,11 +18,12 @@ namespace RecipesServer.Controllers
 	{
 		private readonly IUnitOfWork unitOfWork;
 		private readonly IMapper mapper;
-
-		public RecipesController(IUnitOfWork unitOfWork, IMapper mapper)
+		private readonly IPhotoService photoService;
+		public RecipesController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
 		{
 			this.unitOfWork = unitOfWork;
 			this.mapper = mapper;
+			this.photoService = photoService;
 		}
 
 		[HttpGet("{id}", Name = "GetRecipe")]
@@ -37,9 +39,9 @@ namespace RecipesServer.Controllers
 			var r= await unitOfWork.RecipeRepository.GetUserRecipes(user.Id);
 			return r.ToList();
 		}
-
+		[Authorize]
 		[HttpPut("edit-recipe/{id}")]
-		public async Task<ActionResult> PostRecipe(int id,RecipeUpdateDTO recipeDTO)
+		public async Task<ActionResult> EditRecipe(int id,RecipeUpdateDTO recipeDTO)
 		{
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 			
@@ -56,12 +58,12 @@ namespace RecipesServer.Controllers
 		}
 		[Authorize]
 		[HttpPost]
-		public async Task<ActionResult<RecipeIngDTO>> AddRecipe(RecipeIngDTO recipeDTO)
+		public async Task<ActionResult<Int32>> AddRecipe(RecipeIngDTO recipeDTO)
 		{
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 			recipeDTO.Recipe.UserId = user.Id;
-			await this.unitOfWork.RecipeRepository.AddNewRecipe(recipeDTO);
-			return CreatedAtRoute("GetRecipe", new { recipe = recipeDTO.Recipe.RecipeId }, recipeDTO);
+			var id=await this.unitOfWork.RecipeRepository.AddNewRecipe(recipeDTO);
+			return id;
 		}
 
 		[Authorize]
@@ -77,6 +79,59 @@ namespace RecipesServer.Controllers
 			}
 			return BadRequest();
 		}
+		[Authorize]
+		[HttpPost("add-photo/{id}")]
+		public async Task<ActionResult<RecipePhotoDTO>> AddPhoto(int id,IFormFile file)
+		{
+			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
+			var recipe = await unitOfWork.RecipeRepository.FindRecipeByIdAsync(id);
+			
+			var result = await photoService.AddRecipePhotoAsync(file);
+
+			if (result.Error != null) return BadRequest(result.Error.Message);
+
+			var photo = new RecipePhotos
+			{
+				Url = result.SecureUrl.AbsoluteUri,
+				PublicId = result.PublicId
+			};
+			if (recipe.UserId == user.Id) 
+			{
+				photo.IsMain = true;
+			}
+			recipe.RecipePhotos.Add(photo);
+
+			if (await unitOfWork.Complete())
+			{
+				return Ok(mapper.Map<RecipePhotoDTO>(photo));
+			}
+
+			return BadRequest("Problem adding photo");
+		}
+
+		//[Authorize]
+		//[HttpPut("{recipeId}/add-photo/{recipePhotoId}")]
+		//public async Task<ActionResult> SetMainPhoto(int recipeId,int recipePhotoId)
+		//{
+		//	var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
+		//	var recipe = await unitOfWork.RecipeRepository.FindRecipeByIdAsync(recipeId);
+		//	var photo = recipe.RecipePhotos.FirstOrDefault(x => x.Id == recipePhotoId);
+
+		//	if (recipe.UserId == user.Id)
+		//	{
+		//		photo.IsMain = true;
+		//	}
+		//	return BadRequest("This is already your main photo");
+
+		//	var currentMain = recipe.RecipePhotos.FirstOrDefault(x => x.IsMain);
+		//	if (currentMain != null) currentMain.IsMain = false;
+		//	photo.IsMain = true;
+
+		//	if (await unitOfWork.Complete()) return NoContent();
+
+		//	return BadRequest("Failed to set main photo");
+		//}
+
 		[Authorize]
 		[HttpDelete("{id}/delete-comment")]
 		public async Task<ActionResult<AddCommentDTO>> DeleteComment(int id, int commentId)

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecipesServer.DTOs;
+using RecipesServer.DTOs.Member;
+using RecipesServer.Extensions;
 using RecipesServer.Interfaces;
 using RecipesServer.Models;
 using System;
@@ -14,16 +16,18 @@ namespace RecipesServer.Controllers
 {
 	public class AccountController : BaseApiController
 	{
-        private readonly ITokenService _tokenService;
-        private readonly IMapper _mapper;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper)
+        private readonly ITokenService tokenService;
+        private readonly IMapper mapper;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager; 
+        private readonly IUnitOfWork unitOfWork;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper,IUnitOfWork unitOfWork)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _mapper = mapper;
-            _tokenService = tokenService;
+            this.signInManager = signInManager;
+            this.userManager = userManager;
+            this.mapper = mapper;
+            this.unitOfWork = unitOfWork;
+            this.tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -31,35 +35,35 @@ namespace RecipesServer.Controllers
         {
             if (await UserExists(registerDTO.Username)) return BadRequest("Username is taken");
 
-            var user = _mapper.Map<AppUser>(registerDTO);
+            var user = mapper.Map<AppUser>(registerDTO);
 
             user.UserName = registerDTO.Username.ToLower();
 
-            var result = await _userManager.CreateAsync(user, registerDTO.Password);
+            var result = await userManager.CreateAsync(user, registerDTO.Password);
 
             if (!result.Succeeded) return BadRequest(result.Errors);
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+            var roleResult = await userManager.AddToRoleAsync(user, "Member");
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
-
+            unitOfWork.UserRepository.CreateUserBookmark(user.Id);
             return new UserDTO
             {
                 Username = user.UserName,
-                Token = await _tokenService.CreateToken(user)
+                Token = await tokenService.CreateToken(user)
             };
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
-            var user = await _userManager.Users
+            var user = await userManager.Users
                 //.Include(p => p.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == loginDTO.Username.ToLower());
 
             if (user == null) return Unauthorized("Invalid username");
 
-            var result = await _signInManager
+            var result = await signInManager
                 .CheckPasswordSignInAsync(user, loginDTO.Password, false);
 
             if (!result.Succeeded) return Unauthorized();
@@ -67,14 +71,29 @@ namespace RecipesServer.Controllers
             return new UserDTO
             {
                 Username = user.UserName,
-                Token = await _tokenService.CreateToken(user),
+                Token = await tokenService.CreateToken(user),
               //  PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
             };
         }
 
         private async Task<bool> UserExists(string username)
         {
-            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+            return await userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
+
+        [HttpPut("change-password")]
+        public async Task<ActionResult<ChangePasswordDTO>> ChangePassword(ChangePasswordDTO changePasswordDTO)
+        {
+            var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
+
+            var tacno = await userManager.CheckPasswordAsync(user, changePasswordDTO.CurrentPassword);
+            if (tacno)
+                await userManager.ChangePasswordAsync(user, changePasswordDTO.CurrentPassword, changePasswordDTO.NewPassword);
+            else
+                return BadRequest("Current password is not correct.");
+            return NoContent();
+            
+        }
+
     }
 }

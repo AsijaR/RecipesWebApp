@@ -18,7 +18,6 @@ namespace RecipesServer.Repositories
 	{
 		private readonly DataContext _context;
 		private readonly IMapper _mapper;
-
 		public RecipeRepository(DataContext context, IMapper mapper)
 		{
 			_context = context;
@@ -67,7 +66,10 @@ namespace RecipesServer.Repositories
 
 		public async Task<Recipe> FindRecipeByIdAsync(int recipeId) 
 		{ 
-			return _context.Recipes.Include(i=>i.Ingredients).ThenInclude(i=>i.Ingredient).SingleOrDefault(r => r.RecipeId == recipeId);
+			return _context.Recipes.Include(i=>i.Ingredients)
+									.ThenInclude(i=>i.Ingredient)
+									.Include(p=>p.RecipePhotos)
+									.SingleOrDefault(r => r.RecipeId == recipeId);
 		}
 
 		public int ingredientExists(RecipeIngredients ingredient)
@@ -84,8 +86,9 @@ namespace RecipesServer.Repositories
 			}
 		}
 
-		public async Task<RecipeIngDTO> AddNewRecipe(RecipeIngDTO newRecipeDTO)
+		public async Task<Int32> AddNewRecipe(RecipeIngDTO newRecipeDTO)
 		{
+			var r = _mapper.Map<Recipe>(newRecipeDTO.Recipe);
 			if (newRecipeDTO != null)
 			{
 				var alreadyExistIgredients = new Dictionary<int, string>();
@@ -105,7 +108,6 @@ namespace RecipesServer.Repositories
 				}
 				if (doesntExistIgredients.Count > 0)
 					_context.Ingredients.AddRange(doesntExistIgredients.Select(p => p.Ingredient));
-				var r = _mapper.Map<Recipe>(newRecipeDTO.Recipe);
 				_context.Recipes.Add(r);
 				_context.SaveChanges();
 
@@ -132,8 +134,10 @@ namespace RecipesServer.Repositories
 					_context.Add(recIng);
 					_context.SaveChanges();
 				}
+				_context.Entry(r).GetDatabaseValues();
+
 			}
-			return newRecipeDTO;
+			return r.RecipeId;
 		}
 
 		public async Task<bool> SaveAllAsync()

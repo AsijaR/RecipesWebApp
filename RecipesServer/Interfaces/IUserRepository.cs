@@ -14,6 +14,8 @@ namespace RecipesServer.Interfaces
         Task<IEnumerable<AppUser>> GetAllUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
         Task<AppUser> GetUserByUsernameAsync(string username);
+        void deleteUserPreviousPhoto(int id);
+        void CreateUserBookmark(int id);
        // Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams);
        // Task<MemberDto> GetMemberAsync(string username);
     }

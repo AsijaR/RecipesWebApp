@@ -27,9 +27,9 @@ namespace RecipesServer.Repositories
 
 		public async Task<AppUser> GetUserByIdAsync(int id)
 		{
-			return await _context.Users.FindAsync(id);
+			return await _context.Users.Include(p => p.UserPhoto).FirstOrDefaultAsync(x => x.Id == id);
 		}
-
+		
 		public async Task<AppUser> GetUserByUsernameAsync(string username)
 		{
 			return await _context.Users
@@ -40,7 +40,10 @@ namespace RecipesServer.Repositories
 		//{
 		//	return await _context.Users.ToListAsync();
 		//}
-
+		public void deleteUserPreviousPhoto(int id) {
+			var delPhoto = _context.UserPhotos.FirstOrDefault(x=>x.AppUserId==id);
+			_context.UserPhotos.Remove(delPhoto);
+		}
 		public async Task<bool> SaveAllAsync()
 		{
 			return await _context.SaveChangesAsync() > 0;
@@ -49,6 +52,11 @@ namespace RecipesServer.Repositories
 		public void Update(AppUser user)
 		{
 			_context.Entry(user).State = EntityState.Modified;
+		}
+		public async void CreateUserBookmark(int id)
+		{
+			_context.Bookmarks.Add(new Bookmark() { UserId=id});
+			await _context.SaveChangesAsync();
 		}
 	}
 }

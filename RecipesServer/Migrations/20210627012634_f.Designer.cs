@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipesServer.Data;
 
 namespace RecipesServer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210627012634_f")]
+    partial class f
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,8 +195,8 @@ namespace RecipesServer.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("ShippingPrice")
-                        .HasColumnType("real");
+                    b.Property<string>("ShippingPrice")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
@@ -501,30 +503,6 @@ namespace RecipesServer.Migrations
                     b.ToTable("RecipePhotos");
                 });
 
-            modelBuilder.Entity("RecipesServer.Models.UserPhoto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PublicId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId")
-                        .IsUnique();
-
-                    b.ToTable("UserPhotos");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("RecipesServer.Models.AppRole", null)
@@ -678,17 +656,6 @@ namespace RecipesServer.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("RecipesServer.Models.UserPhoto", b =>
-                {
-                    b.HasOne("RecipesServer.Models.AppUser", "User")
-                        .WithOne("UserPhoto")
-                        .HasForeignKey("RecipesServer.Models.UserPhoto", "AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RecipesServer.Models.AppRole", b =>
                 {
                     b.Navigation("UserRoles");
@@ -699,8 +666,6 @@ namespace RecipesServer.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Recipes");
-
-                    b.Navigation("UserPhoto");
 
                     b.Navigation("UserRoles");
                 });

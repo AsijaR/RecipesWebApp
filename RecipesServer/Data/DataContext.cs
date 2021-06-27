@@ -27,6 +27,7 @@ namespace RecipesServer.Data
 		public DbSet<RecipeBookmarks> RecipeBookmarks { get; set; }
 		public DbSet<RecipeComments> RecipeCommments { get; set; }
 		public DbSet<RecipeOrders> RecipeOrders { get; set; }
+		public DbSet<UserPhoto> UserPhotos { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

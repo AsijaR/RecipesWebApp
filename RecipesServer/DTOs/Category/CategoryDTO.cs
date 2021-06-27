@@ -10,6 +10,6 @@ namespace RecipesServer.DTOs.Category
 	{
 		public int CategoryId { get; set; }
 		public string Name { get; set; }
-		public ICollection<RecipeDTO> Recipes { get; set; }
+		public ICollection<RecipeBasicInfoDTO> Recipes { get; set; }
 	}
 }

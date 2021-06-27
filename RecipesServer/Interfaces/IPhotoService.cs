@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace RecipesServer.Interfaces
 {
-	public interface IRecipePhotoService
+	public interface IPhotoService
 	{
-		Task<ImageUploadResult> AddPhotoAsync(IFormFile file);
+		Task<ImageUploadResult> AddRecipePhotoAsync(IFormFile file);
+		Task<ImageUploadResult> AddUserPhotoAsync(IFormFile file);
 		Task<DeletionResult> DeletePhotoAsync(string publicId);
 	}
 }

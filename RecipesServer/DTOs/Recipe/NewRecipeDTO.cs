@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace RecipesServer.DTOs.Recipe
 		public float Price { get; set; }
 		public string NoteForShipping { get; set; }
 		public int CategoryId { get; set; }
+		//public IFormFile file { get; set; }
+		//public RecipePhotoDTO RecipePhotos { get; set; }
 		//public ICollection<IngredientDTO> Ingredients { get; set; }
 	}
 }
