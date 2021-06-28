@@ -74,10 +74,11 @@ namespace RecipesServer.Repositories
 
 		public int ingredientExists(RecipeIngredients ingredient)
 		{
-			var exists = _context.Ingredients.Where(ing => ing.Name == ingredient.Ingredient.Name.ToLower()).Any();
+			var ing = _context.Ingredients.Where(ing => ing.Name.ToLower() == ingredient.Ingredient.Name.ToLower());
+			var exists = ing.Any();
 			if (exists)
 			{
-				var c=_context.RecipeIngredients.FirstOrDefault(i => i.Ingredient.Name == ingredient.Ingredient.Name).IngredientId;
+				var c = ing.FirstOrDefault().IngredientId;
 				return c;
 			}
 			else
@@ -145,27 +146,25 @@ namespace RecipesServer.Repositories
 			return await _context.SaveChangesAsync() > 0;
 		}
 
-		public async Task<RecipeUpdateDTO> UpdateAsync(Recipe recipe, RecipeUpdateDTO recipeDTO)
+		public async Task<RecipeUpdateDTO> UpdateRecipe(Recipe recipe,RecipeUpdateDTO recipeDTO)
 		{
-			//var recipeInDb = _context.Recipes.SingleOrDefault(r=>r.RecipeId==recipe.re);
-			var novi = _mapper.Map<Recipe>(recipeDTO);
-			var ff = recipe.Ingredients;
-			//var allCurrentIngredients = _context.RecipeIngredients.Where(r => r.RecipeId == recipe.RecipeId).ToList();
+			var recipeInDb = recipe;
+			var newRecipe = _mapper.Map<Recipe>(recipeDTO);
 			var alreadyExistIgredients = new Dictionary<int, string>();
-			var doesntExistIgredients = new List<Ingredient>();
-			var r = new List<RecipeIngredients>();
-			var d = new List<RecipeIngredients>();
-
-			foreach (var ing in recipe.Ingredients)
+			var doesntExistIgredients = new Dictionary<Ingredient, string>(); ;
+			var ingredientsToRemove = new List<RecipeIngredients>();
+			var ingredientsWhoStays = new List<RecipeIngredients>();
+			//ovo su mi original ingredients od recepta
+			foreach (var ing in recipeInDb.Ingredients)
 			{
-				var c= novi.Ingredients.Any(i=>i.Ingredient.Name==ing.Ingredient.Name);
+				var c= newRecipe.Ingredients.Any(i=>i.Ingredient.Name==ing.Ingredient.Name);
 				if (!c)
-					r.Add(ing);
+					ingredientsToRemove.Add(ing);
 				else
-					d.Add(ing);
+					ingredientsWhoStays.Add(ing);
 			}
 
-			foreach (var i in novi.Ingredients)
+			foreach (var i in newRecipe.Ingredients)
 			{
 				if (ingredientExists(i) is var id && id != 0 )
 				{
@@ -173,48 +172,47 @@ namespace RecipesServer.Repositories
 				}
 				else
 				{
-					doesntExistIgredients.Add(i.Ingredient);
-					//_context.Ingredients.AddAsync(i.Ingredient);
+					doesntExistIgredients.Add(i.Ingredient,i.Amount);
 				}
 			}
 
-			if(r.Count()>0)
-				 r.ForEach(x => recipe.Ingredients.Remove(x));
+			if(ingredientsToRemove.Count()>0)
+				ingredientsToRemove.ForEach(x => recipeInDb.Ingredients.Remove(x));
 
 			if (doesntExistIgredients.Count > 0) 
 			{
-				 _context.Ingredients.AddRangeAsync(doesntExistIgredients);
+				 await _context.Ingredients.AddRangeAsync(doesntExistIgredients.Keys);
 				 _context.SaveChanges();
 				_context.RecipeIngredients.AsNoTracking();
 			}
 				
-
-
 			foreach (KeyValuePair<int, string> entry in alreadyExistIgredients)
 			{
-				if (d.Any(i=>i.IngredientId!=entry.Key)) {
-				var recIng = new RecipeIngredients
+				var ing = recipeInDb.Ingredients.FirstOrDefault(ing => ing.IngredientId == entry.Key);
+				if (ing == null) 
 				{
-					RecipeId = recipe.RecipeId,
-					IngredientId = entry.Key,
-					Amount = entry.Value
-				};
-				 _context.RecipeIngredients.AddAsync(recIng);
+					var recIng = new RecipeIngredients
+					{
+						RecipeId = recipeInDb.RecipeId,
+						IngredientId = entry.Key,
+						Amount = entry.Value
+					};
+					await _context.RecipeIngredients.AddAsync(recIng);
 				}
+				else ing.Amount = entry.Value;
 			}
 			foreach (var i in doesntExistIgredients)
 			{
-				//var e =  _context.Ingredients.SingleOrDefaultAsync(i=>i.Name==i.Name);
 				var recIng = new RecipeIngredients
 				{
-					RecipeId = recipe.RecipeId,
-					IngredientId =i.IngredientId,
-					Amount = i.Amount
+					RecipeId = recipeInDb.RecipeId,
+					IngredientId =i.Key.IngredientId,
+					Amount = i.Value
 				};
-				_context.RecipeIngredients.AddAsync(recIng);
+				await _context.RecipeIngredients.AddAsync(recIng);
 			}
 			
-			_context.Entry(recipe).State = EntityState.Modified;
+			_context.Entry(recipeInDb).State = EntityState.Modified;
 			_context.SaveChanges();
 			return recipeDTO;
 		}

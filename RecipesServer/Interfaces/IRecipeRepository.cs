@@ -12,7 +12,7 @@ namespace RecipesServer.Interfaces
 	{
         Task<IEnumerable<RecipeBasicInfoDTO>> GetUserRecipes(int userId);
         void DeleteRecipe(Recipe recipe);
-        Task<RecipeUpdateDTO> UpdateAsync(Recipe recipe, RecipeUpdateDTO recipeDTO); 
+        Task<RecipeUpdateDTO> UpdateRecipe(Recipe recipe,RecipeUpdateDTO recipeDTO); 
         Task<bool> SaveAllAsync();
         Task<Int32> AddNewRecipe(RecipeIngDTO recipeDTO);
         // Task<IEnumerable<Recipe>> GetRecipesAsync();

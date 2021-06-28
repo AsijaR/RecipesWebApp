@@ -9,7 +9,7 @@ namespace RecipesServer.DTOs.Recipe
 {
 	public class RecipeUpdateDTO
 	{
-		//public int RecipeId { get; set; }
+		public int RecipeId { get; set; }
 		public string Title { get; set; }
 		public string Complexity { get; set; }
 		public int ServingNumber { get; set; }

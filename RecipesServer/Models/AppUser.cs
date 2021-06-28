@@ -16,7 +16,7 @@ namespace RecipesServer.Models
 		public string City { get; set; }
 		public string State { get; set; }
 		public string Zip { get; set; }
-		public float ShippingPrice { get; set; }
+		public float ShippingPrice { get; set; } = 2;
 		public UserPhoto UserPhoto { get; set; } 
 		public ICollection<AppUserRole> UserRoles { get; set; }
 		public ICollection<RecipeOrders>? Orders { get; set; }

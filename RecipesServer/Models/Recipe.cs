@@ -16,7 +16,7 @@ namespace RecipesServer.Models
 		public string TimeNeededToPrepare { get; set; }
 		public string Description { get; set; }
 		public string Note { get; set; }
-		public bool MealCanBeOrdered { get; set; }
+		public bool MealCanBeOrdered { get; set; } = false;
 		public float Price { get; set; }
 		public int MaxServingNumber { get; set; }
 		public string NoteForShipping { get; set; }

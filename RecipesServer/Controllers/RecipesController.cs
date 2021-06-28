@@ -51,7 +51,7 @@ namespace RecipesServer.Controllers
 				if (recipe.UserId != user.Id) return Forbid("You are not authorized to edit this recipe!!");
 
 				//mapper.Map(recipeDTO, recipe);
-				await unitOfWork.RecipeRepository.UpdateAsync(recipe,recipeDTO);
+				await unitOfWork.RecipeRepository.UpdateRecipe(recipe,recipeDTO);
 				 return Ok("Recipe Is updated.");
 			}
 			return BadRequest("Failed to update user");
