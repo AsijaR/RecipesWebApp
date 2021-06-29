@@ -93,13 +93,14 @@ namespace RecipesServer.Controllers
                 Url = result.SecureUrl.AbsoluteUri,
                 PublicId = result.PublicId
             };
+            
             unitOfWork.UserRepository.deleteUserPreviousPhoto(user.Id);
 
             user.UserPhoto = photo;
 
             if (await unitOfWork.Complete())
             {
-                return Ok(mapper.Map<UserPhoto>(photo));
+                return Ok(mapper.Map<UserPhotoDTO>(photo));
             }
 
             return BadRequest("Problem adding photo");

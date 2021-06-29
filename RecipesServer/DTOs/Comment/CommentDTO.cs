@@ -10,7 +10,7 @@ namespace RecipesServer.DTOs.Comment
 		public string FullName { get; set; }
 		public string Message { get; set; }
 		public DateTime DateCommentIsPosted { get; set; }
-		//streba i slika osobe da se posalje
+		public string UserPhotoUrl { get; set; }
 		
 	}
 }

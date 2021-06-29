@@ -12,13 +12,13 @@ namespace RecipesServer.Repositories
 {
 	public class UserRepository : IUserRepository
 	{
-        private readonly DataContext _context;
-        private readonly IMapper _mapper;
-        public UserRepository(DataContext context, IMapper mapper)
-        {
-            _mapper = mapper;
-            _context = context;
-        }
+		private readonly DataContext _context;
+		private readonly IMapper _mapper;
+		public UserRepository(DataContext context, IMapper mapper)
+		{
+			_mapper = mapper;
+			_context = context;
+		}
 
 		public async Task<IEnumerable<AppUser>> GetAllUsersAsync()
 		{
@@ -29,7 +29,7 @@ namespace RecipesServer.Repositories
 		{
 			return await _context.Users.Include(p => p.UserPhoto).FirstOrDefaultAsync(x => x.Id == id);
 		}
-		
+
 		public async Task<AppUser> GetUserByUsernameAsync(string username)
 		{
 			return await _context.Users
@@ -40,9 +40,14 @@ namespace RecipesServer.Repositories
 		//{
 		//	return await _context.Users.ToListAsync();
 		//}
-		public void deleteUserPreviousPhoto(int id) {
-			var delPhoto = _context.UserPhotos.FirstOrDefault(x=>x.AppUserId==id);
-			_context.UserPhotos.Remove(delPhoto);
+		public void deleteUserPreviousPhoto(int id)
+		{
+			var exist = _context.UserPhotos.Where(x => x.AppUserId == id).Any();
+			if (exist)
+			{
+				var delPhoto = _context.UserPhotos.FirstOrDefault(x => x.AppUserId == id);
+				_context.UserPhotos.Remove(delPhoto);
+			}
 		}
 		public async Task<bool> SaveAllAsync()
 		{
@@ -55,7 +60,7 @@ namespace RecipesServer.Repositories
 		}
 		public async void CreateUserBookmark(int id)
 		{
-			_context.Bookmarks.Add(new Bookmark() { UserId=id});
+			_context.Bookmarks.Add(new Bookmark() { UserId = id });
 			await _context.SaveChangesAsync();
 		}
 	}

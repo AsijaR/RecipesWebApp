@@ -11,9 +11,7 @@ namespace RecipesServer.Models
 		public int CommentId { get; set; }
 		public string Message { get; set; }
 		public DateTime DateCommentIsPosted { get; set; }
-		[ForeignKey("AppUser")]
-		public int UserId { get; set; }
-		[NotMapped]
+		public int AppUserId { get; set; }
 		public AppUser User { get; set; }
 		//public User User { get; set; }
 		public ICollection<RecipeComments>? Recipes { get; set; }

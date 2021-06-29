@@ -18,7 +18,6 @@ namespace RecipesServer.Models
 		public string Note { get; set; }
 		public bool MealCanBeOrdered { get; set; } = false;
 		public float Price { get; set; }
-		public int MaxServingNumber { get; set; }
 		public string NoteForShipping { get; set; }
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
 		[ForeignKey("Category")]

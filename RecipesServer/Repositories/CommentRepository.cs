@@ -23,7 +23,7 @@ namespace RecipesServer.Repositories
 
 		public async void AddComment(int recipeId, int userId, AddCommentDTO comment)
 		{
-				var commentToAdd = new Comment { UserId = userId, DateCommentIsPosted = DateTime.Now, Message = comment.Message };
+				var commentToAdd = new Comment { AppUserId = userId, DateCommentIsPosted = DateTime.Now, Message = comment.Message };
 				await _context.RecipeCommments.AddAsync(new RecipeComments { RecipeId = recipeId, Comment= commentToAdd });
 		}
 

@@ -274,16 +274,18 @@ namespace RecipesServer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateCommentIsPosted")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("CommentId");
+
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Comments");
                 });
@@ -580,6 +582,17 @@ namespace RecipesServer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("RecipesServer.Models.Comment", b =>
+                {
+                    b.HasOne("RecipesServer.Models.AppUser", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("RecipesServer.Models.Recipe", b =>
                 {
                     b.HasOne("RecipesServer.Models.Category", null)
@@ -696,6 +709,8 @@ namespace RecipesServer.Migrations
 
             modelBuilder.Entity("RecipesServer.Models.AppUser", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Orders");
 
                     b.Navigation("Recipes");

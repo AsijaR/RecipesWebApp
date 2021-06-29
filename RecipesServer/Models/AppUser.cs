@@ -20,7 +20,7 @@ namespace RecipesServer.Models
 		public UserPhoto UserPhoto { get; set; } 
 		public ICollection<AppUserRole> UserRoles { get; set; }
 		public ICollection<RecipeOrders>? Orders { get; set; }
-		//public ICollection<Comment>? Comments { get; set; }
+		public ICollection<Comment>? Comments { get; set; }
 		public ICollection<Recipe>? Recipes { get; set; }
 	}
 }
