@@ -18,7 +18,6 @@ namespace RecipesServer.DTOs.Recipe
 		public string Note { get; set; }
 		public bool MealCanBeOrdered { get; set; }
 		public float Price { get; set; }
-		public int MaxServingNumber { get; set; }
 		public string NoteForShipping { get; set; }
 		public int CategoryId { get; set; }
 		public ICollection<IngredientDTO> Ingredients { get; set; }

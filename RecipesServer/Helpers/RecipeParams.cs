@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace RecipesServer.Helpers
 {
-	public class RecipeParams : PaginationParams
+    public class RecipeParams : PaginationParams
     {
-        public string CurrentId { get; set; }
-        //public string Gender { get; set; }
-      //  public int MinAge { get; set; } = 18;
-      //  public int MaxAge { get; set; } = 150;
-        public string OrderBy { get; set; } = "lastAdded";
+        public string Title { get; set; }
+        public bool searchIng { get; set; }
+        public string Ingredient1 { get; set; }
+        public string Ingredient2 { get; set; }
+        public string Ingredient3 { get; set; }
     }
 }

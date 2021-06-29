@@ -66,7 +66,9 @@ namespace RecipesServer.Helpers
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<RegisterDTO, AppUser>();
 
-            CreateMap<Recipe, RecipeBasicInfoDTO>().ReverseMap();
+            CreateMap<Recipe, RecipeBasicInfoDTO>()
+                .ForMember(dest=>dest.HeaderUrl,src=>src.MapFrom(r=>r.RecipePhotos.FirstOrDefault(p=>p.IsMain==true).Url))
+                .ReverseMap();
             CreateMap<Recipe, RecipeDeleteDTO>().ReverseMap();
             CreateMap<Recipe, RecipeUpdateDTO>().ReverseMap();
             CreateMap<Recipe, NewRecipeDTO>().ReverseMap();

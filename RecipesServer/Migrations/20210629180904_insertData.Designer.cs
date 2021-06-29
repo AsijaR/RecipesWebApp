@@ -10,8 +10,8 @@ using RecipesServer.Data;
 namespace RecipesServer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210629153236_initial")]
-    partial class initial
+    [Migration("20210629180904_insertData")]
+    partial class insertData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -267,6 +267,38 @@ namespace RecipesServer.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            Name = "Lunch"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            Name = "Salads"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            Name = "Main Dishes"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            Name = "Desserts"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            Name = "Smoothies"
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            Name = "Other"
+                        });
                 });
 
             modelBuilder.Entity("RecipesServer.Models.Comment", b =>
@@ -305,6 +337,58 @@ namespace RecipesServer.Migrations
                     b.HasKey("IngredientId");
 
                     b.ToTable("Ingredients");
+
+                    b.HasData(
+                        new
+                        {
+                            IngredientId = 1,
+                            Name = "butter"
+                        },
+                        new
+                        {
+                            IngredientId = 2,
+                            Name = "vegetable oil"
+                        },
+                        new
+                        {
+                            IngredientId = 3,
+                            Name = "red onion"
+                        },
+                        new
+                        {
+                            IngredientId = 4,
+                            Name = "shallots"
+                        },
+                        new
+                        {
+                            IngredientId = 5,
+                            Name = "curry powder"
+                        },
+                        new
+                        {
+                            IngredientId = 6,
+                            Name = "tomato paste"
+                        },
+                        new
+                        {
+                            IngredientId = 7,
+                            Name = "coconut milk"
+                        },
+                        new
+                        {
+                            IngredientId = 8,
+                            Name = "water"
+                        },
+                        new
+                        {
+                            IngredientId = 9,
+                            Name = "chicken"
+                        },
+                        new
+                        {
+                            IngredientId = 10,
+                            Name = "lime juice"
+                        });
                 });
 
             modelBuilder.Entity("RecipesServer.Models.Order", b =>
@@ -371,9 +455,6 @@ namespace RecipesServer.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MaxServingNumber")
-                        .HasColumnType("int");
-
                     b.Property<bool>("MealCanBeOrdered")
                         .HasColumnType("bit");
 
@@ -405,6 +486,24 @@ namespace RecipesServer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Recipes");
+
+                    b.HasData(
+                        new
+                        {
+                            RecipeId = 1,
+                            CategoryId = 1,
+                            Complexity = "Simple",
+                            CreatedDate = new DateTime(2021, 6, 29, 20, 9, 3, 761, DateTimeKind.Local).AddTicks(8067),
+                            Description = "In a large pot or high-sided skillet over medium heat, heat oil and butter. When butter is melted, add onion and shallots and cook until tender and translucent, 6 to 8 minutes.;Add garlic, ginger, and curry powder and cook until fragrant, 1 minute more. Add tomato paste and cook until darkened slightly, 1 to 2 minutes more.;Add coconut milk and water and bring to a simmer. Add chicken and cook, stirring occasionally, until chicken is cooked through, 6 to 8 minutes.;Stir in lime juice and garnish with mint and cilantro. Serve hot with rice.",
+                            MealCanBeOrdered = true,
+                            Note = "And don't forget to whip up some rice to soak up all that saucy goodness! ",
+                            NoteForShipping = "needs to be in freezer after deliver",
+                            Price = 10f,
+                            ServingNumber = 5,
+                            TimeNeededToPrepare = "35min",
+                            Title = "Coconut Curry Chicken",
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("RecipesServer.Models.RecipeBookmarks", b =>
@@ -453,6 +552,68 @@ namespace RecipesServer.Migrations
                     b.HasIndex("IngredientId");
 
                     b.ToTable("RecipeIngredients");
+
+                    b.HasData(
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 1,
+                            Amount = "1 tbsp"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 2,
+                            Amount = "1 tbsp"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 3,
+                            Amount = "2 large"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 4,
+                            Amount = "1 tbsp"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 5,
+                            Amount = "1.5 tbsp"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 6,
+                            Amount = "2 tbsp"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 7,
+                            Amount = "1 can"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 8,
+                            Amount = "500 ml"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 9,
+                            Amount = "1.5 lb boneless"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 10,
+                            Amount = "0.5ml"
+                        });
                 });
 
             modelBuilder.Entity("RecipesServer.Models.RecipeOrders", b =>

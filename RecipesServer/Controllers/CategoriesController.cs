@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RecipesServer.DTOs;
 using RecipesServer.DTOs.Category;
+using RecipesServer.DTOs.Recipe;
 using RecipesServer.Interfaces;
 using RecipesServer.Models;
 using System;
@@ -31,12 +32,13 @@ namespace RecipesServer.Controllers
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
+        public async Task<ActionResult<IEnumerable<RecipeBasicInfoDTO>>> GetCategory(int id)
         {
 
             var result = await this.unitOfWork.CategoryRepository.GetCategory(id);
 
             if (result == null) return NotFound();
+
             return Ok(result);
 
         }

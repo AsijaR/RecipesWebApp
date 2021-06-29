@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RecipesServer.Migrations
 {
-    public partial class initial : Migration
+    public partial class inital : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -279,7 +279,6 @@ namespace RecipesServer.Migrations
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MealCanBeOrdered = table.Column<bool>(type: "bit", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
-                    MaxServingNumber = table.Column<int>(type: "int", nullable: false),
                     NoteForShipping = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: true),

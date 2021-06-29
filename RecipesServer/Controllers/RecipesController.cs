@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using RecipesServer.DTOs.Comment;
 using RecipesServer.DTOs.Recipe;
 using RecipesServer.Extensions;
+using RecipesServer.Helpers;
 using RecipesServer.Interfaces;
 using RecipesServer.Models;
 using System;
@@ -30,6 +31,13 @@ namespace RecipesServer.Controllers
 		public async Task<ActionResult<RecipeDTO>> GetRecipe(int id)
 		{
 			return await unitOfWork.RecipeRepository.GetRecipeByIdAsync(id);
+		}
+		[HttpGet("search-recipes")]
+		public async Task<ActionResult<IEnumerable<RecipeBasicInfoDTO>>> GetSearchedRecipes([FromQuery]RecipeParams recipeParams)
+		{
+			var recipes = await unitOfWork.RecipeRepository.GetSearchedRecipesAsync(recipeParams);
+			Response.AddPaginationHeader(recipes.CurrentPage,recipes.PageSize,recipes.TotalCount,recipes.TotalPages);
+			return Ok(recipes);
 		}
 		[HttpGet]
 		[Authorize]
@@ -108,29 +116,6 @@ namespace RecipesServer.Controllers
 
 			return BadRequest("Problem adding photo");
 		}
-
-		//[Authorize]
-		//[HttpPut("{recipeId}/add-photo/{recipePhotoId}")]
-		//public async Task<ActionResult> SetMainPhoto(int recipeId,int recipePhotoId)
-		//{
-		//	var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
-		//	var recipe = await unitOfWork.RecipeRepository.FindRecipeByIdAsync(recipeId);
-		//	var photo = recipe.RecipePhotos.FirstOrDefault(x => x.Id == recipePhotoId);
-
-		//	if (recipe.UserId == user.Id)
-		//	{
-		//		photo.IsMain = true;
-		//	}
-		//	return BadRequest("This is already your main photo");
-
-		//	var currentMain = recipe.RecipePhotos.FirstOrDefault(x => x.IsMain);
-		//	if (currentMain != null) currentMain.IsMain = false;
-		//	photo.IsMain = true;
-
-		//	if (await unitOfWork.Complete()) return NoContent();
-
-		//	return BadRequest("Failed to set main photo");
-		//}
 
 		[Authorize]
 		[HttpDelete("{id}/delete-comment")]
