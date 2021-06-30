@@ -1,15 +1,20 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RecipesServer.DTOs;
 using RecipesServer.DTOs.Member;
 using RecipesServer.Extensions;
+using RecipesServer.Helpers;
 using RecipesServer.Interfaces;
 using RecipesServer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace RecipesServer.Controllers
@@ -40,40 +45,55 @@ namespace RecipesServer.Controllers
             user.UserName = registerDTO.Username.ToLower();
 
             var result = await userManager.CreateAsync(user, registerDTO.Password);
+            if (result.Succeeded) 
+            {
+                var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                string confirmationLink = Url.Action("ConfirmEmail","Account", new { userid = user.Id,  token = token }, protocol: HttpContext.Request.Scheme);
+                EmailHelper emailHelper = new EmailHelper();
+                bool emailResponse = emailHelper.SendEmail(user.Email, confirmationLink);
 
+                if (emailResponse)
+                    return Ok("Confirmation link has been sended to your email.");
+                else
+                {
+                    return BadRequest("Ups something bad happend");
+                }
+            }
             if (!result.Succeeded) return BadRequest(result.Errors);
 
             var roleResult = await userManager.AddToRoleAsync(user, "Member");
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
-            unitOfWork.UserRepository.CreateUserBookmark(user.Id);
-            return new UserDTO
-            {
-                Username = user.UserName,
-                Token = await tokenService.CreateToken(user)
-            };
-        }
+            return Ok();
 
+        }
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string token, string userid)
+        {
+            var user = await userManager.FindByIdAsync(userid);
+            if (user == null)
+                return BadRequest("Something went wrong. Please try later");
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            return Ok(result.Succeeded ? "Your email has been confirmed" : "Error");
+        }
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
             var user = await userManager.Users
-                //.Include(p => p.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == loginDTO.Username.ToLower());
 
             if (user == null) return Unauthorized("Invalid username");
 
             var result = await signInManager
                 .CheckPasswordSignInAsync(user, loginDTO.Password, false);
-
+            if (result.IsNotAllowed) return BadRequest("Please confirm your email to access your account");
             if (!result.Succeeded) return Unauthorized();
-
             return new UserDTO
-            {
-                Username = user.UserName,
-                Token = await tokenService.CreateToken(user),
-              //  PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
-            };
+                {
+                    Username = user.UserName,
+                    Token = await tokenService.CreateToken(user),
+                };
         }
 
         private async Task<bool> UserExists(string username)
