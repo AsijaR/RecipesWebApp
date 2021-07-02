@@ -100,6 +100,11 @@ namespace RecipesServer.Data
 				   .WithMany(p => p.Comments)
 				   .HasForeignKey(d => d.AppUserId)
 				   .OnDelete(DeleteBehavior.Restrict);
+
+			//builder.Entity<RecipeOrders>().HasOne(d => d.Order)
+			//		   .WithMany(p => p.)
+			//		   .HasForeignKey(d => d.AppUserId)
+			//		   .OnDelete(DeleteBehavior.Restrict);
 			//builder.Entity<Comment>().HasOne(r=>)
 
 			builder.Entity<RecipeOrders>().HasKey(x => new { x.OrderId, x.ChefId });
@@ -130,7 +135,7 @@ namespace RecipesServer.Data
 					RecipeId = 1,
 					Title = "Coconut Curry Chicken",
 					ServingNumber = 5,
-					TimeNeededToPrepare = "35min",
+					TimeNeededToPrepare = "35m",
 					Description = "In a large pot or high-sided skillet over medium heat, heat oil and butter. When butter is" +
 								" melted, add onion and shallots and cook until tender and translucent, 6 to 8 minutes.;Add garlic," +
 								" ginger, and curry powder and cook until fragrant, 1 minute more. Add tomato paste and cook until" +
@@ -142,7 +147,7 @@ namespace RecipesServer.Data
 					MealCanBeOrdered = true,
 					Price = 10,
 					NoteForShipping = "needs to be in freezer after deliver",
-					UserId = 1,
+					AppUserId = 2,
 					Complexity = "Simple"
 				});
 			builder.Entity<RecipeIngredients>().HasData(

@@ -53,17 +53,41 @@ namespace RecipesServer.Helpers
                 .ForMember(dest => dest.Message, src => src.MapFrom(u => u.Comment.Message));
             CreateMap<AddCommentDTO, Comment>();
 
-           // CreateMap<RecipeOrders, OrderDTO>();
-            //    .ForMember(dest=>dest.Address,src=>src.MapFrom(r=>r.Address))
-            //    .ForMember(dest=>dest.City,src=>src.MapFrom(r=>r.City))
-            //    .ForMember(dest=>dest.Address,src=>src.MapFrom(r=>r.Address))
-            //    .ForMember(dest=>dest.Address,src=>src.MapFrom(r=>r.Address))
-            //    .ForMember(dest=>dest.Address,src=>src.MapFrom(r=>r.Address))
-            //.ForMember(dest=>dest.Title,src=>src.MapFrom(r=>r.Order.Recipes.))
+            CreateMap<RecipeOrders, GetOrdersDTO>()
+                .ForMember(dest => dest.FullName, src => src.MapFrom(r => r.Order.FullName))
+                .ForMember(dest => dest.Address, src => src.MapFrom(r => r.Order.Address))
+                .ForMember(dest => dest.ApprovalStatus, src => src.MapFrom(r => r.ApprovalStatus))
+                .ForMember(dest => dest.City, src => src.MapFrom(r => r.Order.City))
+                .ForMember(dest => dest.DateMealShouldBeShipped, src => src.MapFrom(r => r.Order.DateMealShouldBeShipped))
+                .ForMember(dest => dest.NoteToChef, src => src.MapFrom(r => r.Order.NoteToChef))
+                .ForMember(dest => dest.OrderId, src => src.MapFrom(r => r.OrderId))
+                .ForMember(dest => dest.Price, src => src.MapFrom(r => r.Recipe.Price))
+                .ForMember(dest => dest.RecipeId, src => src.MapFrom(r => r.Recipe.RecipeId))
+                .ForMember(dest => dest.RecipeTitle, src => src.MapFrom(r => r.Recipe.Title))
+                .ForMember(dest => dest.ServingNumber, src => src.MapFrom(r => r.Order.ServingNumber))
+                .ForMember(dest => dest.ShippingPrice, src => src.MapFrom(r => r.Chef.ShippingPrice))
+                .ForMember(dest => dest.State, src => src.MapFrom(r => r.Order.State))
+                .ForMember(dest => dest.Total, src => src.MapFrom(r => r.Order.Total))
+                .ForMember(dest => dest.Zip, src => src.MapFrom(r => r.Order.Zip))
+                .ReverseMap();
+           
 
             CreateMap<OrderStatusDTO, RecipeOrders>()
-                .ForMember(dest => dest.ApprovalStatus, src => src.MapFrom(r => r.Status));
-            CreateMap<Order, OrderDTO>().ReverseMap();
+                .ForMember(dest => dest.ApprovalStatus, src => src.MapFrom(r => r.Status)).ReverseMap();
+
+            CreateMap<RecipeOrders, MakeOrderDTO>()
+                .ForMember(dest => dest.Address, src => src.MapFrom(r => r.Order.Address))
+                .ForMember(dest => dest.City, src => src.MapFrom(r => r.Order.City))
+                .ForMember(dest => dest.DateMealShouldBeShipped, src => src.MapFrom(r => r.Order.DateMealShouldBeShipped))
+                .ForMember(dest => dest.FullName, src => src.MapFrom(r => r.Order.FullName))
+                .ForMember(dest => dest.NoteToChef, src => src.MapFrom(r => r.Order.NoteToChef))
+                .ForMember(dest => dest.RecipeId, src => src.MapFrom(r => r.RecipeId))
+                .ForMember(dest => dest.ServingNumber, src => src.MapFrom(r => r.Order.ServingNumber))
+                .ForMember(dest => dest.State, src => src.MapFrom(r => r.Order.State))
+                .ForMember(dest => dest.Zip, src => src.MapFrom(r => r.Order.Zip))
+                .ForMember(dest => dest.Total, src => src.MapFrom(r => r.Order.Total))
+                .ReverseMap();
+
             CreateMap<RegisterDTO, AppUser>();
 
             CreateMap<Recipe, RecipeBasicInfoDTO>()

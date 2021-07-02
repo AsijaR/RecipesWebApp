@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace RecipesServer.DTOs.Order
 {
-	public class OrderDTO
+	public class MakeOrderDTO
 	{
         public string FullName { get; set; }
         public string Address { get; set; }
@@ -16,5 +16,6 @@ namespace RecipesServer.DTOs.Order
         public int ServingNumber { get; set; }
         public string NoteToChef { get; set; }
         public int RecipeId { get; set; }
+        public float Total { get; set; }
     }
 }

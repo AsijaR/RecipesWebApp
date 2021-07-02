@@ -10,8 +10,8 @@ using RecipesServer.Data;
 namespace RecipesServer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210629180904_insertData")]
-    partial class insertData
+    [Migration("20210702022309_editOrder")]
+    partial class editOrder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -419,9 +419,6 @@ namespace RecipesServer.Migrations
                     b.Property<int>("ServingNumber")
                         .HasColumnType("int");
 
-                    b.Property<float>("ShippingPrice")
-                        .HasColumnType("real");
-
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
@@ -442,6 +439,9 @@ namespace RecipesServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
@@ -476,14 +476,11 @@ namespace RecipesServer.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("RecipeId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("AppUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Recipes");
 
@@ -491,18 +488,18 @@ namespace RecipesServer.Migrations
                         new
                         {
                             RecipeId = 1,
+                            AppUserId = 2,
                             CategoryId = 1,
                             Complexity = "Simple",
-                            CreatedDate = new DateTime(2021, 6, 29, 20, 9, 3, 761, DateTimeKind.Local).AddTicks(8067),
+                            CreatedDate = new DateTime(2021, 7, 2, 4, 23, 8, 995, DateTimeKind.Local).AddTicks(7657),
                             Description = "In a large pot or high-sided skillet over medium heat, heat oil and butter. When butter is melted, add onion and shallots and cook until tender and translucent, 6 to 8 minutes.;Add garlic, ginger, and curry powder and cook until fragrant, 1 minute more. Add tomato paste and cook until darkened slightly, 1 to 2 minutes more.;Add coconut milk and water and bring to a simmer. Add chicken and cook, stirring occasionally, until chicken is cooked through, 6 to 8 minutes.;Stir in lime juice and garnish with mint and cilantro. Serve hot with rice.",
                             MealCanBeOrdered = true,
                             Note = "And don't forget to whip up some rice to soak up all that saucy goodness! ",
                             NoteForShipping = "needs to be in freezer after deliver",
                             Price = 10f,
                             ServingNumber = 5,
-                            TimeNeededToPrepare = "35min",
-                            Title = "Coconut Curry Chicken",
-                            UserId = 1
+                            TimeNeededToPrepare = "35m",
+                            Title = "Coconut Curry Chicken"
                         });
                 });
 
@@ -624,18 +621,20 @@ namespace RecipesServer.Migrations
                     b.Property<int?>("ChefId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ApprovalStatus")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("OrderId", "ChefId");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("ChefId");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("RecipeOrders");
                 });
@@ -758,15 +757,15 @@ namespace RecipesServer.Migrations
 
             modelBuilder.Entity("RecipesServer.Models.Recipe", b =>
                 {
+                    b.HasOne("RecipesServer.Models.AppUser", "User")
+                        .WithMany("Recipes")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RecipesServer.Models.Category", null)
                         .WithMany("Recipes")
                         .HasForeignKey("CategoryId");
-
-                    b.HasOne("RecipesServer.Models.AppUser", "User")
-                        .WithMany("Recipes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -830,17 +829,27 @@ namespace RecipesServer.Migrations
 
             modelBuilder.Entity("RecipesServer.Models.RecipeOrders", b =>
                 {
-                    b.HasOne("RecipesServer.Models.AppUser", null)
+                    b.HasOne("RecipesServer.Models.AppUser", "Chef")
                         .WithMany("Orders")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("ChefId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RecipesServer.Models.Order", "Order")
-                        .WithMany("Recipes")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RecipesServer.Models.Recipe", "Recipe")
+                        .WithMany("RecipeOrders")
+                        .HasForeignKey("RecipeId");
+
+                    b.Navigation("Chef");
+
                     b.Navigation("Order");
+
+                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("RecipesServer.Models.RecipePhotos", b =>
@@ -903,11 +912,6 @@ namespace RecipesServer.Migrations
                     b.Navigation("Recipes");
                 });
 
-            modelBuilder.Entity("RecipesServer.Models.Order", b =>
-                {
-                    b.Navigation("Recipes");
-                });
-
             modelBuilder.Entity("RecipesServer.Models.Recipe", b =>
                 {
                     b.Navigation("Bookmarks");
@@ -915,6 +919,8 @@ namespace RecipesServer.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Ingredients");
+
+                    b.Navigation("RecipeOrders");
 
                     b.Navigation("RecipePhotos");
                 });

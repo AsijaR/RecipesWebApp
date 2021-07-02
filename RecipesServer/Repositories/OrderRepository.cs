@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using RecipesServer.Data;
 using RecipesServer.DTOs.Order;
@@ -22,68 +23,53 @@ namespace RecipesServer.Repositories
 			_context = context;
 			_mapper = mapper;
 		}
-		public async Task<IEnumerable<CustomRecipeOrder>> GetChefOrders(int chefId)
+		public async Task<PagedList<GetOrdersDTO>> GetChefOrders(int chefId,OrderParams orderParams)
 		{
-			var o = await _context.RecipeOrders.Where(ch => ch.ChefId == chefId)
-												.Include(o => o.Order).
-												Join(_context.Recipes, ord => ord.Order.RecipeId, rec => rec.RecipeId, (ord, rec) =>
-														new CustomRecipeOrder { OrderId = ord.OrderId, Title = rec.Title, Price = rec.Price, Order = ord.Order, ApprovalStatus = ord.ApprovalStatus })
-												.ToArrayAsync();
-			return o;
+			var orders =  _context.RecipeOrders.Where(ch => ch.ChefId == chefId)
+												.Include(o => o.Order).Include(r=>r.Recipe).Include(c=>c.Chef)
+												//.Join(_context.Recipes,order=> order.OrderId, recipe=>recipe.RecipeId, (order,recipe)=>new { Recipe=recipe,Order=order})
+												.AsQueryable();
+			if (orderParams.OrderByStatus != "All")
+				orders = orders.Where(o=>o.ApprovalStatus==orderParams.OrderByStatus);
+			return await PagedList<GetOrdersDTO>.CreateAsync(orders.ProjectTo<GetOrdersDTO>(_mapper.ConfigurationProvider).AsNoTracking(),
+					orderParams.PageNumber, orderParams.PageSize);
 		}
-		public async Task<RecipeOrders> EditOrder(int chefId, int orderId, string orderStatus)
+
+		public async Task<OrderStatusDTO> EditOrder(int chefId, int orderId, OrderStatusDTO orderStatus)
 		{
 			var findOrder = await _context.RecipeOrders
 								.Where(o => o.ChefId == chefId && o.OrderId == orderId)
 								.FirstOrDefaultAsync();
+
 			if (findOrder != null)
 			{
-				if (orderStatus == "Approved" || orderStatus == "Denied" || orderStatus == "Completed" || orderStatus == "Waiting")
+				if (orderStatus.Status == "Approved" || orderStatus.Status == "Denied" || orderStatus.Status == "Completed" || orderStatus.Status == "Waiting")
 				{
-					findOrder.ApprovalStatus = orderStatus;
+					findOrder.ApprovalStatus = orderStatus.Status;
 					await _context.SaveChangesAsync();
 				}
 			}
-			return findOrder;
+			return _mapper.Map<OrderStatusDTO>(findOrder);
 		}
 
-		public async Task<IEnumerable<CustomRecipeOrder>> SortChefsOrder(int chefId, string status)
+		public async Task<MakeOrderDTO> OrderMeal(int userId, MakeOrderDTO order)
 		{
-			if (status == "all" || status==null)
-			{
-				return await _context.RecipeOrders.Where(ch => ch.ChefId == chefId)
-												.Include(o => o.Order).
-												Join(_context.Recipes, ord => ord.Order.RecipeId, rec => rec.RecipeId, (ord, rec) =>
-														new CustomRecipeOrder { OrderId = ord.OrderId, Title = rec.Title, Price = rec.Price, Order = ord.Order, ApprovalStatus = ord.ApprovalStatus })
-												.ToArrayAsync();
-			}
-			else
-			{
-				return await _context.RecipeOrders.Where(ch => ch.ChefId == chefId)
-													.Include(o => o.Order).Where(p => p.ApprovalStatus == status).
-													Join(_context.Recipes, ord => ord.Order.RecipeId, rec => rec.RecipeId, (ord, rec) =>
-															new CustomRecipeOrder { OrderId = ord.OrderId, Title = rec.Title, Price = rec.Price, Order = ord.Order, ApprovalStatus = ord.ApprovalStatus })
-													.ToArrayAsync();
-			}
-		}
-
-		public async Task<OrderDTO> OrderMeal(int userId, OrderDTO order)
-		{
-			var findRecipe = await _context.Recipes.FindAsync(order.RecipeId);
-			var o = _mapper.Map<Order>(order);
+			var findRecipe = await _context.Recipes.FirstOrDefaultAsync(r=>r.RecipeId==order.RecipeId);
+			var o = _mapper.Map<RecipeOrders>(order);
 			if (findRecipe != null)
 			{
-				var makeOrder = await _context.Orders.AddAsync(o);
-				_context.SaveChanges();
+				var makeOrder = await _context.Orders.AddAsync(o.Order);
+				await _context.SaveChangesAsync();
 				_context.RecipeOrders.Add(new RecipeOrders { 
 					UserId = userId, 
-					ChefId = findRecipe.UserId, 
-					OrderId = makeOrder.Entity.OrderId
+					ChefId = findRecipe.AppUserId, 
+					OrderId = makeOrder.Entity.OrderId,
+					RecipeId=order.RecipeId
 				}
 				);
-				_context.SaveChanges();
+				await _context.SaveChangesAsync();
 			}
-			return null;
+			return order;
 		}
 	}
 }

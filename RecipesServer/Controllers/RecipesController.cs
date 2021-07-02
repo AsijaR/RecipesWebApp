@@ -49,17 +49,17 @@ namespace RecipesServer.Controllers
 		}
 		[Authorize]
 		[HttpPut("edit-recipe/{id}")]
-		public async Task<ActionResult> EditRecipe(int id,RecipeUpdateDTO recipeDTO)
+		public async Task<ActionResult> EditRecipe(int id,RecipeIngDTO recipeIngDTO)
 		{
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 			
 			var recipe = await unitOfWork.RecipeRepository.FindRecipeByIdAsync(id);
 			if (recipe != null)
 			{
-				if (recipe.UserId != user.Id) return Forbid("You are not authorized to edit this recipe!!");
+				if (recipe.AppUserId != user.Id) return Forbid("You are not authorized to edit this recipe!!");
 
 				//mapper.Map(recipeDTO, recipe);
-				await unitOfWork.RecipeRepository.UpdateRecipe(recipe,recipeDTO);
+				await unitOfWork.RecipeRepository.UpdateRecipe(recipe,recipeIngDTO);
 				 return Ok("Recipe Is updated.");
 			}
 			return BadRequest("Failed to update user");
@@ -103,7 +103,7 @@ namespace RecipesServer.Controllers
 				Url = result.SecureUrl.AbsoluteUri,
 				PublicId = result.PublicId
 			};
-			if (recipe.UserId == user.Id) 
+			if (recipe.AppUserId == user.Id) 
 			{
 				photo.IsMain = true;
 			}
@@ -128,9 +128,12 @@ namespace RecipesServer.Controllers
 				var comm = await unitOfWork.CommentRepository.GetCommentAsync(commentId);
 				if (comm != null) 
 				{
-					unitOfWork.CommentRepository.DeleteComment(id, commentId);
-					unitOfWork.CommentRepository.DeleteCommentAsync(comm);
-					await unitOfWork.Complete(); 
+					if (user.Id == comm.AppUserId)
+					{
+						unitOfWork.CommentRepository.DeleteComment(id, commentId);
+						unitOfWork.CommentRepository.DeleteCommentAsync(comm);
+						await unitOfWork.Complete();
+					}
 				}
 				
 				return NoContent();
@@ -145,7 +148,7 @@ namespace RecipesServer.Controllers
 			var recipe = await unitOfWork.RecipeRepository.FindRecipeByIdAsync(id);
 			if (recipe != null) 
 			{
-				if (recipe.UserId != user.Id) return Forbid("You are not authorized to delete this recipe!!");
+				if (recipe.AppUserId != user.Id) return Forbid("You are not authorized to delete this recipe!!");
 				unitOfWork.RecipeRepository.DeleteRecipe(recipe);
 				return NoContent();
 			}

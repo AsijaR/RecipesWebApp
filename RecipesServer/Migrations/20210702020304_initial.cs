@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RecipesServer.Migrations
 {
-    public partial class inital : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -108,9 +108,7 @@ namespace RecipesServer.Migrations
                     DateMealShouldBeShipped = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ServingNumber = table.Column<int>(type: "int", nullable: false),
                     NoteToChef = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ShippingPrice = table.Column<float>(type: "real", nullable: false),
-                    Total = table.Column<float>(type: "real", nullable: false),
-                    RecipeId = table.Column<int>(type: "int", nullable: false)
+                    Total = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -282,14 +280,14 @@ namespace RecipesServer.Migrations
                     NoteForShipping = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    AppUserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Recipes", x => x.RecipeId);
                     table.ForeignKey(
-                        name: "FK_Recipes_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Recipes_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -299,33 +297,6 @@ namespace RecipesServer.Migrations
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RecipeOrders",
-                columns: table => new
-                {
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    ChefId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    ApprovalStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AppUserId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RecipeOrders", x => new { x.OrderId, x.ChefId });
-                    table.ForeignKey(
-                        name: "FK_RecipeOrders_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RecipeOrders_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -399,6 +370,39 @@ namespace RecipesServer.Migrations
                         principalTable: "Recipes",
                         principalColumn: "RecipeId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RecipeOrders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    ChefId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    RecipeId = table.Column<int>(type: "int", nullable: true),
+                    ApprovalStatus = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeOrders", x => new { x.OrderId, x.ChefId });
+                    table.ForeignKey(
+                        name: "FK_RecipeOrders_AspNetUsers_ChefId",
+                        column: x => x.ChefId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RecipeOrders_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RecipeOrders_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "RecipeId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -483,9 +487,14 @@ namespace RecipesServer.Migrations
                 column: "IngredientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecipeOrders_AppUserId",
+                name: "IX_RecipeOrders_ChefId",
                 table: "RecipeOrders",
-                column: "AppUserId");
+                column: "ChefId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeOrders_RecipeId",
+                table: "RecipeOrders",
+                column: "RecipeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecipePhotos_RecipeId",
@@ -493,14 +502,14 @@ namespace RecipesServer.Migrations
                 column: "RecipeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Recipes_AppUserId",
+                table: "Recipes",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Recipes_CategoryId",
                 table: "Recipes",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Recipes_UserId",
-                table: "Recipes",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPhotos_AppUserId",

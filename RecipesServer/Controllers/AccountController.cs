@@ -51,7 +51,7 @@ namespace RecipesServer.Controllers
                 string confirmationLink = Url.Action("ConfirmEmail","Account", new { userid = user.Id,  token = token }, protocol: HttpContext.Request.Scheme);
                 EmailHelper emailHelper = new EmailHelper();
                 bool emailResponse = emailHelper.SendEmail(user.Email, confirmationLink);
-
+                unitOfWork.UserRepository.CreateUserBookmark(user.Id);
                 if (emailResponse)
                     return Ok("Confirmation link has been sended to your email.");
                 else
@@ -90,9 +90,10 @@ namespace RecipesServer.Controllers
             if (result.IsNotAllowed) return BadRequest("Please confirm your email to access your account");
             if (!result.Succeeded) return Unauthorized();
             return new UserDTO
-                {
-                    Username = user.UserName,
-                    Token = await tokenService.CreateToken(user),
+            {
+                Username = user.UserName,
+                Token = await tokenService.CreateToken(user),
+                UserId = user.Id
                 };
         }
 

@@ -58,10 +58,10 @@ namespace RecipesServer.Repositories
 		{
 			_context.Entry(user).State = EntityState.Modified;
 		}
-		public async void CreateUserBookmark(int id)
+		public void CreateUserBookmark(int id)
 		{
 			_context.Bookmarks.Add(new Bookmark() { UserId = id });
-			await _context.SaveChangesAsync();
+			_context.SaveChanges();
 		}
 	}
 }

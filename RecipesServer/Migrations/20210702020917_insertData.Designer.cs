@@ -10,8 +10,8 @@ using RecipesServer.Data;
 namespace RecipesServer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210629180444_inital")]
-    partial class inital
+    [Migration("20210702020917_insertData")]
+    partial class insertData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -267,6 +267,38 @@ namespace RecipesServer.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            Name = "Lunch"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            Name = "Salads"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            Name = "Main Dishes"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            Name = "Desserts"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            Name = "Smoothies"
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            Name = "Other"
+                        });
                 });
 
             modelBuilder.Entity("RecipesServer.Models.Comment", b =>
@@ -305,6 +337,58 @@ namespace RecipesServer.Migrations
                     b.HasKey("IngredientId");
 
                     b.ToTable("Ingredients");
+
+                    b.HasData(
+                        new
+                        {
+                            IngredientId = 1,
+                            Name = "butter"
+                        },
+                        new
+                        {
+                            IngredientId = 2,
+                            Name = "vegetable oil"
+                        },
+                        new
+                        {
+                            IngredientId = 3,
+                            Name = "red onion"
+                        },
+                        new
+                        {
+                            IngredientId = 4,
+                            Name = "shallots"
+                        },
+                        new
+                        {
+                            IngredientId = 5,
+                            Name = "curry powder"
+                        },
+                        new
+                        {
+                            IngredientId = 6,
+                            Name = "tomato paste"
+                        },
+                        new
+                        {
+                            IngredientId = 7,
+                            Name = "coconut milk"
+                        },
+                        new
+                        {
+                            IngredientId = 8,
+                            Name = "water"
+                        },
+                        new
+                        {
+                            IngredientId = 9,
+                            Name = "chicken"
+                        },
+                        new
+                        {
+                            IngredientId = 10,
+                            Name = "lime juice"
+                        });
                 });
 
             modelBuilder.Entity("RecipesServer.Models.Order", b =>
@@ -329,14 +413,8 @@ namespace RecipesServer.Migrations
                     b.Property<string>("NoteToChef")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ServingNumber")
                         .HasColumnType("int");
-
-                    b.Property<float>("ShippingPrice")
-                        .HasColumnType("real");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
@@ -358,6 +436,9 @@ namespace RecipesServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
@@ -392,16 +473,31 @@ namespace RecipesServer.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("RecipeId");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Recipes");
+
+                    b.HasData(
+                        new
+                        {
+                            RecipeId = 1,
+                            AppUserId = 2,
+                            CategoryId = 1,
+                            Complexity = "Simple",
+                            CreatedDate = new DateTime(2021, 7, 2, 4, 9, 17, 134, DateTimeKind.Local).AddTicks(8559),
+                            Description = "In a large pot or high-sided skillet over medium heat, heat oil and butter. When butter is melted, add onion and shallots and cook until tender and translucent, 6 to 8 minutes.;Add garlic, ginger, and curry powder and cook until fragrant, 1 minute more. Add tomato paste and cook until darkened slightly, 1 to 2 minutes more.;Add coconut milk and water and bring to a simmer. Add chicken and cook, stirring occasionally, until chicken is cooked through, 6 to 8 minutes.;Stir in lime juice and garnish with mint and cilantro. Serve hot with rice.",
+                            MealCanBeOrdered = true,
+                            Note = "And don't forget to whip up some rice to soak up all that saucy goodness! ",
+                            NoteForShipping = "needs to be in freezer after deliver",
+                            Price = 10f,
+                            ServingNumber = 5,
+                            TimeNeededToPrepare = "35m",
+                            Title = "Coconut Curry Chicken"
+                        });
                 });
 
             modelBuilder.Entity("RecipesServer.Models.RecipeBookmarks", b =>
@@ -450,6 +546,68 @@ namespace RecipesServer.Migrations
                     b.HasIndex("IngredientId");
 
                     b.ToTable("RecipeIngredients");
+
+                    b.HasData(
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 1,
+                            Amount = "1 tbsp"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 2,
+                            Amount = "1 tbsp"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 3,
+                            Amount = "2 large"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 4,
+                            Amount = "1 tbsp"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 5,
+                            Amount = "1.5 tbsp"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 6,
+                            Amount = "2 tbsp"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 7,
+                            Amount = "1 can"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 8,
+                            Amount = "500 ml"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 9,
+                            Amount = "1.5 lb boneless"
+                        },
+                        new
+                        {
+                            RecipeId = 1,
+                            IngredientId = 10,
+                            Amount = "0.5ml"
+                        });
                 });
 
             modelBuilder.Entity("RecipesServer.Models.RecipeOrders", b =>
@@ -460,18 +618,20 @@ namespace RecipesServer.Migrations
                     b.Property<int?>("ChefId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ApprovalStatus")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("OrderId", "ChefId");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("ChefId");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("RecipeOrders");
                 });
@@ -594,15 +754,15 @@ namespace RecipesServer.Migrations
 
             modelBuilder.Entity("RecipesServer.Models.Recipe", b =>
                 {
+                    b.HasOne("RecipesServer.Models.AppUser", "User")
+                        .WithMany("Recipes")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RecipesServer.Models.Category", null)
                         .WithMany("Recipes")
                         .HasForeignKey("CategoryId");
-
-                    b.HasOne("RecipesServer.Models.AppUser", "User")
-                        .WithMany("Recipes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -666,17 +826,27 @@ namespace RecipesServer.Migrations
 
             modelBuilder.Entity("RecipesServer.Models.RecipeOrders", b =>
                 {
-                    b.HasOne("RecipesServer.Models.AppUser", null)
+                    b.HasOne("RecipesServer.Models.AppUser", "Chef")
                         .WithMany("Orders")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("ChefId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RecipesServer.Models.Order", "Order")
-                        .WithMany("Recipes")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RecipesServer.Models.Recipe", "Recipe")
+                        .WithMany("RecipeOrders")
+                        .HasForeignKey("RecipeId");
+
+                    b.Navigation("Chef");
+
                     b.Navigation("Order");
+
+                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("RecipesServer.Models.RecipePhotos", b =>
@@ -739,11 +909,6 @@ namespace RecipesServer.Migrations
                     b.Navigation("Recipes");
                 });
 
-            modelBuilder.Entity("RecipesServer.Models.Order", b =>
-                {
-                    b.Navigation("Recipes");
-                });
-
             modelBuilder.Entity("RecipesServer.Models.Recipe", b =>
                 {
                     b.Navigation("Bookmarks");
@@ -751,6 +916,8 @@ namespace RecipesServer.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Ingredients");
+
+                    b.Navigation("RecipeOrders");
 
                     b.Navigation("RecipePhotos");
                 });

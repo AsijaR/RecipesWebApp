@@ -16,6 +16,10 @@ namespace RecipesServer.Models
 
 		[ForeignKey("User")]
 		public int? ChefId { get; set; }
+		public AppUser Chef { get; set; }
+
+		public int? RecipeId { get; set; }
+		public Recipe Recipe { get; set; }
 
 		public string ApprovalStatus { get; set; } = "Waiting";
 	}

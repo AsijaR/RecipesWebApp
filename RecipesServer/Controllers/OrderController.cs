@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RecipesServer.DTOs.Order;
 using RecipesServer.Extensions;
+using RecipesServer.Helpers;
 using RecipesServer.Interfaces;
 using RecipesServer.Models;
 using System;
@@ -22,19 +23,19 @@ namespace RecipesServer.Controllers
 		}
 		[Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomRecipeOrder>>> GetChefsOrders(string status)
+        public async Task<ActionResult<IEnumerable<GetOrdersDTO>>> GetChefsOrders([FromQuery]OrderParams orderParams)
         {
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
-			var result = await unitOfWork.OrderRepository.SortChefsOrder(user.Id,status);
+			var result = await unitOfWork.OrderRepository.GetChefOrders(user.Id, orderParams);
 			
 			if (result == null) return NotFound();
-
+			Response.AddPaginationHeader(result.CurrentPage, result.PageSize, result.TotalCount, result.TotalPages);
 			return Ok(result);
 
 		}
 		[Authorize]
         [HttpPut("change-status/{orderId}")]
-        public async Task<ActionResult<OrderStatusDTO>> ChangeOrder(int orderId, string orderStatus)
+        public async Task<ActionResult<OrderStatusDTO>> ChangeOrder(int orderId, OrderStatusDTO orderStatus)
         {
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 
@@ -46,7 +47,7 @@ namespace RecipesServer.Controllers
 
         [HttpPost]
 		[Authorize]
-		public async Task<ActionResult<OrderDTO>> MakeOrder(OrderDTO order)
+		public async Task<ActionResult<MakeOrderDTO>> MakeOrder(MakeOrderDTO order)
 		{
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 			if (order == null)

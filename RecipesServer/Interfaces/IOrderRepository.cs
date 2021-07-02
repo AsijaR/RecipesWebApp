@@ -1,4 +1,5 @@
 ﻿using RecipesServer.DTOs.Order;
+using RecipesServer.Helpers;
 using RecipesServer.Models;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,8 @@ namespace RecipesServer.Interfaces
 {
 	public interface IOrderRepository
 	{
-		Task<OrderDTO> OrderMeal(int userId, OrderDTO order);
-		Task<RecipeOrders> EditOrder(int chefId, int orderId, string orderStatus);
-		Task<IEnumerable<CustomRecipeOrder>> GetChefOrders(int userId);
-		Task<IEnumerable<CustomRecipeOrder>> SortChefsOrder(int chefId, string status);
+		Task<MakeOrderDTO> OrderMeal(int userId, MakeOrderDTO order);
+		Task<OrderStatusDTO> EditOrder(int chefId, int orderId, OrderStatusDTO orderStatus);
+		Task<PagedList<GetOrdersDTO>> GetChefOrders(int userId,OrderParams orderParams);
 	}
 }
