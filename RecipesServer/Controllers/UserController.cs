@@ -28,18 +28,6 @@ namespace RecipesServer.Controllers
             this.photoService = photoService;
 		}
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers()
-        {
-           // var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-           
-
-          // var users = await _userRepository.GetAllUsersAsync();
-
-           
-
-            return Ok();
-        }
         [HttpGet("userInfo")]
         public async Task<ActionResult<MemberDTO>> GetUserInfo()
         {

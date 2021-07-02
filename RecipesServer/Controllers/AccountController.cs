@@ -52,6 +52,8 @@ namespace RecipesServer.Controllers
                 EmailHelper emailHelper = new EmailHelper();
                 bool emailResponse = emailHelper.SendEmail(user.Email, confirmationLink);
                 unitOfWork.UserRepository.CreateUserBookmark(user.Id);
+                var roleResult = await userManager.AddToRoleAsync(user, "Member"); 
+                if (!roleResult.Succeeded) return BadRequest(result.Errors);
                 if (emailResponse)
                     return Ok("Confirmation link has been sended to your email.");
                 else
@@ -60,10 +62,6 @@ namespace RecipesServer.Controllers
                 }
             }
             if (!result.Succeeded) return BadRequest(result.Errors);
-
-            var roleResult = await userManager.AddToRoleAsync(user, "Member");
-
-            if (!roleResult.Succeeded) return BadRequest(result.Errors);
             return Ok();
 
         }

@@ -20,6 +20,12 @@ namespace RecipesServer.Helpers
             CreateMap<AppUser, MemberDTO>()
               .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                    src.UserPhoto.Url));
+            CreateMap<AppUser, UserInfoDTO>()
+                .ForMember(d => d.FullName, opt => opt.MapFrom(u => u.FirstName + " " + u.LastName))
+                .ForMember(d => d.AppUserId, opt => opt.MapFrom(u => u.Id))
+                .ForMember(d => d.Username, opt => opt.MapFrom(u => u.UserName)).ReverseMap();
+               
+
             CreateMap<MemberUpdateProfileDTO, AppUser>();
             CreateMap<MemberUpdateShippingPriceDTO, AppUser>();
             // .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));

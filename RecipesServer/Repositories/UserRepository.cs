@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RecipesServer.Data;
+using RecipesServer.DTOs;
+using RecipesServer.Helpers;
 using RecipesServer.Interfaces;
 using RecipesServer.Models;
 using System;
@@ -20,16 +22,26 @@ namespace RecipesServer.Repositories
 			_context = context;
 		}
 
-		public async Task<IEnumerable<AppUser>> GetAllUsersAsync()
+		public async Task<IEnumerable<UserInfoDTO>> GetAllUsersAsync()
 		{
-			return await _context.Users.ToListAsync();
+			var users= await _context.Users.OrderBy(u=>u.UserName).ToListAsync();
+			return _mapper.Map<IEnumerable<UserInfoDTO>>(users);
 		}
 
 		public async Task<AppUser> GetUserByIdAsync(int id)
 		{
 			return await _context.Users.Include(p => p.UserPhoto).FirstOrDefaultAsync(x => x.Id == id);
 		}
-
+		public bool deleteUser(int userId) 
+		{
+			var user =  _context.Users.FirstOrDefault(u=>u.Id==userId);
+			if (user != null)
+			{
+				_context.Users.Remove(user);
+				return true;
+			}
+			else return false;
+		}
 		public async Task<AppUser> GetUserByUsernameAsync(string username)
 		{
 			return await _context.Users

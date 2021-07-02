@@ -11,11 +11,12 @@ namespace RecipesServer.Interfaces
 	{
         void Update(AppUser user);
         Task<bool> SaveAllAsync();
-        Task<IEnumerable<AppUser>> GetAllUsersAsync();
+        Task<IEnumerable<UserInfoDTO>> GetAllUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
         Task<AppUser> GetUserByUsernameAsync(string username);
         void deleteUserPreviousPhoto(int id);
         void CreateUserBookmark(int id);
+        bool deleteUser(int userId);
        // Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams);
        // Task<MemberDto> GetMemberAsync(string username);
     }
