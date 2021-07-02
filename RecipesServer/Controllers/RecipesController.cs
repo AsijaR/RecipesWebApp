@@ -56,7 +56,7 @@ namespace RecipesServer.Controllers
 			var recipe = await unitOfWork.RecipeRepository.FindRecipeByIdAsync(id);
 			if (recipe != null)
 			{
-				if (recipe.AppUserId != user.Id) return Forbid("You are not authorized to edit this recipe!!");
+				if (recipe.UserId != user.Id) return Forbid("You are not authorized to edit this recipe!!");
 
 				//mapper.Map(recipeDTO, recipe);
 				await unitOfWork.RecipeRepository.UpdateRecipe(recipe,recipeIngDTO);
@@ -103,7 +103,7 @@ namespace RecipesServer.Controllers
 				Url = result.SecureUrl.AbsoluteUri,
 				PublicId = result.PublicId
 			};
-			if (recipe.AppUserId == user.Id) 
+			if (recipe.UserId == user.Id) 
 			{
 				photo.IsMain = true;
 			}
@@ -148,7 +148,7 @@ namespace RecipesServer.Controllers
 			var recipe = await unitOfWork.RecipeRepository.FindRecipeByIdAsync(id);
 			if (recipe != null) 
 			{
-				if (recipe.AppUserId != user.Id) return Forbid("You are not authorized to delete this recipe!!");
+				if (recipe.UserId != user.Id) return Forbid("You are not authorized to delete this recipe!!");
 				unitOfWork.RecipeRepository.DeleteRecipe(recipe);
 				return NoContent();
 			}

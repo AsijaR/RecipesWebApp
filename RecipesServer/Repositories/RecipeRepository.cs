@@ -49,7 +49,7 @@ namespace RecipesServer.Repositories
 		}
 		public async Task<IEnumerable<RecipeBasicInfoDTO>> GetUserRecipes(int userId)
 		{
-			return await _context.Recipes.Where(u => u.AppUserId == userId)
+			return await _context.Recipes.Where(u => u.UserId == userId)
 									.ProjectTo<RecipeBasicInfoDTO>(_mapper.ConfigurationProvider)
 									.ToListAsync();
 		}
@@ -125,7 +125,7 @@ namespace RecipesServer.Repositories
 				if (doesntExistIgredients.Count > 0)
 					await _context.Ingredients.AddRangeAsync(doesntExistIgredients.Select(p => p.Ingredient));
 
-				var c = _context.Recipes.Add(r).State;
+				var c = _context.Recipes.AddAsync(r);
 				try
 				{
 					_context.SaveChanges();

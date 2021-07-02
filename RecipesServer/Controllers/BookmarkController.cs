@@ -62,7 +62,7 @@ namespace RecipesServer.Controllers
                 await unitOfWork.Complete();
                 return Ok("Recipe is removed from bookmark");
             }
-            else return Ok("Doesnt Exists");
+            else return BadRequest("Doesnt Exists");
         }
 
     }

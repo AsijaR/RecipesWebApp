@@ -62,7 +62,7 @@ namespace RecipesServer.Repositories
 				await _context.SaveChangesAsync();
 				_context.RecipeOrders.Add(new RecipeOrders { 
 					UserId = userId, 
-					ChefId = findRecipe.AppUserId, 
+					ChefId = findRecipe.UserId, 
 					OrderId = makeOrder.Entity.OrderId,
 					RecipeId=order.RecipeId
 				}

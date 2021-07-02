@@ -13,7 +13,7 @@ namespace RecipesServer.DTOs
 		[Required]
 		public string Email { get; set; }
 		[Required]
-		[StringLength(8, MinimumLength = 4)]
+		[StringLength(20, MinimumLength = 8)]
 		public string Password { get; set; }
 		[Required]
 		public string FirstName { get; set; }

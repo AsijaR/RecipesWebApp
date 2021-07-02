@@ -147,7 +147,7 @@ namespace RecipesServer.Data
 					MealCanBeOrdered = true,
 					Price = 10,
 					NoteForShipping = "needs to be in freezer after deliver",
-					AppUserId = 2,
+					UserId = 2,
 					Complexity = "Simple"
 				});
 			builder.Entity<RecipeIngredients>().HasData(

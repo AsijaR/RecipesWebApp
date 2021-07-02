@@ -22,8 +22,8 @@ namespace RecipesServer.Models
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
 		[ForeignKey("Category")]
 		public int? CategoryId { get; set; }
-		//[ForeignKey("AppUser")]
-		public int AppUserId { get; set; }
+		[ForeignKey("AppUser")]
+		public int UserId { get; set; }
 		public AppUser User { get; set; }
 
 		public ICollection<RecipeIngredients> Ingredients { get; set; }
