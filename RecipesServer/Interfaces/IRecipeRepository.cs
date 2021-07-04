@@ -17,6 +17,7 @@ namespace RecipesServer.Interfaces
         Task<Int32> AddNewRecipe(RecipeIngDTO recipeDTO);
         // Task<IEnumerable<Recipe>> GetRecipesAsync();
         Task<RecipeDTO> GetRecipeByIdAsync(int id);
+        void deleteRecipeHeaderPreviousPhoto(int recipeId);
         Task<PagedList<RecipeBasicInfoDTO>> GetSearchedRecipesAsync(RecipeParams recipeParams);
         // Task<Recipe> GetRecipeAsync(int recipeId);
 

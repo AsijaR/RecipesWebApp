@@ -30,7 +30,7 @@ namespace RecipesServer.Repositories
 
 		public async Task<AppUser> GetUserByIdAsync(int id)
 		{
-			return await _context.Users.Include(p => p.UserPhoto).FirstOrDefaultAsync(x => x.Id == id);
+			return await _context.Users.Include(p=>p.UserPhoto).FirstOrDefaultAsync(x => x.Id == id);
 		}
 		public bool deleteUser(int userId) 
 		{

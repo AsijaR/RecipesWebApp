@@ -105,6 +105,7 @@ namespace RecipesServer.Controllers
 			};
 			if (recipe.UserId == user.Id) 
 			{
+				unitOfWork.RecipeRepository.deleteRecipeHeaderPreviousPhoto(recipe.RecipeId);
 				photo.IsMain = true;
 			}
 			recipe.RecipePhotos.Add(photo);

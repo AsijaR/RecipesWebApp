@@ -23,7 +23,11 @@ namespace RecipesServer.Repositories
 			_context = context;
 			_mapper = mapper;
 		}
-
+		public void deleteRecipeHeaderPreviousPhoto(int recipeId)
+		{
+			var photo = _context.RecipePhotos.Where(x => x.RecipeId == recipeId).FirstOrDefault(m=>m.IsMain==true);
+			_context.RecipePhotos.Remove(photo);
+		}
 		public async Task<Recipe> GetRecipeAsync(int recipeId)
 		{
 			var recipe = await _context.Recipes.Include(ing => ing.Ingredients)

@@ -32,15 +32,6 @@ namespace RecipesServer.Controllers
         public async Task<ActionResult<MemberDTO>> GetUserInfo()
         {
             var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
-            //var recipe = unitOfWork.RecipeRepository.FindRecipeByIdAsync(id);
-            //if (recipe != null)
-            //{
-            //    unitOfWork.CommentRepository.AddComment(id, user.Id, message);
-            //    await unitOfWork.Complete();
-            //    return message;
-            //}
-            //return BadRequest();
-
             return Ok(mapper.Map<MemberDTO>(user));
         }
         [HttpPut("updateProfile")]
