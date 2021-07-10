@@ -1,0 +1,51 @@
+.container form{
+  display: grid;
+  text-align: left;
+  font-size: 14px;
+}
+input[type=text], select {
+    padding: 10px 18px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 10px;
+    outline: none;
+  }
+  
+  input[type=password], select {
+    padding: 10px 18px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 10px;
+    outline: none;
+  }
+  
+label{
+  
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: #5E5E5E;
+  margin-top: 0.6em;
+    
+}
+.example-card {
+    max-width: 350px;
+  }
+  
+  .example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+  }
+  input[type=file] {
+    display: none;
+  }
+  ::ng-deep .opa{
+    background-color: white;
+    font-size: 20px;
+    color: #707070;
+}
+.error-message{
+  color: rgba(216, 38, 38, 0.801);
+  font-size: 13px;
+}

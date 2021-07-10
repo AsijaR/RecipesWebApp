@@ -1,0 +1,25 @@
+<div fxFlex fxLayout="column wrap">
+    <label class="recipe-headline">Take a look how others prepared this meal</label>
+    <div fxFlex>
+        <div class="container">
+            <div class="image-upload">
+                <label for="file-input">
+                    <a style="margin-right: 10px; text-decoration: none; " mat-stroked-button>Choose image</a>
+                </label>
+                <input id="file-input" type="file" ng2FileSelect [uploader]="uploader" />
+                <button [disabled]="user===null||user===undefined" class="btn-upload" mat-flat-button (click)="uploader.uploadAll()">Post your photo</button>
+            </div>
+        </div>
+
+    </div>
+    <div fxFlex>
+        <div *ngIf="photos.length==1; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+            <h4 style="font-weight: 500;">There are no photos for this recipe. Be the first one to post one!</h4>
+        </ng-template>
+        <ng-template #elseBlock>
+            <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery">
+            </ngx-gallery>
+        </ng-template>
+    </div>
+</div>

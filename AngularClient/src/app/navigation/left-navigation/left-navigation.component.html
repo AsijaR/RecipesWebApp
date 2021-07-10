@@ -1,0 +1,29 @@
+<div fxFlex fxFill fxLayout="column wrap">
+    <div style="margin-bottom: 2em;" >
+        <!-- <svg-icon src="assets/logo.svg" [svgStyle]="{ 'width.px':210,'height.px':40}"></svg-icon> 
+             -->
+    </div>
+    <nav >
+        
+        <mat-nav-list >
+            <a mat-list-item *appHasRole='["Admin"]' [routerLink]="['/admin']">
+                <span>Dashboard</span>
+            </a>
+            <a mat-list-item [routerLink]="['/add-recipe']">
+                <span>Add Recipe</span>
+            </a>
+            <a mat-list-item [routerLink]="['/my-recipes']">
+                <span>My Recipes</span>
+            </a>
+            <a mat-list-item [routerLink]="['/orders']">
+                <span>Orders</span>
+            </a>
+            <a mat-list-item [routerLink]="['/bookmarks']" >
+                <span>Bookmarks</span>
+            </a>
+            <a mat-list-item [routerLink]="['/my-profile']">
+                <span>My Profile</span>
+            </a>
+        </mat-nav-list>
+    </nav>
+</div>

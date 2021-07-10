@@ -1,0 +1,12 @@
+.title{
+    font: normal normal bold 16px Roboto;
+    letter-spacing: 1.4px;
+    color: #5E5E5E;
+}
+.sort{
+    width: 10em;
+    padding: 0.8em;
+    border: 1px solid #ccc;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 5px;
+}

@@ -1,0 +1,14 @@
+<mat-toolbar class="header-navbar" fxFlex>
+    
+        <a mat-list-item style="padding-left: 2em;" [routerLink]="['/']">Home</a>
+     <div  *ngFor="let cat of categories">   
+        <a mat-list-item routerLink="/category/{{cat.categoryId}}" routerLinkActive="active">{{cat.name}}</a>
+        <!-- <a mat-list-item [routerLink]="['/contact']">Contact</a> -->
+    </div>
+    <div class="login" >
+        <a style="cursor:pointer;" mat-list-item  *ngIf="(accountService.currentUser$ | async) === null" (click)="buttonClicked()">Login/SignUp</a>
+        <ng-container *ngIf="userLogged">
+            <a style="cursor:pointer;" mat-list-item (click)="logout()" >Logout</a>
+        </ng-container>
+    </div>
+</mat-toolbar>

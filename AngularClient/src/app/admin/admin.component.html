@@ -1,0 +1,56 @@
+<h2>Hello Admin</h2>
+<mat-tab-group mat-align-tabs="start">
+    <mat-tab label="Users">
+        <table mat-table [dataSource]="users" class="mat-elevation-z8">
+          
+            <ng-container matColumnDef="UserId">
+              <th mat-header-cell *matHeaderCellDef>Id </th>
+              <td mat-cell *matCellDef="let user"> {{user.appUserId}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="FullName">
+              <th mat-header-cell *matHeaderCellDef> Full Name </th>
+              <td mat-cell *matCellDef="let user"> {{user.fullName}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="Username">
+                <th mat-header-cell *matHeaderCellDef> Username </th>
+                <td mat-cell *matCellDef="let user"> {{user.username}} </td>
+              </ng-container>
+
+            <ng-container matColumnDef="Delete">
+              <th mat-header-cell *matHeaderCellDef> Delete </th>
+              <td mat-cell *matCellDef="let user"> 
+                <button mat-stroked-button color="warn" (click)="deleteUser(user.appUserId)">Delete</button>
+              </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+    </mat-tab>
+    <mat-tab label="Recipes">
+        <table mat-table [dataSource]="recipes" class="mat-elevation-z8">
+          
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>Title </th>
+              <td mat-cell *matCellDef="let recipe"> {{recipe.title}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="chefName">
+              <th mat-header-cell *matHeaderCellDef>Chef Name </th>
+              <td mat-cell *matCellDef="let recipe"> {{recipe.chefName}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="Delete">
+              <th mat-header-cell *matHeaderCellDef>Delete </th>
+              <td mat-cell *matCellDef="let user"> 
+                <button mat-stroked-button color="warn" (click)="deleteRecipe(recipe.recipeId)">Delete</button>
+              </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsRecipe"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsRecipe;"></tr>
+          </table>
+    </mat-tab>
+  </mat-tab-group>

@@ -1,0 +1,140 @@
+<div fxFlex fxLayout="row wrap" fxLayoutGap="20px" *ngIf="member">
+    <div fxFlex="30" >
+        <mat-card class="example-card">
+            <img mat-card-image style="height: 300px;" src="{{member.photoUrl || './assets/user.png'}}" alt="Profile Photo">
+            <mat-card-content>
+                <div class="image-upload" fxLayout="row wrap">
+                  <div>
+                    <label for="file-input">
+                        <a style="margin-right: 10px; text-decoration: none;" mat-stroked-button>Change image</a>
+                    </label>
+                    <input id="file-input" type="file" ng2FileSelect [uploader]="uploader" />
+                  </div>
+                    <button  mat-flat-button (click)="uploadPhoto()" style="color: rgb(37, 112, 233);">Upload photo</button>
+                </div>
+                <div class="card-body">
+                    <div fxLayout="row wrap" fxLayoutGap="20px">
+                        <strong>Email:</strong>
+                        <p>{{member.email}}</p>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="20px">
+                        <strong>Username:</strong>
+                        <p>{{member.username}}</p>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+    <div fxFlex style="background-color: white;">
+        <mat-tab-group animationDuration="0ms">
+            <mat-tab label="Profile info">
+                <div style="padding:2em;">
+                    <form  [formGroup]="profileForm" (ngSubmit)="updateProfile(profileForm.value)">
+                        <div fxLayout="row wrap">
+                            <label for="fname" class="col-sm-3 col-form-label">First Name</label>
+                            <div class="col-sm-4">
+                              <input type="text" id="fname" required [(ngModel)]="member.firstName" formControlName="firstName">
+                              <p class="error-message" *ngIf="changePasswordForm.get('currentPassword').hasError('required') && passwordForm.submitted">
+                                This field is required
+                              </p>
+                            </div>
+                          </div>
+                          <div fxLayout="row wrap">
+                            <label for="lname" class="col-sm-3 col-form-label">Last Name</label>
+                            <div class="col-sm-4">
+                              <input type="text"  id="lname" required [(ngModel)]="member.lastName" formControlName="lastName">
+                              <p class="error-message" *ngIf="changePasswordForm.get('currentPassword').hasError('required') && passwordForm.submitted">
+                                This field is required
+                              </p>
+                            </div>
+                          </div>
+                          <div fxLayout="row wrap">
+                            <label for="address" class="col-sm-3 col-form-label">Address</label>
+                            <div class="col-sm-4">
+                              <input type="text" id="address"  [(ngModel)]="member.address" formControlName="address" >
+                            </div>
+                          </div>
+                          <div fxLayout="row wrap">
+                            <label for="city" class="col-sm-3 col-form-label">City</label>
+                            <div class="col-sm-4">
+                              <input type="text"  id="city"  [(ngModel)]="member.city" formControlName="city">
+                            </div>
+                          </div>
+                          <div fxLayout="row wrap">
+                            <label for="state" class="col-sm-3 col-form-label">State</label>
+                            <div class="col-sm-4">
+                              <input type="text" id="state"  [(ngModel)]="member.state" formControlName="state">
+                            </div>
+                          </div>
+                          <div fxLayout="row wrap">
+                            <label for="Zip" class="col-sm-3 col-form-label">Zip</label>
+                            <div class="col-sm-4">
+                              <input type="text" id="Zip"  [(ngModel)]="member.zip" formControlName="zip">
+                            </div>
+                          </div>
+                        <button mat-raised-button [disabled]="!profileForm.valid" type="submit" color="accent">Save changes</button>
+                    </form>
+                </div>
+            </mat-tab>
+            <mat-tab label="Change Password">
+                <div style="padding:2em;">
+                    <form [formGroup]="changePasswordForm" #passwordForm="ngForm" (ngSubmit)="updatePassword(changePasswordForm.value)" autocomplete="off">
+                        <div fxLayout="row wrap">
+                            <label for="cPassword" class="col-sm-3 col-form-label">Current Password</label>
+                            <div class="col-sm-4">
+                              <input type="password" id="cPassword" required formControlName="currentPassword">
+                              <p class="error-message" *ngIf="changePasswordForm.get('currentPassword').hasError('required') && passwordForm.submitted">
+                                This field is required
+                              </p>
+                              <p class="error-message" *ngIf="wrongPassword && passwordForm.submitted">
+                                Wrong password
+                              </p>
+                            </div>
+                          </div>
+                          <div fxLayout="row wrap">
+                            <label for="nPassword1" class="col-sm-3 col-form-label">New Password</label>
+                            <div class="col-sm-4">
+                              <input type="password" required id="nPassword1" formControlName="newPassword">
+                              <p class="error-message" *ngIf="changePasswordForm.get('newPassword').hasError('required') && passwordForm.submitted">
+                                This field is required
+                              </p>
+                              <p class="error-message" *ngIf="changePasswordForm.get('newPassword').hasError('pattern') &&changePasswordForm.touched && passwordForm.submitted">
+                                Password needs to have upper and lower letters, number and special character
+                              </p>
+                            </div>
+                          </div>
+                          <div fxLayout="row wrap">
+                            <label for="nPassword2" class="col-sm-3 col-form-label">Confirm Password</label>
+                            <div class="col-sm-4">
+                              <input type="password" required id="nPassword2" formControlName="newPassword2">
+                              <p class="error-message" *ngIf="changePasswordForm.get('newPassword2').hasError('required') && passwordForm.submitted">
+                                This field is required
+                              </p>
+                              <p class="error-message" *ngIf="errorMatchPassword && passwordForm.submitted">
+                                Passwords don't match
+                              </p>
+                            </div>
+                          </div>
+                        <button mat-raised-button  type="submit" color="accent">Save changes</button>
+                    </form>
+                </div>
+            </mat-tab>
+            <mat-tab label="Order settings">
+                <div style="padding:2em;">
+                    <form  [formGroup]="shippingPriceForm" #orderSettingsForm="ngForm" (ngSubmit)="updateShippingPrice(shippingPriceForm.value)">
+                        <div fxLayout="row wrap">
+                            <label for="shippingPrice" class="col-sm-3 col-form-label">Shipping price</label>
+                            <div class="col-sm-4">
+                              <input type="text" id="shippingPrice" required [(ngModel)]="member.shippingPrice" formControlName="shippingPrice">
+                              <p class="error-message" *ngIf="shippingPriceForm.get('shippingPrice').hasError('required') && orderSettingsForm.submitted">
+                                This field is required
+                              </p>
+                            </div>
+                          </div>
+                        <button mat-raised-button [disabled]="!shippingPriceForm.valid" type="submit" color="accent">Save changes</button>
+                    </form>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>

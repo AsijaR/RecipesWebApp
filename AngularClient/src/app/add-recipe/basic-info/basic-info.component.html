@@ -1,0 +1,48 @@
+<div class="container">
+    <form  [formGroup]="basicInfoForm">
+        <label for="title" style="margin-top: 0;">Recipe Title</label>
+        <input type="text" formControlName="title">
+        <p class="error-message" *ngIf="basicInfoForm.get('title').hasError('required') && submitted">
+          This field is required
+      </p>
+      <p class="error-message" *ngIf="basicInfoForm.get('title').hasError('pattern') && submitted">
+        Only letters and number are allowed
+    </p>
+
+        <label for="complexity">Complexity</label>
+        <select  name="complexity" formControlName="complexity">
+          <option *ngFor="let complex of complexity" [ngValue]="complex" >
+            {{complex}}
+          </option>
+        </select>
+    
+        <label for="category">Category</label>
+        <select id="category" name="category" formControlName="category">
+          <option *ngFor="let category of categories" [ngValue]="category.categoryId" >
+            {{category.name}}
+          </option>
+        </select>
+        <p class="error-message" *ngIf="basicInfoForm.get('category').hasError('required') && submitted">
+          Please choose category
+      </p>
+
+        <label for="servingNumber">Serving Number</label>
+        <input type="text" formControlName="servingNumber">
+        <p class="error-message" *ngIf="basicInfoForm.get('servingNumber').hasError('required') && submitted">
+          This field is required
+      </p>
+      <p class="error-message" *ngIf="basicInfoForm.get('servingNumber').hasError('pattern') && submitted">
+        Only numbers are allowed
+    </p>
+
+        <label for="preparationTime">Preparation Time</label>
+        <input type="text" formControlName="preparationTime">
+        <p class="error-message" *ngIf="basicInfoForm.get('preparationTime').hasError('required') && submitted">
+          This field is required
+      </p>
+      <p class="error-message" *ngIf="basicInfoForm.get('preparationTime').hasError('pattern') && submitted">
+        Only numbers are allowed
+    </p>
+
+      </form>
+</div>

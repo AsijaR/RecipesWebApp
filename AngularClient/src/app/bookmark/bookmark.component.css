@@ -1,0 +1,40 @@
+.recipe-card {
+    max-width: 243px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #2C0C0C29;
+    border-radius: 12px;
+    margin-bottom: 2em;
+    display: inline-block;
+    cursor:pointer;
+    margin-right: 1em;
+    margin-top: -0.5em;
+  }
+
+  .recipe-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+  }
+  #colorOfIcons{
+      color: #5E5E5E;
+  }
+  mat-card-content{
+      
+      letter-spacing: 0.7px;
+      color: #5E5E5E;
+      
+  }
+  .mat-title{
+    text-align: left;
+    font-size: 16px;
+    letter-spacing: 0.9px;
+    color: #5E5E5E;
+    text-transform: uppercase;
+  }
+  .short-desc{
+      display:inline-flex;
+  }
+  ::ng-deep .opa{
+    background-color: white;
+    font-size: 20px;
+    color: #707070;
+}

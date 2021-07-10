@@ -23,26 +23,6 @@ namespace RecipesServer.Data
                 await roleManager.CreateAsync(role);
             }
 
-            //var users = new List<AppUser>
-            //{
-            //    new AppUser{
-            //        FirstName = "asija", LastName = "ramovic",
-            //        Address = "novi pazar",City = "novi pazar",
-            //        State = "serbia", Zip = "36300",Email="as@gmail.com",
-            //        UserName="asa"},
-            //    new AppUser{
-            //        FirstName = "jasko", LastName = "ramovic",
-            //        Address = "novi pazar",City = "novi pazar",
-            //        State = "serbia", Zip = "36300",Email="jasko@gmail.com",
-            //        UserName="jale"}
-            //};
-            //foreach (var user in users)
-            //{
-            //    user.UserName = user.UserName.ToLower();
-            //    await userManager.CreateAsync(user, "Asija123.");
-            //    await userManager.AddToRoleAsync(user, "Member");
-            //}
-
             var admin = new AppUser
             {
                 UserName = "admin"

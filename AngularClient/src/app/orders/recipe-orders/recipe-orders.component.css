@@ -1,0 +1,60 @@
+
+  .example-headers-align .mat-expansion-panel-header-title,
+  .example-headers-align .mat-expansion-panel-header-description {
+    flex-basis: 0;
+    align-items: center;
+  }
+  
+  .example-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header{
+    margin-top: 12px;
+  }
+  .order-status{
+
+  }
+  .status-approved{
+      background-color: #86ec8691;
+      color: #7e8075;
+      border-radius: 5px;
+      padding:  2px 5px;
+      width: 6em;
+      text-align: center;
+  }
+  .status-denied{
+    background-color: #f28585bd;
+    color: #6c6d6a;
+    border-radius: 5px;
+    padding:  2px 5px;
+    text-align: center;
+    width: 6em;
+}
+
+.status-waiting{
+    background-color: #f8dda7bd;
+    color: #7e8075;
+    border-radius: 5px;
+    padding:  2px 5px;
+    width: 6em;
+    text-align: center;
+}
+.status-completed{
+    background-color: #c8d7e1a2;
+    color: #7e8075;
+    border-radius: 5px;
+    padding:  2px 5px;
+    width: 6em;
+    text-align: center;
+}
+.bottom{
+    border-top: 2px dashed #70707073;
+    margin-right: 5em;
+    margin-top: 1em;
+    padding-top: 1em;
+}
+.bottom h4{
+    margin-top: 1em;
+    font-weight: 600;
+}

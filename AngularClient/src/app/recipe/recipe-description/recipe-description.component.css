@@ -1,0 +1,25 @@
+.container{
+   display: grid;
+    grid-template-columns: 0.5fr 4fr;
+    grid-template-areas: "numbers text"; 
+    grid-gap: 20px;
+}
+.description-numbers{
+   grid-area: "numbers";
+    background: #FFC955 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 1em;
+    padding-right: 10px; 
+    padding-top: 5px; 
+    text-align: right;
+    height: 40px;
+ }
+
+ .description-steps{
+    grid-area: "text";
+    text-align: left;
+    font-size: 16px;
+    letter-spacing: 0.18px;
+ }

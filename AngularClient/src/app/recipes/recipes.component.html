@@ -1,0 +1,10 @@
+<div fxFlex fxLayout="column wrap">
+    <div fxFlex>
+        <app-search-box (recParams)="searchThis($event)" ></app-search-box>
+    </div>
+    <div fxFlex>
+        <app-recipe-cards [recipes]="recipes"></app-recipe-cards>
+    </div>
+</div>
+
+

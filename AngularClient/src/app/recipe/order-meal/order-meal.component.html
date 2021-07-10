@@ -1,0 +1,97 @@
+<div class="container">
+    <h1 mat-dialog-title>Shipping information</h1>
+    <div class="wrap-form" fxLayout="row wrap" fxLayoutGap="40px">
+        <form [formGroup]="orderForm" fxFlex>
+            <div class="row">
+                <div class="col" fxLayout="column wrap">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" required formControlName="fullName">
+                    <p class="error-message" *ngIf="orderForm.get('fullName').hasError('required') && submitted">
+                        This field is required
+                    </p>
+                    <p class="error-message" *ngIf="orderForm.get('fullName').hasError('pattern') && submitted">
+                        Only letters are allowed
+                    </p>
+
+                    <label for="address">Address</label>
+                    <input type="text" id="address" required formControlName="address">
+                    <p class="error-message" *ngIf="orderForm.get('address').hasError('required') && submitted">
+                        This field is required
+                    </p>
+
+                    <label for="city">City</label>
+                    <input type="text" id="city" required formControlName="city">
+                    <p class="error-message" *ngIf="orderForm.get('city').hasError('required') && submitted">
+                        This field is required
+                    </p>
+                    <p class="error-message" *ngIf="orderForm.get('city').hasError('pattern') && submitted">
+                        Only letters are allowed
+                    </p>
+
+                    <label for="state">State</label>
+                    <input type="text" id="state" required formControlName="state">
+                    <p class="error-message" *ngIf="orderForm.get('state').hasError('required') && submitted">
+                        This field is required
+                    </p>
+                    <p class="error-message" *ngIf="orderForm.get('state').hasError('pattern') && submitted">
+                        Only letters are allowed
+                    </p>
+
+                    <label for="zip">Zip</label>
+                    <input type="text" id="zip" required formControlName="zip" style="margin-bottom: 0;" maxlength="5">
+                    <p class="error-message" *ngIf="orderForm.get('zip').hasError('required') && submitted">
+                        This field is required
+                    </p>
+                    <p class="error-message" *ngIf="orderForm.get('zip').hasError('pattern') && submitted">
+                        Only numbers are allowed
+                    </p>
+                </div>
+                <div class="col" fxLayout="column wrap">
+                    <label for="servingNumber">Serving Number</label>
+                    <input type="text" id="servingNumber" required formControlName="servingNumber">
+                    <p class="error-message" *ngIf="orderForm.get('servingNumber').hasError('required') && submitted">
+                        This field is required
+                    </p>
+                    <p class="error-message" *ngIf="orderForm.get('servingNumber').hasError('pattern') && submitted">
+                        Only numbers are allowed
+                    </p>
+                    <p class="error-message" *ngIf="positivNumber && submitted">
+                        Serving number has to be greater than 0
+                    </p>
+
+                    <label for="shippingDate">Date meal should be shipped</label>
+                    <input type="date" id="shippingDate" required formControlName="dateMealShouldBeShipped" [min]="minDate">
+                    <p class="error-message" *ngIf="orderForm.get('dateMealShouldBeShipped').hasError('required') && submitted">
+                        This field is required
+                    </p>
+
+                    <label for="noteToChef">Note to Chef</label>
+                    <input type="text" id="fullName" formControlName="noteToChef">
+
+                    <label for="mealPrice">Meal price</label>
+                    <input type="text" id="mealPrice" [(value)]="data.price" readonly>
+
+                    <label for="shippingPrice">Shipping price</label>
+                    <input type="text" id="shippingPrice" [(value)]="data.shippingPrice" readonly
+                        style="margin-bottom: 0;">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row bottom-info">
+        <div class="col">
+            <p><span class="noteChef">Note from Chef:</span> {{data.noteForShipping}} </p>
+
+        </div>
+        <div class="col ">
+            <p style="margin-left: 1.5em;">Total: <span style="font-weight: 600; margin-left: 1em;">${{total}}</span>
+            </p>
+        </div>
+    </div>
+    <div mat-dialog-actions class="row button-actions">
+        <button class="col" mat-stroked-button (click)="onNoClick()">Cancel</button>
+        <button class="col" type="submit" mat-stroked-button style="background-color: #fc5185; color: white;"
+            (click)="submitForm(orderForm.value)">
+            Place order</button>
+    </div>
+</div>

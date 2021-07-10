@@ -1,0 +1,98 @@
+<div>
+    <div *ngIf="c; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
+        <div class="sidecContainer" style="width: 280px;">
+            <p>
+                We are glad you decied to <span style="color: rgb(238, 28, 109); font-weight: 500;">join our
+                    community</span>.
+                <br>
+                <br>
+                Create your account right now!
+            </p>
+            <form [formGroup]="registerForm" #signUpForm="ngForm" fxLayout="column wrap" (ngSubmit)="signUp()">
+                <label style="margin-top: 0;">Username</label>
+                <input type="text" formControlName="username" class="form-control mr-sm-2" type="text">
+                <p class="error-message" *ngIf="registerForm.get('username').hasError('required') && signUpForm.submitted">
+                        This field is required
+                </p>
+                <p class="error-message" *ngIf="registerForm.get('username').hasError('min') && signUpForm.submitted">
+                    Username has to be at least 4 characters long.
+            </p>
+
+                <label style="margin-top: 0;">First Name</label>
+                <input type="text" name="firstName" formControlName="firstName" class="form-control mr-sm-2" type="text">
+                <p class="error-message" *ngIf="registerForm.get('firstName').hasError('required') && signUpForm.submitted">
+                        This field is required
+                </p>
+                <p class="error-message" *ngIf="registerForm.get('firstName').hasError('pattern') && signUpForm.submitted">
+                    Only letters are allowed
+            </p>
+
+                <label style="margin-top: 0;">Last Name</label>
+                <input type="text" formControlName="lastName" class="form-control mr-sm-2" type="text">
+                <p class="error-message" *ngIf="registerForm.get('lastName').hasError('required') && signUpForm.submitted">
+                        This field is required
+                </p>
+                <p class="error-message" *ngIf="registerForm.get('lastName').hasError('pattern') && signUpForm.submitted">
+                    Only letters are allowed
+            </p>
+
+                <label style="margin-top: 0;">Email</label>
+                <input type="email"  formControlName="email"  [email]="true" class="form-control mr-sm-2"  type="text">
+                <p class="error-message" *ngIf="registerForm.get('email').hasError('required') && signUpForm.submitted">
+                        This field is required
+                </p>
+                <p class="error-message" *ngIf="registerForm.get('email').hasError('email') && signUpForm.submitted">
+                    Email is not valid
+                </p>
+
+                <label style="margin-top: 15px;">Password</label>
+                <input type="text" formControlName="password" class="form-control mr-sm-2" type="password">
+                <p class="error-message" *ngIf="registerForm.get('password').hasError('required') && signUpForm.submitted">
+                    This field is required
+            </p>
+            
+            <p class="error-message" *ngIf="registerForm.get('password').hasError('pattern') && signUpForm.submitted">
+            Password needs to have upper and lower letters, number and special character and at least 8 characters long!
+        </p>
+            <p class="error-message" *ngIf="serverErrorResponse">
+               {{errorMessage.error|json}}
+             </p>
+             <button mat-stroked-button type="submit" style="margin-bottom: 1em;" (click)="signUp()">Register</button>
+            </form>
+            <h4>Already have an account? <a style="color: red; cursor: pointer;" (click)="changeTemplate()">Sign in</a>
+            </h4>
+
+        </div>
+    </ng-template>
+    <ng-template #elseBlock>
+        <div class="sidecContainer" style="width: 280px;">
+            <p>
+                We are so glad to have you here. Discover recipes based on the <span
+                    style="color: rgb(28, 126, 238); font-style: italic;">food you love</span>.
+            </p>
+            <form [formGroup]="loginUserForm" #loginForm="ngForm" fxLayout="column wrap">
+                <label style="margin-top: 0;">Username</label>
+                <input type="text" name="username" class="form-control mr-sm-2"
+                    type="text" formControlName="username">
+                <p class="error-message" *ngIf="loginUserForm.get('username').hasError('required') && loginForm.submitted">
+                    This field is required
+                </p>
+
+                <label style="margin-top: 15px;">Password</label>
+                <input type="text" name="password"  class="form-control mr-sm-2"
+                    type="password" formControlName="password">
+                <p class="error-message" *ngIf="loginUserForm.get('password').hasError('required') && loginForm.submitted">
+                    This field is required
+                </p>
+                <p class="error-message" *ngIf="serverErrorResponse">
+                    {{errorMessage|json}}
+                </p>
+                <button mat-stroked-button type="submit" style="margin-bottom: 1em;" (click)="login()">Login</button>
+            </form>
+           <h4>Dont have an account?<a style="color: red; cursor: pointer;" (click)="changeTemplate()">Register right
+                    now!</a></h4>
+
+        </div>
+    </ng-template>
+</div>

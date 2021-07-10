@@ -1,0 +1,18 @@
+.middle{
+    border-bottom: 2px dashed #70707091;
+   
+}
+button{
+    background: rgb(26, 153, 98) 0% 0% no-repeat padding-box;
+    border-radius: 10px;
+    color: white;
+    padding: -10px;
+    white-space: normal;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+.title{
+    font: normal normal bold 14px Roboto;
+    letter-spacing: 1.4px;
+    color: #5E5E5E;
+}

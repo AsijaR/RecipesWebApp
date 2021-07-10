@@ -1,0 +1,19 @@
+<div class="container">
+  <form [formGroup]="orderForm">
+    <section class="example-section">
+        <mat-checkbox class="example-margin" formControlName="mealCanBeOrdered" >This meal can be ordered</mat-checkbox>
+      </section>
+      
+        <label for="rprice">Price per person</label>
+        <input type="text" formControlName="price" id="rprice" disabled (keydown)="eventHandler($event)">
+        <p class="error-message" *ngIf="orderForm.get('price').hasError('required') && submitted">
+          This field is required
+      </p>
+
+         <label for="rshippingNote">Note for shipping</label>
+        <input type="text" formControlName="shippingNote" name="shippingNote" disabled>
+        <p class="error-message" *ngIf="orderForm.get('shippingNote').hasError('pattern') && submitted">
+          Some characters are invalid
+      </p>
+      </form>
+</div>

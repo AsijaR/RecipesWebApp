@@ -1,0 +1,82 @@
+:host { 
+  min-height: 100%;
+  display:grid;
+}
+.class1{
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows:  1fr auto;
+  grid-gap: 12px;
+  grid-template-areas:
+  "left_content center_content";
+}
+.class2{
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows:  1fr auto;
+  grid-template-areas:
+  "center_content";
+}
+
+.second-column{
+  grid-area: center_content;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+  "top",
+  "content";
+}
+.sidebar{ 
+  grid-area: left_content;
+  border-radius: 15px;
+  background:#364F6B;
+  padding: 20px;
+}
+input[type=text], select {
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 20px;
+  outline: none;
+}
+input[type=password], select {
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 20px;
+  outline: none;
+}
+
+label{
+
+font-weight: 600;
+letter-spacing: 1.2px;
+color: #5E5E5E;
+margin-top: 0.6em;
+  
+}
+.content
+{
+  position: absolute;
+  width: 97%;
+  overflow-y: hidden;
+}
+.sidecContainer{
+  
+  margin: 10px 25px;
+}
+p{
+  margin-top: 2em;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  font-size: 16px;
+}
+button{
+  margin-top: 1.5em;
+  padding: 3px 0;
+  border-radius: 15px;
+  font-size: 16px;
+  background-color: #fc5185; color: white; width: 100%;
+}

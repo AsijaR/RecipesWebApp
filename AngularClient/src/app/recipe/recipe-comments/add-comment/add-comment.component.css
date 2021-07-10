@@ -1,0 +1,9 @@
+.add-comment{
+    display: grid;
+}
+.error-message{
+    color:firebrick;
+    font-size: 12px;
+    margin-top: -1em;
+    line-height: normal;
+}

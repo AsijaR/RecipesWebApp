@@ -1,0 +1,20 @@
+<div *ngFor="let comment of comments" fxLayout="column wrap" class="comment-wrap">
+  <div fxLayout="row wrap">
+    <div>
+      <img src="{{comment.userPhotoUrl || './assets/user.png'}}" alt="Profile picture">
+    </div>
+    <div class="user-info" fxFlex>
+      <p>{{comment.fullName}}
+        <br>
+        <span>
+          {{comment.dateCommentIsPosted | slice:0:10}} at {{comment.dateCommentIsPosted |slice:11:19}}
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div fxFlex class="comment-info-message">
+    <p>{{comment.message}}</p>
+  </div>
+
+</div>

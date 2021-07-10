@@ -1,0 +1,17 @@
+<div class="row" fxLayout="row wrap" style="margin: 0.5em;" fxLayoutGap="10px">
+    <ng-container *ngIf="accountService.currentUser$ | async">
+         <div class="col" fxFlex="17%" class="sidebar">
+             <app-left-navigation></app-left-navigation>
+         </div>
+         
+     </ng-container>
+  <div class="col" fxFlex fxLayout="column wrap" fxLayoutGap="10px">
+         <div>
+             <app-top-navigation [userLogged]="userLogged" (clicked)="openLoginDialog($event)"></app-top-navigation>
+         </div>
+         <div  >
+             <router-outlet></router-outlet>
+         </div>
+  </div>
+  </div>
+  

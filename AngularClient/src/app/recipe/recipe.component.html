@@ -1,0 +1,35 @@
+<div class="container" *ngIf="recipe">
+  <div class="header">
+    <app-recipe-information [recipeId]="recipe.recipeId" [chefName]="recipe.chefName" [chefPicture]="recipe.chefPhoto" [title]="recipe.title"
+      [timeNeededToPrepare]="recipe.timeNeededToPrepare" [servingNumber]="recipe.servingNumber"
+      [complexity]="recipe.complexity" [price]="recipe.price" [mealCanBeOrdered]="recipe.mealCanBeOrdered"
+      [deleted]="deleted" [noteFromChef]="recipe.noteForShipping" [shippingPrice]="recipe.shippingPrice" [headerPhoto]="headerPhoto"
+      (goToComments)="scrollToComment(addComment,$event)">
+    </app-recipe-information>
+  </div>
+  <div class="content">
+    <div class="left-side">
+      <h2 class="recipe-headline">Ingredients</h2>
+      <app-recipe-ingredients [ingredients]="recipe.ingredients"></app-recipe-ingredients>
+    </div>
+    <div class="right-side">
+      <h2 class="recipe-headline">Directions</h2>
+      <app-recipe-description [recipeDescription]="recipeDescription"></app-recipe-description>
+      <div *ngIf="recipe.note!=null">
+        <h2 class="recipe-headline">Notes</h2>
+        <app-recipe-notes [notes]="recipe.note"></app-recipe-notes>
+      </div>
+      <h2 class="recipe-headline">Comments</h2>
+      <app-recipe-comments [comments]="recipe.comments"></app-recipe-comments>
+      <div #addComment>
+        <app-add-comment></app-add-comment>
+      </div>
+
+    </div>
+
+
+  </div>
+  <div >
+    <app-review-photos [photos]="recipe.recipePhotos" [recipeId]="recipe.recipeId"></app-review-photos>
+  </div>
+</div>

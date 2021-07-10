@@ -1,0 +1,39 @@
+<div class="container" >
+  <div class="left-side">
+    <!-- red 1 podaci o useru-->
+    <div class="chef-info">
+      <img src="{{chefPicture || './assets/user.png'}}" alt="Chegf Profile Photo">
+      <p>{{chefName}}</p>
+    </div>
+    <!-- red 2 podaci o imenu i mini desc-->
+    <div class="recipe-basic-info">
+      <p class="recipe-title">{{title}}</p>
+    </div>
+    <!-- red 2  mini desc-->
+    <div  class="recipe-short-info" fxLayoutAlign="space-between" style="margin-top: 1em;" >
+      <div fxLayout="row wrap">
+        <svg-icon src="assets/icons/clock.svg"></svg-icon> 
+        <p>{{timeNeededToPrepare}} min</p>
+      </div>
+      <div fxLayout="row wrap">
+        <svg-icon src="assets/icons/servings.svg"></svg-icon> 
+        <p>{{servingNumber}} servings</p>
+      </div>
+      <div fxLayout="row wrap">
+        <svg-icon src="assets/icons/complexity.svg" ></svg-icon> 
+        <p>{{complexity}}</p>
+      </div>
+      
+    </div>
+    <div class="recipe-order" *ngIf="mealCanBeOrdered">
+        <button mat-stroked-button (click)="openDialog()">Order for ${{price}}/Person</button>
+    </div>
+    <div class="recipe-actions">
+      <button mat-stroked-button style="background-color: #62d2db;" (click)="AddToBookmark()">{{btnText}}</button>
+      <button mat-stroked-button style="background-color: #364f6b;" (click)="onComment()">Add Comment</button>
+    </div>
+  </div>
+  <div class="right-side" style="z-index: -1;">
+    <img class="recipe-image" src="{{headerPhoto}}">
+  </div>
+  </div>

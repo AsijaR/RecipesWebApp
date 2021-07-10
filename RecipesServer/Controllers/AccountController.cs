@@ -10,6 +10,7 @@ using RecipesServer.Extensions;
 using RecipesServer.Helpers;
 using RecipesServer.Interfaces;
 using RecipesServer.Models;
+using RecipesServer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,15 @@ namespace RecipesServer.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager; 
         private readonly IUnitOfWork unitOfWork;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper,IUnitOfWork unitOfWork)
+        private readonly IEmailService emailService;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper,IUnitOfWork unitOfWork, IEmailService emailService)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
             this.tokenService = tokenService;
+            this.emailService = emailService;
         }
 
         [HttpPost("register")]
@@ -49,8 +52,8 @@ namespace RecipesServer.Controllers
             {
                 var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
                 string confirmationLink = Url.Action("ConfirmEmail","Account", new { userid = user.Id,  token = token }, protocol: HttpContext.Request.Scheme);
-                EmailHelper emailHelper = new EmailHelper();
-                bool emailResponse = emailHelper.SendEmail(user.Email, confirmationLink);
+                //EmailHelper emailHelper = new EmailHelper();
+                bool emailResponse = emailService.SendEmail(user.Email, confirmationLink);
                 unitOfWork.UserRepository.CreateUserBookmark(user.Id);
                 var roleResult = await userManager.AddToRoleAsync(user, "Member"); 
                 if (!roleResult.Succeeded) return BadRequest(result.Errors);
@@ -62,7 +65,7 @@ namespace RecipesServer.Controllers
                 }
             }
             if (!result.Succeeded) return BadRequest(result.Errors);
-            return Ok();
+            return Ok("dobro je");
 
         }
         [HttpGet]

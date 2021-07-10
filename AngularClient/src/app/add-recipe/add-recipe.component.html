@@ -1,0 +1,41 @@
+<div class="container">
+     <div style="margin-bottom: 10px;">
+          <button mat-flat-button (click)="submitRecipe()">
+               <div >
+                    <svg-icon src="assets/icons/whisk.svg"
+                         [svgStyle]="{'fill':'white','vertical-align':'middle','margin.px':'5'}"></svg-icon>
+                    Post a recipe
+               </div>
+          </button>
+     </div>
+     <div class="wrapper">
+          <ng-container [formGroup]="mainForm">
+               <div>
+                    <app-basic-info [submitted]="submitted" formGroupName="basicInfo"></app-basic-info>
+                    <app-add-header-photo [hasNoFiles]="hasNoFiles" #photo></app-add-header-photo>
+               </div>
+               <div class="middle" fxLayout="column wrap">
+                    <!-- <label  #appenHereIngredients>Ingredients</label> -->
+                    <app-ingredients #ing> </app-ingredients>
+                    <p class="error-message" *ngIf="emptyIng&& submitted">
+                         This field is required
+                     </p>
+
+                    <app-directions #dir></app-directions>
+                    <p class="error-message" *ngIf="emptyDir&& submitted">
+                         This field is required
+                     </p>
+
+                    <label for="rnote" style="margin-top: 1.5em; margin-bottom: 0.6em;">Note</label>
+                    <textarea id="rnote" formControlName="noteForm"></textarea>
+                    <p class="error-message" *ngIf="mainForm.get('noteForm').hasError('pattern') && submitted">
+                         Some of characters are invalid
+                     </p>
+
+               </div>
+               <div>
+                    <app-order [submitted]="submitted" formGroupName="orderInfo"></app-order>
+               </div>
+          </ng-container>
+     </div>
+</div>

@@ -1,0 +1,23 @@
+.container{
+    margin-top: 3em;
+    display: grid;
+    grid-template-rows:  1fr auto;
+    grid-gap: 40px;
+    grid-template-areas:
+    "header",
+    "content";
+    
+}
+.content{
+    display: grid;
+    grid-template-columns: 1fr 2.5fr;
+    grid-template-areas: "left-side right-side"; 
+    grid-gap: 20px;
+    color: #606060;
+}
+.recipe-headline{
+    text-align: left;
+    font-size: 18px;
+    letter-spacing: 5.5px;
+    text-transform: uppercase;
+ }

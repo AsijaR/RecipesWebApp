@@ -1,0 +1,32 @@
+
+ .comment-wrap {
+    background: rgba(255, 255, 255, 0.438);
+    padding: 0.5em;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    margin-top: 1em;
+ }
+ 
+ .user-info{
+     font-size: 12px;
+    letter-spacing: 0.2px;
+    font-weight: 500;
+    margin-left: 1em; margin-top: 0.2em;
+ }
+ 
+.info span{
+    font-size: 10px;
+    font-weight: 200;
+}
+ img{
+    border-radius: 50%; 
+    max-width: 50px;
+    width: 100%;
+    height: auto;
+ }
+
+ 
+ .comment-info-message {
+    padding: 0.5em;
+ } 
+ 

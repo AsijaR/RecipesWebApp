@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="wrap-form" fxLayout="row wrap" fxLayoutGap="40px">
+        <form [formGroup]="searchByIngForm" #searchIngForm="ngForm" (ngSubmit)="submitForm(searchByIngForm.value)">
+            <div class="row">
+                <div fxLayout="column wrap">
+                    <label for="fullName">Ingredient 1</label>
+                    <input type="text" id="fullName" required formControlName="ingredient1" >
+
+                    <label for="address">Ingredient 2 </label>
+                    <input type="text" id="address" required formControlName="ingredient2"  >
+
+                    <label for="city">Ingredient 3</label>
+                    <input type="text" id="city" required formControlName="ingredient3">
+
+                </div>
+                <div mat-dialog-actions class="row button-actions">
+                    <button  type="submit" mat-stroked-button  style="background-color: #fc5185; color: white;"> Search</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>

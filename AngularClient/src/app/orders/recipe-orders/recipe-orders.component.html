@@ -1,0 +1,56 @@
+<mat-accordion class="example-headers-align" single *ngIf="orders">
+    <mat-expansion-panel *ngFor="let order of orders" (afterExpand)="selectedOrderId = order.orderId">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+        #{{order.orderId}} {{order.fullName}}
+        </mat-panel-title>
+        <mat-panel-description class="header" >
+            <div fxFlex fxLayout="row">
+                <p fxFlex>Ship for: {{order.dateMealShouldBeShipped | date}}</p>
+                <p [ngClass]="{'status-approved': order.approvalStatus === 'Approved', 
+                                'status-denied' : order.approvalStatus === 'Denied',
+                                'status-waiting': order.approvalStatus === 'Waiting',
+                                'status-completed': order.approvalStatus === 'Completed' }">
+                 {{order.approvalStatus}}</p>
+            </div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div fxLayout="row wrap">
+         <div fxFlex fxLayout="column wrap">
+             <h4>Order Info</h4>
+             <p>{{order.fullName}}</p>
+             <p>{{order.address}}</p>
+             <p> {{order.city}} {{order.zip}} </p>
+             <p> {{order.state}} </p>
+         </div>
+         <div fxFlex fxLayout="column wrap">
+            <h4>Recipe Info</h4>
+            <p routerLink='/recipe/{{order.recipeId}}' style="cursor: pointer;">{{order.recipeTitle}}</p>
+            <p>Serving number: {{order.servingNumber}}</p>
+            <p>Shipping date: {{order.dateMealShouldBeShipped | date}}</p>
+            <p>Note: {{order.noteToChef}}</p>
+         </div>
+         <div fxFlex>
+             <h4>Payment Info</h4>
+             <p>Price: ${{order.price}}</p>
+             <p style="margin-left: 3em;">x {{order.servingNumber}} Persons</p>
+             <p style="margin-left: 3em;">+ ${{order.shippingPrice}} Shipping Price</p>
+             <hr  style="opacity:50%; margin-right: 5em;">
+             <p>Total: ${{order.total}}</p>             
+         </div>
+      </div>
+      <div fxLayout="row" fxLayoutGap="20px" class="bottom">
+        <h4 >Change order status: </h4>
+        <form  [formGroup]="changeStatusForm" >
+        <mat-form-field >
+            <mat-select style="padding: 2px;" formControlName="status" >
+              <mat-option *ngFor="let option of options" [value]="option"  >
+                {{option}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          </form>
+          <button   mat-raised-button style="height: 3em; width: 8em;" (click)="changeStatus()">Save</button>
+     </div>
+    </mat-expansion-panel>
+  </mat-accordion>

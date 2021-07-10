@@ -1,0 +1,8 @@
+<div class="container" *ngFor="let desc of recipeDescription; index as i">
+    <div class="description-numbers" >
+        <p>{{i+1}}.</p> 
+      </div>
+      <div class="description-steps">
+        {{desc}}
+      </div>
+  </div>

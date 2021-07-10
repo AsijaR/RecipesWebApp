@@ -1,0 +1,14 @@
+ <h4 *ngIf="(accountService.currentUser$ | async) == null" style="font-weight: 500;">You need to login to add a comment</h4>
+ <form *ngIf="(accountService.currentUser$ | async) != null" #form="ngForm" (submit)="PostAComment()">
+    <div class="add-comment">
+        <mat-form-field appearance="outline">
+            <mat-label>Write a comment</mat-label>
+            <input  name="message" matInput placeholder="Please be kind :)"
+            [(ngModel)]="model.message" required minlength="2"  >
+        
+        </mat-form-field>
+        <p class="error-message" *ngIf="shortComment">Comment is too short.</p>
+        <p class="error-message" *ngIf="invalidChar" >Special characters are not allowed!</p>
+        <button style="width: 20%; position: relative;" type="submit" mat-raised-button>Post</button>
+    </div>
+</form>

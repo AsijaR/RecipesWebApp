@@ -1,0 +1,35 @@
+::ng-deep ngx-gallery-thumbnail {
+    background-color: rgb(0, 255, 98);
+}
+.ngx-gallery { 
+    margin-top: 1em;
+    display: inline-block; 
+    margin-bottom: 20px;
+ }
+ ::ng-deep .ngx-gallery-thumbnails .ngx-gallery-thumbnail {
+    box-shadow: 0px 3px 6px #3f3e3e5e;
+    border-radius: 12px;
+}
+.recipe-headline{
+    text-align: left;
+    font-size: 18px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #606060;
+    margin-bottom: 1em;
+ }
+ .btn-upload{
+    background: #FC5185 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    color: white;
+    letter-spacing: 0.16px;
+    font-weight: 200;
+ }
+ input[type=file]::file-selector-button {
+    display: none;
+  }
+  ::ng-deep .opa{
+   background-color: white;
+   font-size: 20px;
+   color: #707070;
+}

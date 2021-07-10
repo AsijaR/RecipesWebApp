@@ -1,0 +1,8 @@
+a:hover,a:active,mat-list-item:hover,mat-list-item:active
+{
+  background-color: #000000 10%;
+  border-left: #FC97C7 5px solid ;
+}
+span {
+    color: white ;
+  }

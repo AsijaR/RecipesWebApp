@@ -1,0 +1,31 @@
+<div  fxLayout="row wrap" 
+fxLayout.lt-sm="column" 
+fxLayoutGap="22px" 
+fxLayoutAlign="flex-start" >
+    <mat-card  class="recipe-card" *ngFor="let recipe of recipes">
+        <mat-card-content routerLink="/recipe/{{recipe.recipeId}}">
+            <img style="border-radius: 12px 12px 0 0;" mat-card-image src="{{recipe.headerUrl || './assets/emptyPlate.jpg'}}" alt="Recipe header photo">
+            <div class="mat-title">{{recipe.title}}</div>
+          <div fxLayout="row wrap" fxLayoutAlign="space-between" class="short-desc">
+              <div fxLayout="row wrap">
+                <svg-icon src="assets/icons/clock.svg" [svgStyle]="{'width.px':16,'height.px':16}"></svg-icon> 
+                <p class="icon-text">{{recipe.timeNeededToPrepare}} min</p>
+              </div>
+              <div fxLayout="row wrap">
+                <svg-icon src="assets/icons/servings.svg" [svgStyle]="{'width.px':16,'height.px':16}"></svg-icon> 
+                <p class="icon-text">{{recipe.servingNumber}} servings</p>
+              </div>
+              <div fxLayout="row wrap">
+                <svg-icon src="assets/icons/complexity.svg" [svgStyle]="{'width.px':16,'height.px':16}"></svg-icon> 
+                <p class="icon-text">{{recipe.complexity}}</p>
+              </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions *ngIf="recipeOwner" style="padding:10px; color:white">
+          <button  mat-stroked-button style="background-color: #006FFF;" routerLink="/add-recipe/{{recipe.recipeId}}">Edit</button>
+          <button  mat-stroked-button style="background-color: #EF1734 ; " (click)="openDeleteDialog(recipe.recipeId)">Delete</button>
+        </mat-card-actions>
+        <div *ngIf="bookmarkPage" style="padding:10px; color:white">
+          <button  mat-stroked-button style="background-color: #EF1734 ; " (click)="removeFromBookmark(recipe.recipeId)">Remove from Bookmark</button></div>
+      </mat-card>         
+</div>

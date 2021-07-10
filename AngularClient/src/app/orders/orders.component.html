@@ -1,0 +1,34 @@
+<div fxFlex fxLayoutAlign="space-between" fxLayout="column wrap">
+<h2 class="title" >Orders</h2>
+<form [formGroup]="sortingForm" fxFlex fxLayoutAlign="end" style="margin-bottom: 10px;" >
+    <label for="showStatus" style="margin-right: 1em; margin-top: 0.6em;">Show: </label>
+    <select class="sort" name="showStatus" id="showStatus" formControlName="statusForm" #sf (change)="getChefsOrders(sf.value)">
+        <option value="All" selected>All </option>
+        <option value="Completed">Completed </option>
+        <option value="Waiting">Waiting</option>
+        <option value="Denied">Denied</option>
+        <option value="Approved">Approved</option>
+    </select>
+</form>
+<!-- <ng-template *ngIf="noOrders">
+    <h3>There are no currently orders with {{choosenStatus}} status</h3>>
+  </ng-template> -->
+<app-recipe-orders fxFlex 
+                    [orders]="orders"
+                    (choosenStatus)="addItem($event)"
+                    ></app-recipe-orders>
+
+ <div class="d-flex justify-content-center" *ngIf="pagination" style="margin-top: 2em;">
+    <pagination 
+        [boundaryLinks]="true" 
+        [totalItems]="pagination.totalItems"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;" 
+        nextText="&rsaquo;" 
+        firstText="&laquo;" 
+        lastText="&raquo;">
+</pagination>
+</div>                   
+</div>

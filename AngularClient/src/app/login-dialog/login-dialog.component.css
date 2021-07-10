@@ -1,0 +1,10 @@
+button{
+    margin-top: 1.5em;
+    border-radius: 10px;
+    font-size: 14px;
+    background-color: #fc5185; color: white; width: 100%;
+  }
+  .error-message{
+    color: rgba(216, 38, 38, 0.801);
+    font-size: 13px;
+  }

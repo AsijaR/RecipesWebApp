@@ -1,0 +1,36 @@
+.container form{
+    display: grid;
+  }
+  mat-checkbox{
+    font-size: 16px;
+    letter-spacing: 1.3px;
+    color:#5E5E5E;
+    font-weight: 600;
+    margin-bottom: 1em;
+  }
+  input[type=text], select {
+      padding: 12px 20px;
+      margin: 5px 0 10px 0;
+      border: 1px solid #ccc;
+      box-shadow: 0px 3px 6px #00000029;
+      border-radius: 20px;
+      font-size: 14px;
+      outline: none;
+    }
+    
+    
+  label{
+    letter-spacing: 0.8px;
+    color: #5E5E5E;
+    font-weight: 400;
+    font-size: 12px;
+    margin-left: 1em;
+    margin-top: 0.6em;
+  }
+  .error-message{
+    color: rgba(216, 38, 38, 0.801);
+    font-size: 12px;
+    margin-left: 1.5em;
+    margin-top: -4px;
+    margin-bottom: -4px;
+  }
