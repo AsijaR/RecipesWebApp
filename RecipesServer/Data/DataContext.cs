@@ -118,51 +118,51 @@ namespace RecipesServer.Data
 					new Category { CategoryId = 5, Name = "Smoothies" },
 					new Category { CategoryId = 6, Name = "Other" }
 				);
-			builder.Entity<Ingredient>().HasData(
-				new Ingredient { IngredientId = 1, Name = "butter" },
-				new Ingredient { IngredientId = 2, Name = "vegetable oil" },
-				new Ingredient { IngredientId = 3, Name = "red onion" },
-				new Ingredient { IngredientId = 4, Name = "shallots" },
-				new Ingredient { IngredientId = 5, Name = "curry powder" },
-				new Ingredient { IngredientId = 6, Name = "tomato paste" },
-				new Ingredient { IngredientId = 7, Name = "coconut milk" },
-				new Ingredient { IngredientId = 8, Name = "water" },
-				new Ingredient { IngredientId = 9, Name = "chicken" },
-				new Ingredient { IngredientId = 10, Name = "lime juice" }
-				);
-			builder.Entity<Recipe>().HasData(
-				new Recipe
-				{
-					RecipeId = 1,
-					Title = "Coconut Curry Chicken",
-					ServingNumber = 5,
-					TimeNeededToPrepare = "35m",
-					Description = "In a large pot or high-sided skillet over medium heat, heat oil and butter. When butter is" +
-								" melted, add onion and shallots and cook until tender and translucent, 6 to 8 minutes.;Add garlic," +
-								" ginger, and curry powder and cook until fragrant, 1 minute more. Add tomato paste and cook until" +
-								" darkened slightly, 1 to 2 minutes more.;Add coconut milk and water and bring to a simmer. Add chicken " +
-								"and cook, stirring occasionally, until chicken is cooked through, 6 to 8 minutes.;Stir in lime juice " +
-								"and garnish with mint and cilantro. Serve hot with rice.",
-					Note = "And don't forget to whip up some rice to soak up all that saucy goodness! ",
-					CategoryId = 1,
-					MealCanBeOrdered = true,
-					Price = 10,
-					NoteForShipping = "needs to be in freezer after deliver",
-					UserId = 1,
-					Complexity = "Simple"
-				});
-			builder.Entity<RecipeIngredients>().HasData(
-				new RecipeIngredients { RecipeId = 1, Amount = "1 tbsp", IngredientId = 1 },
-				new RecipeIngredients { RecipeId = 1, Amount = "1 tbsp", IngredientId = 2 },
-				new RecipeIngredients { RecipeId = 1, Amount = "2 large", IngredientId = 3 },
-				new RecipeIngredients { RecipeId = 1, Amount = "1 tbsp", IngredientId = 4 },
-				new RecipeIngredients { RecipeId = 1, Amount = "1.5 tbsp", IngredientId = 5 },
-				new RecipeIngredients { RecipeId = 1, Amount = "2 tbsp", IngredientId = 6 },
-				new RecipeIngredients { RecipeId = 1, Amount = "1 can", IngredientId = 7 },
-				new RecipeIngredients { RecipeId = 1, Amount = "500 ml", IngredientId = 8 },
-				new RecipeIngredients { RecipeId = 1, Amount = "1.5 lb boneless", IngredientId = 9 },
-				new RecipeIngredients { RecipeId = 1, Amount = "0.5ml", IngredientId = 10 }
-			);
+			//builder.Entity<Ingredient>().HasData(
+			//	new Ingredient { IngredientId = 1, Name = "butter" },
+			//	new Ingredient { IngredientId = 2, Name = "vegetable oil" },
+			//	new Ingredient { IngredientId = 3, Name = "red onion" },
+			//	new Ingredient { IngredientId = 4, Name = "shallots" },
+			//	new Ingredient { IngredientId = 5, Name = "curry powder" },
+			//	new Ingredient { IngredientId = 6, Name = "tomato paste" },
+			//	new Ingredient { IngredientId = 7, Name = "coconut milk" },
+			//	new Ingredient { IngredientId = 8, Name = "water" },
+			//	new Ingredient { IngredientId = 9, Name = "chicken" },
+			//	new Ingredient { IngredientId = 10, Name = "lime juice" }
+			//	);
+			//builder.Entity<Recipe>().HasData(
+			//	new Recipe
+			//	{
+			//		RecipeId = 1,
+			//		Title = "Coconut Curry Chicken",
+			//		ServingNumber = 5,
+			//		TimeNeededToPrepare = "35m",
+			//		Description = "In a large pot or high-sided skillet over medium heat, heat oil and butter. When butter is" +
+			//					" melted, add onion and shallots and cook until tender and translucent, 6 to 8 minutes.;Add garlic," +
+			//					" ginger, and curry powder and cook until fragrant, 1 minute more. Add tomato paste and cook until" +
+			//					" darkened slightly, 1 to 2 minutes more.;Add coconut milk and water and bring to a simmer. Add chicken " +
+			//					"and cook, stirring occasionally, until chicken is cooked through, 6 to 8 minutes.;Stir in lime juice " +
+			//					"and garnish with mint and cilantro. Serve hot with rice.",
+			//		Note = "And don't forget to whip up some rice to soak up all that saucy goodness! ",
+			//		CategoryId = 1,
+			//		MealCanBeOrdered = true,
+			//		Price = 10,
+			//		NoteForShipping = "needs to be in freezer after deliver",
+			//		UserId = 1,
+			//		Complexity = "Simple"
+			//	});
+			//builder.Entity<RecipeIngredients>().HasData(
+			//	new RecipeIngredients { RecipeId = 1, Amount = "1 tbsp", IngredientId = 1 },
+			//	new RecipeIngredients { RecipeId = 1, Amount = "1 tbsp", IngredientId = 2 },
+			//	new RecipeIngredients { RecipeId = 1, Amount = "2 large", IngredientId = 3 },
+			//	new RecipeIngredients { RecipeId = 1, Amount = "1 tbsp", IngredientId = 4 },
+			//	new RecipeIngredients { RecipeId = 1, Amount = "1.5 tbsp", IngredientId = 5 },
+			//	new RecipeIngredients { RecipeId = 1, Amount = "2 tbsp", IngredientId = 6 },
+			//	new RecipeIngredients { RecipeId = 1, Amount = "1 can", IngredientId = 7 },
+			//	new RecipeIngredients { RecipeId = 1, Amount = "500 ml", IngredientId = 8 },
+			//	new RecipeIngredients { RecipeId = 1, Amount = "1.5 lb boneless", IngredientId = 9 },
+			//	new RecipeIngredients { RecipeId = 1, Amount = "0.5ml", IngredientId = 10 }
+			//);
 			/*	builder.Entity<Bookmark>().HasData(
 					new Bookmark { BookmarkId = 1, UserId = 1 });
 				builder.Entity<Category>().HasData(

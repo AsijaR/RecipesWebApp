@@ -25,8 +25,11 @@ namespace RecipesServer.Repositories
 		}
 		public void deleteRecipeHeaderPreviousPhoto(int recipeId)
 		{
-			var photo = _context.RecipePhotos.Where(x => x.RecipeId == recipeId).FirstOrDefault(m=>m.IsMain==true);
-			_context.RecipePhotos.Remove(photo);
+			var recipeHasHeaderPhoto = _context.RecipePhotos.Where(x => x.RecipeId == recipeId).Any();
+			if (recipeHasHeaderPhoto) 
+			{
+				_context.RecipePhotos.Remove(_context.RecipePhotos.Where(x => x.RecipeId == recipeId).FirstOrDefault(m => m.IsMain == true));
+			}
 		}
 		public async Task<Recipe> GetRecipeAsync(int recipeId)
 		{

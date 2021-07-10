@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace RecipesServer.Migrations
 {
-    public partial class switchingToPostgresDB : Migration
+    public partial class swithicingToPostgress : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -426,6 +426,19 @@ namespace RecipesServer.Migrations
                         principalTable: "Recipes",
                         principalColumn: "RecipeId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Lunch" },
+                    { 2, "Salads" },
+                    { 3, "Main Dishes" },
+                    { 4, "Desserts" },
+                    { 5, "Smoothies" },
+                    { 6, "Other" }
                 });
 
             migrationBuilder.CreateIndex(

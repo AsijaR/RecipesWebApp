@@ -25,7 +25,7 @@ namespace RecipesServer.Data
 
             var admin = new AppUser
             {
-                UserName = "admin"
+                UserName = "admin", FirstName = "Asija", LastName = "Ramovic", Email = "asija.np@gmail.com", EmailConfirmed = true
             };
 
             await userManager.CreateAsync(admin, "Admin123.");
