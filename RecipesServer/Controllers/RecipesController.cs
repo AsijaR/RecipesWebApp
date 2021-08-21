@@ -62,7 +62,7 @@ namespace RecipesServer.Controllers
 				await unitOfWork.RecipeRepository.UpdateRecipe(recipe,recipeIngDTO);
 				 return Ok("Recipe Is updated.");
 			}
-			return BadRequest("Failed to update user");
+			return BadRequest("Failed to update recipe");
 		}
 		[Authorize]
 		[HttpPost]

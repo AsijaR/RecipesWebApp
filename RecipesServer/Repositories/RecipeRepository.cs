@@ -225,9 +225,18 @@ namespace RecipesServer.Repositories
 				if (ingredientsToRemove.Count() > 0)
 					ingredientsToRemove.ForEach(x => recipeInDb.Ingredients.Remove(x));
 
-				if (doesntExistIgredients.Count > 0)
+				if (doesntExistIgredients.Count > 0) 
+				{ 
 					await _context.Ingredients.AddRangeAsync(doesntExistIgredients.Select(p => p.Ingredient));
-
+				}
+				try
+				{
+					_context.SaveChanges();
+				}
+				catch (DbUpdateException ex)
+				{
+					var e = ex;
+				}
 				foreach (KeyValuePair<int, string> entry in alreadyExistIgredients)
 				{
 					var ing = recipeInDb.Ingredients.FirstOrDefault(ing => ing.IngredientId == entry.Key);
@@ -249,14 +258,15 @@ namespace RecipesServer.Repositories
 					var recIng = new RecipeIngredients
 					{
 						RecipeId = recipeInDb.RecipeId,
-						IngredientId = i.IngredientId,
+						IngredientId = i.Ingredient.IngredientId,
 						Amount = i.Amount
 					};
 					await _context.RecipeIngredients.AddAsync(recIng);
 				}
 			}
+
 			_context.Entry(recipeInDb).State = EntityState.Modified;
-			_context.SaveChanges();
+			//_context.SaveChanges();
 			return recipeIngDTO;
 		}
 	}
