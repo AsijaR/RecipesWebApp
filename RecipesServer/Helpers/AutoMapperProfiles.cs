@@ -42,6 +42,7 @@ namespace RecipesServer.Helpers
 
             CreateMap<RecipeBookmarks, RecipeBasicInfoDTO>()
                 .ForMember(dest => dest.RecipeId, src => src.MapFrom(b => b.RecipeId))
+                .ForMember(dest=>dest.HeaderUrl,src=>src.MapFrom(r=>r.Recipe.RecipePhotos.FirstOrDefault(p => p.IsMain == true).Url))
                 .ForMember(dest => dest.Title, src => src.MapFrom(r => r.Recipe.Title))
                 .ForMember(dest => dest.Complexity, src => src.MapFrom(r => r.Recipe.Complexity))
                 .ForMember(dest => dest.TimeNeededToPrepare, src => src.MapFrom(r => r.Recipe.TimeNeededToPrepare))

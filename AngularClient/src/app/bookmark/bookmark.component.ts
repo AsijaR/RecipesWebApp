@@ -20,7 +20,10 @@ export class BookmarkComponent implements OnInit {
   }
   ngOnInit(): void {
   this.bookmarkService.getBookmarks().subscribe(
-      r=>this.bookmark=r);
+    r=>{
+      console.log("ovo mi je "+JSON.stringify(r));
+      this.bookmark=r;
+    });
   }
   reloadCurrentRoute() {
     let currentUrl = this.router.url;

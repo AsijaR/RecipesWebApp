@@ -118,6 +118,7 @@ namespace RecipesServer.Data
 					new Category { CategoryId = 5, Name = "Smoothies" },
 					new Category { CategoryId = 6, Name = "Other" }
 				);
+			builder.Entity<Bookmark>().HasData(new Bookmark { BookmarkId = 1,UserId=1 }) ;
 			//builder.Entity<Ingredient>().HasData(
 			//	new Ingredient { IngredientId = 1, Name = "butter" },
 			//	new Ingredient { IngredientId = 2, Name = "vegetable oil" },
