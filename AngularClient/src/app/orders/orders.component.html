@@ -1,4 +1,5 @@
-<div fxFlex fxLayoutAlign="space-between" fxLayout="column wrap">
+<div fxFlex fxLayoutAlign="space-between" fxLayout="column wrap" style="margin-top: 0.7em;">
+    <div>
 <h2 class="title" >Orders</h2>
 <form [formGroup]="sortingForm" fxFlex fxLayoutAlign="end" style="margin-bottom: 10px;" >
     <label for="showStatus" style="margin-right: 1em; margin-top: 0.6em;">Show: </label>
@@ -9,11 +10,13 @@
         <option value="Denied">Denied</option>
         <option value="Approved">Approved</option>
     </select>
-</form>
-<!-- <ng-template *ngIf="noOrders">
-    <h3>There are no currently orders with {{choosenStatus}} status</h3>>
-  </ng-template> -->
-<app-recipe-orders fxFlex 
+</form></div>
+<div *ngIf="orders.length==0; then thenBlock else elseBlock"></div>
+<ng-template #thenBlock>
+    <h4 style="font-weight: 400; font-size: 16px;">Oh no, you still dont have any orders.</h4>
+</ng-template>
+<ng-template #elseBlock>
+   <app-recipe-orders fxFlex 
                     [orders]="orders"
                     (choosenStatus)="addItem($event)"
                     ></app-recipe-orders>
@@ -30,5 +33,9 @@
         firstText="&laquo;" 
         lastText="&raquo;">
 </pagination>
-</div>                   
+</div>
+</ng-template>
+<!-- <ng-template *ngIf="noOrders">
+    <h3>There are no currently orders with {{choosenStatus}} status</h3>>
+  </ng-template> -->                
 </div>
