@@ -23,6 +23,7 @@ export class UserProfileComponent implements OnInit {
   baseUrl = environment.apiUrl + "User/add-photo/";
   errorMatchPassword = false;
   wrongPassword = false;
+  errorMessage:string="";
   sameValue = false;
   profileForm = new FormGroup({
     firstName: new FormControl(''),
@@ -33,7 +34,7 @@ export class UserProfileComponent implements OnInit {
     zip: new FormControl("")
   });
   shippingPriceForm = new FormGroup({
-    shippingPrice: new FormControl('')
+    shippingPrice: new FormControl('',[Validators.pattern("^[0-9]*$")])
   });
   changePasswordForm = new FormGroup({
     currentPassword: new FormControl('',[Validators.required]),
@@ -111,7 +112,6 @@ export class UserProfileComponent implements OnInit {
       this.errorMatchPassword = true;
       // if (this.changePasswordForm.valid) {
     this.memberService.changePassword(data).subscribe(x => {
-
         let snackRef = this.snackbar.open("Password successfully changed", "", {
           duration: 10 * 1000,
           panelClass: ["opa"],
@@ -120,6 +120,7 @@ export class UserProfileComponent implements OnInit {
         });
       }, error => {
         this.wrongPassword = true;
+        this.errorMessage=error.error;
       }
       );
     //   }

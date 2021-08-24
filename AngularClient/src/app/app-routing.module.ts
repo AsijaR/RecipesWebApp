@@ -13,7 +13,8 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
-  { path: " ", component: NavigationComponent },
+  { path: "home", component: RecipesComponent },
+  { path: '',   redirectTo: '/home', pathMatch: 'full' },
   { path: "category/:categoryId", component: RecipesComponent },
   { path: "recipe/:recipeId", component: RecipeComponent },
   { path: "recipes", component: RecipesComponent },

@@ -81,6 +81,10 @@ namespace RecipesServer.Repositories
 				var recipesFoundIn1And2 = i1.Union(i2);
 				query = recipesFoundIn1And2.Union(i3);
 			}
+			if (recipeParams.GetRecentRecipes) 
+			{
+				query = query.OrderByDescending(r=>r.CreatedDate).Take(10);
+			}
 			return await PagedList<RecipeBasicInfoDTO>.CreateAsync(query.ProjectTo<RecipeBasicInfoDTO>(_mapper.ConfigurationProvider).AsNoTracking(),
 					recipeParams.PageNumber, recipeParams.PageSize);
 		}

@@ -88,7 +88,7 @@
                                 This field is required
                               </p>
                               <p class="error-message" *ngIf="wrongPassword && passwordForm.submitted">
-                                Wrong password
+                               {{errorMessage}}
                               </p>
                             </div>
                           </div>
@@ -100,7 +100,7 @@
                                 This field is required
                               </p>
                               <p class="error-message" *ngIf="changePasswordForm.get('newPassword').hasError('pattern') &&changePasswordForm.touched && passwordForm.submitted">
-                                Password needs to have upper and lower letters, number and special character
+                                Password needs to have upper and lower letters, number and to be at least 8 characters long!
                               </p>
                             </div>
                           </div>
@@ -124,7 +124,7 @@
                 <div style="padding:2em;">
                     <form  [formGroup]="shippingPriceForm" #orderSettingsForm="ngForm" (ngSubmit)="updateShippingPrice(shippingPriceForm.value)">
                         <div fxLayout="row wrap">
-                            <label for="shippingPrice" class="col-sm-3 col-form-label">Shipping price</label>
+                            <label for="shippingPrice" class="col-sm-3 col-form-label" >Shipping price ($)</label>
                             <div class="col-sm-4">
                               <input type="text" id="shippingPrice" required [(ngModel)]="member.shippingPrice" formControlName="shippingPrice">
                               <p class="error-message" *ngIf="shippingPriceForm.get('shippingPrice').hasError('required') && orderSettingsForm.submitted">

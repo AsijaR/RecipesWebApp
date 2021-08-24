@@ -33,18 +33,13 @@
         <table mat-table [dataSource]="recipes" class="mat-elevation-z8">
           
             <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef>Title </th>
+              <th mat-header-cell *matHeaderCellDef>Recipe Title </th>
               <td mat-cell *matCellDef="let recipe"> {{recipe.title}} </td>
-            </ng-container>
-          
-            <ng-container matColumnDef="chefName">
-              <th mat-header-cell *matHeaderCellDef>Chef Name </th>
-              <td mat-cell *matCellDef="let recipe"> {{recipe.chefName}} </td>
             </ng-container>
           
             <ng-container matColumnDef="Delete">
               <th mat-header-cell *matHeaderCellDef>Delete </th>
-              <td mat-cell *matCellDef="let user"> 
+              <td mat-cell *matCellDef="let recipe"> 
                 <button mat-stroked-button color="warn" (click)="deleteRecipe(recipe.recipeId)">Delete</button>
               </td>
             </ng-container>

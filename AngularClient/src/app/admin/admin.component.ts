@@ -15,7 +15,7 @@ export class AdminComponent implements OnInit {
   users: User[];
   recipes:Recipe[];
   displayedColumns: string[] = ['UserId', 'Username', 'FullName', 'Delete'];
-  displayedColumnsRecipe: string[] = ['title', 'chefName', 'Delete'];
+  displayedColumnsRecipe: string[] = ['title', 'Delete'];
   
   constructor(private adminService: AdminService,private router:Router, private _snackBar: MatSnackBar) { }
 
@@ -30,32 +30,36 @@ export class AdminComponent implements OnInit {
   }
   deleteUser(data) {
     this.adminService.deleteUser(data).subscribe(users=>{
+      //console.log(this.users);
+    },error=>{
+      this.users=this.users.filter(x=>x.appUserId!==data);
       this._snackBar.open("User is deleted", 'Close', {
         duration: 4 * 1000,
         panelClass:["opa"],
         verticalPosition:'bottom',
         horizontalPosition:'center'
       });
-     this.router.navigateByUrl('/admin');
     });
-
   }
   getAllRecipes()
   {
     this.adminService.getRecipes().subscribe(res=>{
       this.recipes=res.result;
+      console.log(this.recipes);
     }, error => console.log(error));
   }
   deleteRecipe(data)
   {
-    this.adminService.deleteRecipe(data).subscribe(users=>{
+     this.adminService.deleteRecipe(data).subscribe(recipes=>{
+      // this.recipes
+    },error=>{
+      this.recipes=this.recipes.filter(x=>x.recipeId!==data);
       this._snackBar.open("Recipe is deleted", 'Close', {
         duration: 4 * 1000,
         panelClass:["opa"],
         verticalPosition:'bottom',
         horizontalPosition:'center'
       });
-     this.router.navigateByUrl('/admin');
     });
   }
 }

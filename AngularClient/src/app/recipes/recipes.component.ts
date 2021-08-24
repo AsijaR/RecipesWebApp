@@ -16,7 +16,7 @@ import { RecipeService } from '../service/recipe.service';
 })
 export class RecipesComponent implements OnInit {
 
-  public recipes: Recipe[];
+  public recipes: Recipe[]=[];
   public category: Observable<Category>;
   public cateogryId: number;
   private paramMapsActiveSub: Subscription[];
@@ -32,12 +32,22 @@ export class RecipesComponent implements OnInit {
     this.getRecipes();
     this.category.subscribe(p => this.recipes = p.recipes);
   }
-  getRecipes(): void {
+  getRecipes():void {
     this.category = this.route.paramMap.pipe(switchMap(params => {
       this.cateogryId = Number(params.get('categoryId'));
-      return this.categoryService.getCategory(this.cateogryId);
+      if(this.cateogryId===0)
+      {
+        this.recipeParams.getRecentRecipes=true;
+        this.recipeService.getSearchedRecipes(this.recipeParams).subscribe(res=>
+          {
+            this.recipes=res.result;
+            this.pagination=res.pagination;
+          });
+      }
+      else return this.categoryService.getCategory(this.cateogryId);
     }));
   }
+
   OnDestroy() {
     this.paramMapsActiveSub.forEach((sub: Subscription) => {
       sub.unsubscribe();

@@ -53,7 +53,7 @@ namespace RecipesServer.Controllers
                 var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
                 string confirmationLink = Url.Action("ConfirmEmail","Account", new { userid = user.Id,  token = token }, protocol: HttpContext.Request.Scheme);
                 //EmailHelper emailHelper = new EmailHelper();
-                bool emailResponse = emailService.SendEmail(user.Email, confirmationLink);
+                bool emailResponse = emailService.SendConfirmationEmail(user.Email, confirmationLink);
                 unitOfWork.UserRepository.CreateUserBookmark(user.Id);
                 var roleResult = await userManager.AddToRoleAsync(user, "Member"); 
                 if (!roleResult.Succeeded) return BadRequest(result.Errors);
@@ -108,9 +108,13 @@ namespace RecipesServer.Controllers
         {
             var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 
-            var tacno = await userManager.CheckPasswordAsync(user, changePasswordDTO.CurrentPassword);
-            if (tacno)
-                await userManager.ChangePasswordAsync(user, changePasswordDTO.CurrentPassword, changePasswordDTO.NewPassword);
+            var check = await userManager.CheckPasswordAsync(user, changePasswordDTO.CurrentPassword);
+            if (check) 
+            {
+                if(changePasswordDTO.CurrentPassword== changePasswordDTO.NewPassword) return BadRequest("Old password cannot be the same as the new one.");
+                await userManager.ChangePasswordAsync(user, changePasswordDTO.CurrentPassword, changePasswordDTO.NewPassword); 
+            }
+                
             else
                 return BadRequest("Current password is not correct.");
             return NoContent();

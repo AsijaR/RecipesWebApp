@@ -1,16 +1,14 @@
-<div class="container">
-    <div class="row"  >
-        <app-search-box (recParams)="searchThis($event)" ></app-search-box>
+<div class="container" >
+    <div class="row">
+        <app-search-box (recParams)="searchThis($event)"></app-search-box>
     </div>
     <div class="row" style="margin-top: 1em;">
-       <div *ngIf="recipes.length==0; then thenBlock else elseBlock"></div>
-    <ng-template #thenBlock>
-        <h3>There are no recipes with those ingredients. Maybe you should try searching something else?</h3>
-    </ng-template>
-    <ng-template #elseBlock>
-        <app-recipe-cards [recipes]="recipes"></app-recipe-cards>
-    </ng-template> 
+        <div *ngIf="recipes.length==0; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+            <h3>There are no recipes found.</h3>
+        </ng-template>
+        <ng-template #elseBlock>
+            <app-recipe-cards [recipes]="recipes"></app-recipe-cards>
+        </ng-template>
     </div>
 </div>
-
-

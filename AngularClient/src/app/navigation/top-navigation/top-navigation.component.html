@@ -1,6 +1,5 @@
 <mat-toolbar class="header-navbar" fxFlex>
-    
-        <a mat-list-item style="padding-left: 2em;" [routerLink]="['/']">Home</a>
+    <a mat-list-item style="padding-left: 2em;" [routerLink]="['home']" routerLinkActive="active">Home</a>
      <div  *ngFor="let cat of categories">   
         <a mat-list-item routerLink="/category/{{cat.categoryId}}" routerLinkActive="active">{{cat.name}}</a>
         <!-- <a mat-list-item [routerLink]="['/contact']">Contact</a> -->

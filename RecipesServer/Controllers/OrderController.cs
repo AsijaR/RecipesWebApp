@@ -16,10 +16,11 @@ namespace RecipesServer.Controllers
 	public class OrderController : BaseApiController
 	{
 		private readonly IUnitOfWork unitOfWork;
-
-		public OrderController(IUnitOfWork unitOfWork)
+		private readonly IEmailService emailService;
+		public OrderController(IUnitOfWork unitOfWork, IEmailService emailService)
 		{
 			this.unitOfWork = unitOfWork;
+			this.emailService = emailService;
 		}
 		[Authorize]
         [HttpGet]
@@ -28,6 +29,18 @@ namespace RecipesServer.Controllers
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 			var result = await unitOfWork.OrderRepository.GetChefOrders(user.Id, orderParams);
 			
+			if (result == null) return NotFound();
+			Response.AddPaginationHeader(result.CurrentPage, result.PageSize, result.TotalCount, result.TotalPages);
+			return Ok(result);
+
+		}
+		[Authorize]
+		[HttpGet("users-orders")]
+		public async Task<ActionResult<IEnumerable<GetOrdersDTO>>> GetUsersOrders([FromQuery] OrderParams orderParams)
+		{
+			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
+			var result = await unitOfWork.OrderRepository.GetChefOrders(user.Id, orderParams);
+
 			if (result == null) return NotFound();
 			Response.AddPaginationHeader(result.CurrentPage, result.PageSize, result.TotalCount, result.TotalPages);
 			return Ok(result);
@@ -52,10 +65,8 @@ namespace RecipesServer.Controllers
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 			if (order == null)
 				return BadRequest("Bad request. Try again later.");
-			await unitOfWork.OrderRepository.OrderMeal(user.Id, order);
-
+			await unitOfWork.OrderRepository.OrderMeal(user.Id,user.Email, order);
 			return Ok("Meal is succefuly ordered");
-
 		}
 
 	}

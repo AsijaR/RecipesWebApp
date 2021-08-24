@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccountService } from '../service/account.service';
 
 @Component({
@@ -25,8 +26,8 @@ export class LoginDialogComponent implements OnInit {
   });
   userLoged=false;
   serverErrorResponse=false;
-  errorMessage:string;
-  constructor(private accountService: AccountService,private dialogRef: MatDialogRef<LoginDialogComponent>) { }
+  errorMessage:string="";
+  constructor(private accountService: AccountService,private dialogRef: MatDialogRef<LoginDialogComponent>,private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -50,11 +51,25 @@ export class LoginDialogComponent implements OnInit {
   signUp() {
     if(this.registerForm.valid){
       this.accountService.register(this.registerForm.value).subscribe(response => { 
-       //console.log("odgovor"+response);
-        this.dialogRef.close();
+          this.dialogRef.close();
        },error=>{
         this.serverErrorResponse=true;
-         this.errorMessage=error.error.text;
+        if(error.status===500)
+         {
+          this.serverErrorResponse=false;
+           this.errorMessage="Uuups...Something went wrong.Try again later";
+          }
+        else if(error.status===200){
+          this.dialogRef.close();
+          let snackRef = this.snackbar.open('Please check your email to confirm you account.', "Close", {
+            duration: 20 * 1000,
+            panelClass: ["opa"],
+            verticalPosition: 'bottom',
+            horizontalPosition: 'center'
+          });
+        }
+        else{this.errorMessage=error.error;}
+        
       });
       }
   }

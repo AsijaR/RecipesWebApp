@@ -17,17 +17,17 @@ namespace RecipesServer.Repositories
 	{
 		private readonly DataContext _context;
 		private readonly IMapper _mapper;
-
-		public OrderRepository(DataContext context, IMapper mapper)
+		private readonly IEmailService _emailService;
+		public OrderRepository(DataContext context, IMapper mapper, IEmailService emailService)
 		{
 			_context = context;
 			_mapper = mapper;
+			_emailService = emailService;
 		}
 		public async Task<PagedList<GetOrdersDTO>> GetChefOrders(int chefId,OrderParams orderParams)
 		{
 			var orders =  _context.RecipeOrders.Where(ch => ch.ChefId == chefId)
 												.Include(o => o.Order).Include(r=>r.Recipe).Include(c=>c.Chef)
-												//.Join(_context.Recipes,order=> order.OrderId, recipe=>recipe.RecipeId, (order,recipe)=>new { Recipe=recipe,Order=order})
 												.AsQueryable();
 			if (orderParams.OrderByStatus != "All")
 				orders = orders.Where(o=>o.ApprovalStatus==orderParams.OrderByStatus);
@@ -40,19 +40,23 @@ namespace RecipesServer.Repositories
 			var findOrder = await _context.RecipeOrders
 								.Where(o => o.ChefId == chefId && o.OrderId == orderId)
 								.FirstOrDefaultAsync();
-
+			var findUser = await _context.RecipeOrders
+								.Where(o =>o.OrderId == orderId).Select(u=>u.UserId)
+								.FirstOrDefaultAsync();
+			var user= await _context.Users.FirstOrDefaultAsync(x => x.Id == findUser);
 			if (findOrder != null)
 			{
 				if (orderStatus.Status == "Approved" || orderStatus.Status == "Denied" || orderStatus.Status == "Completed" || orderStatus.Status == "Waiting")
 				{
 					findOrder.ApprovalStatus = orderStatus.Status;
 					await _context.SaveChangesAsync();
+					bool emailResponse = _emailService.OrderStatusEmail(user.Email, orderStatus.Status);
 				}
 			}
 			return _mapper.Map<OrderStatusDTO>(findOrder);
 		}
 
-		public async Task<MakeOrderDTO> OrderMeal(int userId, MakeOrderDTO order)
+		public async Task<MakeOrderDTO> OrderMeal(int userId,string email, MakeOrderDTO order)
 		{
 			var findRecipe = await _context.Recipes.FirstOrDefaultAsync(r=>r.RecipeId==order.RecipeId);
 			var o = _mapper.Map<RecipeOrders>(order);
@@ -68,7 +72,10 @@ namespace RecipesServer.Repositories
 				}
 				);
 				await _context.SaveChangesAsync();
+				var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == findRecipe.UserId);
+				bool emailResponse = _emailService.SendOrderEmail(email, findRecipe, o,user.ShippingPrice);
 			}
+			
 			return order;
 		}
 	}

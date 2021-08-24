@@ -53,10 +53,10 @@
             </p>
             
             <p class="error-message" *ngIf="registerForm.get('password').hasError('pattern') && signUpForm.submitted">
-            Password needs to have upper and lower letters, number and special character and at least 8 characters long!
+            Password needs to have upper and lower letters, number and to be at least 8 characters long!
         </p>
             <p class="error-message" *ngIf="serverErrorResponse">
-               {{errorMessage.error|json}}
+               {{errorMessage}}
              </p>
              <button mat-stroked-button type="submit" style="margin-bottom: 1em;" (click)="signUp()">Register</button>
             </form>

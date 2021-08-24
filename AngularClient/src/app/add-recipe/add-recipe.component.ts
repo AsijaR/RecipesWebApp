@@ -68,7 +68,7 @@ export class AddRecipeComponent implements OnInit, OnDestroy {
         shippingNoteFormControl.disable();
       } else {
         priceFormControl.enable();
-        priceFormControl.setValidators([Validators.required]);
+        priceFormControl.setValidators([Validators.required,Validators.pattern("^[0-9]*$")]);
         shippingNoteFormControl.enable();
       }
       priceFormControl.updateValueAndValidity();

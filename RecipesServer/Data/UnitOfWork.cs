@@ -12,11 +12,12 @@ namespace RecipesServer.Data
 	{
 		private readonly DataContext _context;
 		private readonly IMapper _mapper;
-
-		public UnitOfWork(DataContext context, IMapper mapper)
+		private readonly IEmailService _emailService;
+		public UnitOfWork(DataContext context, IMapper mapper, IEmailService emailService)
 		{
 			_context = context;
 			_mapper = mapper;
+			_emailService = emailService;
 		}
 
 		public IRecipeRepository RecipeRepository => new RecipeRepository(_context,_mapper);
@@ -26,7 +27,7 @@ namespace RecipesServer.Data
 		public ICategoryRepository CategoryRepository => new CategoryRepository(_context, _mapper);
 		public IBookmarkRepository BookmarkRepository => new BookmarkRepository(_context, _mapper);
 		public ICommentRepository CommentRepository => new CommentRepository(_context, _mapper);
-		public IOrderRepository OrderRepository => new OrderRepository(_context, _mapper);
+		public IOrderRepository OrderRepository => new OrderRepository(_context, _mapper,_emailService);
 
 		public async Task<bool> Complete()
 		{

@@ -30,12 +30,14 @@ export class RecipeService{
   
   constructor(private http: HttpClient) {
    }
-
-  setUserParams(params: RecipeParams) {
+   getRecipeParams() {
+    return this.recipeParams;
+  }
+  setRecipeParams(params: RecipeParams) {
     this.recipeParams = params;
   }
 
-  resetUserParams() {
+  resetRecipeParams() {
     this.recipeParams = new RecipeParams();
     return this.recipeParams;
   }
@@ -43,21 +45,18 @@ export class RecipeService{
   public getSearchedRecipes(recipeParams: RecipeParams) {
     let params = getPaginationHeaders(recipeParams.pageNumber, recipeParams.pageSize);
 
-    if(recipeParams.title!=undefined||null)
+    if(recipeParams.title!=(undefined||null||""||" "))
       params = params.append('title', recipeParams.title);
-    if(recipeParams.ingredient1!=undefined)
+    if(recipeParams.ingredient1!=(undefined||null||""||" "))
       params = params.append('ingredient1', recipeParams.ingredient1);
-    if(recipeParams.ingredient2!=undefined)
+    if(recipeParams.ingredient2!=(undefined||null||""||" "))
       params = params.append('ingredient2', recipeParams.ingredient2);
-    if(recipeParams.ingredient3!=undefined)
+    if(recipeParams.ingredient3!=(undefined||null||""||" "))
       params = params.append('ingredient3', recipeParams.ingredient3);
-
-
-    return getPaginatedResult<Recipe[]>(this.baseUrl + 'search-recipes', params, this.http)
-      .pipe(
-        map(response => {
-        return response;
-      }),
+      if(recipeParams.getRecentRecipes!=undefined)
+      params = params.append('getRecentRecipes', String(recipeParams.getRecentRecipes));
+   return getPaginatedResult<Recipe[]>(this.baseUrl + 'search-recipes', params, this.http)
+      .pipe( map(response => {  return response;}),
       catchError(err => {
         console.log('Handling error locally and rethrowing it...', err);
         return throwError(err)}));

@@ -61,7 +61,7 @@ namespace RecipesServer.Controllers
         {
             var recipe = await unitOfWork.RecipeRepository.FindRecipeByIdAsync(id);
             unitOfWork.RecipeRepository.DeleteRecipe(recipe);
-            return NoContent();
+            return Ok("User is deleted");
 
         }
     }
