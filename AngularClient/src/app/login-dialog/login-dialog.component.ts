@@ -59,7 +59,8 @@ export class LoginDialogComponent implements OnInit {
           this.serverErrorResponse=false;
            this.errorMessage="Uuups...Something went wrong.Try again later";
           }
-        else if(error.status===200){
+        if(error.status===200){
+          this.serverErrorResponse=false;
           this.dialogRef.close();
           let snackRef = this.snackbar.open('Please check your email to confirm you account.', "Close", {
             duration: 20 * 1000,

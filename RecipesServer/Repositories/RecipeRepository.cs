@@ -71,13 +71,13 @@ namespace RecipesServer.Repositories
 			var query = _context.Recipes.AsQueryable();
 			if (recipeParams.Title != null)
 			{
-				query = query.Where(r => r.Title.Contains(recipeParams.Title));
+				query = query.Where(r =>  r.Title.ToLower().Contains(recipeParams.Title.ToLower()));
 			}
 			if (recipeParams.Ingredient1 != null || recipeParams.Ingredient2 != null || recipeParams.Ingredient3 != null)
 			{
-				var i1 = _context.RecipeIngredients.Where(i => i.Ingredient.Name.Contains(recipeParams.Ingredient1)).AsNoTracking().Select(r => r.Recipe);
-				var i2 = _context.RecipeIngredients.Where(i => i.Ingredient.Name.Contains(recipeParams.Ingredient2)).AsNoTracking().Select(r => r.Recipe);
-				var i3 = _context.RecipeIngredients.Where(i => i.Ingredient.Name.Contains(recipeParams.Ingredient3)).AsNoTracking().Select(r => r.Recipe);
+				var i1 = _context.RecipeIngredients.Where(i => i.Ingredient.Name.ToLower().Contains(recipeParams.Ingredient1.ToLower())).AsNoTracking().Select(r => r.Recipe);
+				var i2 = _context.RecipeIngredients.Where(i => i.Ingredient.Name.ToLower().Contains(recipeParams.Ingredient2.ToLower())).AsNoTracking().Select(r => r.Recipe);
+				var i3 = _context.RecipeIngredients.Where(i => i.Ingredient.Name.ToLower().Contains(recipeParams.Ingredient3.ToLower())).AsNoTracking().Select(r => r.Recipe);
 				var recipesFoundIn1And2 = i1.Union(i2);
 				query = recipesFoundIn1And2.Union(i3);
 			}
