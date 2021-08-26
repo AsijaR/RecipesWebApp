@@ -121,7 +121,7 @@ namespace RecipesServer.Controllers
                 
             else
                 return BadRequest("Current password is not correct.");
-            return NoContent();
+            return Ok();
             
         }
 

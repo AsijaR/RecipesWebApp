@@ -112,15 +112,26 @@ export class UserProfileComponent implements OnInit {
       this.errorMatchPassword = true;
       // if (this.changePasswordForm.valid) {
     this.memberService.changePassword(data).subscribe(x => {
-        let snackRef = this.snackbar.open("Password successfully changed", "", {
-          duration: 10 * 1000,
-          panelClass: ["opa"],
-          verticalPosition: 'bottom',
-          horizontalPosition: 'center'
-        });
+        // let snackRef = this.snackbar.open("Password successfully changed", "", {
+        //   duration: 10 * 1000,
+        //   panelClass: ["opa"],
+        //   verticalPosition: 'bottom',
+        //   horizontalPosition: 'center'
+        // });
       }, error => {
+        if(error.status===200)
+        {
+          let snackRef = this.snackbar.open("Password successfully changed", "", {
+            duration: 10 * 1000,
+            panelClass: ["opa"],
+            verticalPosition: 'bottom',
+            horizontalPosition: 'center'
+          });
+
+        }
+        else {
         this.wrongPassword = true;
-        this.errorMessage=error.error;
+        this.errorMessage=error.error;}
       }
       );
     //   }
