@@ -74,7 +74,6 @@ namespace RecipesServer.Repositories
 				await _context.SaveChangesAsync();
 			}
 			var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == findRecipe.UserId);
-			//bool emailResponse = _emailService.SendOrderEmail(email, findRecipe, o, user.ShippingPrice);
 			bool emailResponse = _emailService.SendOrderEmail(email, findRecipe, o, user.ShippingPrice);
 			return emailResponse;
 		}

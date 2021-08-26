@@ -274,7 +274,7 @@ namespace RecipesServer.Repositories
 			}
 
 			_context.Entry(recipeInDb).State = EntityState.Modified;
-			//_context.SaveChanges();
+			_context.SaveChanges();
 			return recipeIngDTO;
 		}
 	}

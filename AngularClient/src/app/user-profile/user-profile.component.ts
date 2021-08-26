@@ -31,7 +31,7 @@ export class UserProfileComponent implements OnInit {
     address: new FormControl(),
     city: new FormControl(""),
     state: new FormControl(""),
-    zip: new FormControl("")
+    zip: new FormControl("",[Validators.pattern("^[0-9]*$")])
   });
   shippingPriceForm = new FormGroup({
     shippingPrice: new FormControl('',[Validators.pattern("^[0-9]*$")])
