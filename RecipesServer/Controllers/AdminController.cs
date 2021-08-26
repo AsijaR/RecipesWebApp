@@ -49,10 +49,11 @@ namespace RecipesServer.Controllers
         [HttpGet("get-all-recipes")]
         public async Task<ActionResult<IEnumerable<RecipeBasicInfoDTO>>> GetRecipes()
         {
-            var rParams = new RecipeParams();
-            rParams.Title = "";
-            var recipes = await unitOfWork.RecipeRepository.GetSearchedRecipesAsync(rParams);
-            Response.AddPaginationHeader(recipes.CurrentPage, recipes.PageSize, recipes.TotalCount, recipes.TotalPages);
+            ///var rParams = new RecipeParams();
+            // rParams.Title = "";
+            // var recipes = await unitOfWork.RecipeRepository.GetSearchedRecipesAsync(rParams);
+            // Response.AddPaginationHeader(recipes.CurrentPage, recipes.PageSize, recipes.TotalCount, recipes.TotalPages);
+            var recipes = await unitOfWork.RecipeRepository.GetAllRecipesAsync();
             return Ok(recipes);
         }
         [Authorize(Policy = "RequireAdminRole")]

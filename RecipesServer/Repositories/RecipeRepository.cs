@@ -42,7 +42,11 @@ namespace RecipesServer.Repositories
 			return recipe;
 		}
 
-
+		public async Task<IEnumerable<RecipeBasicInfoDTO>> GetAllRecipesAsync()
+		{
+			var recipes = await _context.Recipes.OrderByDescending(u => u.CreatedDate).ToListAsync();
+			return _mapper.Map<IEnumerable<RecipeBasicInfoDTO>>(recipes);
+		}
 		public async Task<RecipeDTO> GetRecipeByIdAsync(int id)
 		{
 			var recipe = await _context.Recipes.Include(c => c.Ingredients)

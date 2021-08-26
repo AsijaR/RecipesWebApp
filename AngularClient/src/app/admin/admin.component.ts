@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Recipe } from '../model/recipe.model';
 import { User } from '../model/user.model';
@@ -10,22 +12,27 @@ import { AdminService } from '../service/admin.service';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit,AfterViewInit  {
 
   users: User[];
   recipes:Recipe[];
   displayedColumns: string[] = ['UserId', 'Username', 'FullName', 'Delete'];
   displayedColumnsRecipe: string[] = ['title', 'Delete'];
-  
+  dataSourceR = new MatTableDataSource<Recipe>();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   constructor(private adminService: AdminService,private router:Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getAllUsers();
     this.getAllRecipes();
   }
+  ngAfterViewInit() {
+    this.dataSourceR.paginator = this.paginator;
+  }
   getAllUsers() {
     this.adminService.getAllUsers().subscribe(users => {
-     this.users = users.filter(x=>x.appUserId!=1);
+      this.users = users.filter(x=>x.appUserId!=1);
     }, error => console.log(error));
   }
   deleteUser(data) {

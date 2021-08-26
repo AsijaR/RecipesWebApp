@@ -14,6 +14,7 @@ namespace RecipesServer.Interfaces
         void DeleteRecipe(Recipe recipe);
         Task<RecipeIngDTO> UpdateRecipe(Recipe recipe, RecipeIngDTO recipeIngDTO); 
         Task<bool> SaveAllAsync();
+        Task<IEnumerable<RecipeBasicInfoDTO>> GetAllRecipesAsync();
         Task<Int32> AddNewRecipe(RecipeIngDTO recipeDTO);
         // Task<IEnumerable<Recipe>> GetRecipesAsync();
         Task<RecipeDTO> GetRecipeByIdAsync(int id);
