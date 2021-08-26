@@ -1,6 +1,8 @@
 <h2>Hello Admin</h2>
 <mat-tab-group mat-align-tabs="start">
     <mat-tab label="Users">
+      <div class="data-table-container">
+      
         <table mat-table [dataSource]="users" class="mat-elevation-z8">
           
             <ng-container matColumnDef="UserId">
@@ -28,9 +30,11 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
+          </div>
     </mat-tab>
     <mat-tab label="Recipes">
-        <table mat-table [dataSource]="recipes" class="mat-elevation-z8">
+      <div class="data-table-container">
+        <table mat-table [dataSource]="recipes" class="mat-elevation-z8" style="height: 80%;">
           
             <ng-container matColumnDef="title">
               <th mat-header-cell *matHeaderCellDef>Recipe Title </th>
@@ -47,5 +51,6 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumnsRecipe"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumnsRecipe;"></tr>
           </table>
+          </div>
     </mat-tab>
   </mat-tab-group>

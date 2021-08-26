@@ -88,7 +88,11 @@ namespace RecipesServer.Controllers
 
             var result = await signInManager
                 .CheckPasswordSignInAsync(user, loginDTO.Password, false);
-            if (result.IsNotAllowed) return BadRequest("Please confirm your email to access your account");
+            //if (loginDTO.Username.ToLower() != "admin") 
+            //{ 
+                if (result.IsNotAllowed) 
+                    return BadRequest("Please confirm your email to access your account");
+            //}
             if (!result.Succeeded) return Unauthorized();
             return new UserDTO
             {
