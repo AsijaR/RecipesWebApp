@@ -65,8 +65,13 @@ namespace RecipesServer.Controllers
 			var user = await unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 			if (order == null)
 				return BadRequest("Bad request. Try again later.");
-			await unitOfWork.OrderRepository.OrderMeal(user.Id,user.Email, order);
-			return Ok("Meal is succefuly ordered");
+			var emailResponse = await unitOfWork.OrderRepository.OrderMeal(user.Id,user.Email, order);
+			if (emailResponse)
+				return Ok("Meal is succefuly ordered. Check your email.");
+			else
+			{
+				return BadRequest("Ups something bad happend");
+			}
 		}
 
 	}

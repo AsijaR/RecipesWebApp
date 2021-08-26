@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Recipe } from 'src/app/model/recipe.model';
+import { AccountService } from 'src/app/service/account.service';
 import { BookmarkService } from 'src/app/service/bookmark.service';
 import { OrderMealComponent } from '../order-meal/order-meal.component';
 
@@ -34,7 +35,7 @@ export class RecipeInformationComponent implements OnInit {
   public btnText:string="Add To Bookmark";
   //horizontalPosition: MatSnackBarHorizontalPosition = 'start';
   //verticalPosition: MatSnackBarVerticalPosition = 'bottom';
-  constructor(private _snackBar: MatSnackBar,public dialog: MatDialog,private bookmarkService:BookmarkService) {
+  constructor(public accountService: AccountService,private _snackBar: MatSnackBar,public dialog: MatDialog,private bookmarkService:BookmarkService) {
     var dialogRef = this.dialog;
   }
 

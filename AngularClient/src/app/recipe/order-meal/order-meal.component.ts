@@ -107,7 +107,17 @@ export class OrderMealComponent implements OnInit {
           this.orderedMeal.emit(true);
           
           },
-        err => console.log('HTTP Error', err));
+        err =>{
+          this._snackBar.open(err.error, 'Close', {
+            duration: 4 * 1000,
+            panelClass:["opa"],
+            verticalPosition:'bottom',
+            horizontalPosition:'center'
+          });
+         // this.orderForm.reset();
+          this.orderedMeal.emit(true);
+          
+         });
      }
   }
 }

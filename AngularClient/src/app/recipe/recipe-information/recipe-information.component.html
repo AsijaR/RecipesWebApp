@@ -26,7 +26,7 @@
       
     </div>
     <div class="recipe-order" *ngIf="mealCanBeOrdered">
-        <button mat-stroked-button (click)="openDialog()">Order for ${{price}}/Person</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="openDialog()" [disabled]="(accountService.currentUser$ | async) == null">Order for ${{price}}/Person</button>
     </div>
     <div class="recipe-actions">
       <button mat-stroked-button style="background-color: #62d2db;" (click)="AddToBookmark()">{{btnText}}</button>

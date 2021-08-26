@@ -56,7 +56,7 @@ namespace RecipesServer.Repositories
 			return _mapper.Map<OrderStatusDTO>(findOrder);
 		}
 
-		public async Task<MakeOrderDTO> OrderMeal(int userId,string email, MakeOrderDTO order)
+		public async Task<bool> OrderMeal(int userId,string email, MakeOrderDTO order)
 		{
 			var findRecipe = await _context.Recipes.FirstOrDefaultAsync(r=>r.RecipeId==order.RecipeId);
 			var o = _mapper.Map<RecipeOrders>(order);
@@ -72,11 +72,10 @@ namespace RecipesServer.Repositories
 				}
 				);
 				await _context.SaveChangesAsync();
-				var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == findRecipe.UserId);
-				bool emailResponse = _emailService.SendOrderEmail(email, findRecipe, o,user.ShippingPrice);
 			}
-			
-			return order;
+			var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == findRecipe.UserId);
+			bool emailResponse = _emailService.SendOrderEmail(email, findRecipe, o, user.ShippingPrice);
+			return emailResponse;
 		}
 	}
 }
