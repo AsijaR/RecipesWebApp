@@ -97,7 +97,7 @@ export class OrderMealComponent implements OnInit {
         this.orderForm.get('total').setValue(this.data.price*this.orderForm.get('servingNumber').value+this.data.shippingPrice);
         this.orderService.makeOrder(this.orderForm.value).subscribe(
         res => {
-          this._snackBar.open("prvo"+res, 'Close', {
+          this._snackBar.open(res, 'Close', {
             duration: 4 * 1000,
             panelClass:["opa"],
             verticalPosition:'bottom',
